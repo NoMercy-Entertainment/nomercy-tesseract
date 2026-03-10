@@ -135,7 +135,7 @@ const renameMapping = {
 };
 
 // Path to the directory containing the traineddata files
-const directoryPath = 'c:\\Projects\\NoMercy\\NoMercyTesseract';
+const directoryPath = 'c:\\Projects\\NoMercy\\tools\\nomercy-tesseract';
 
 // Rename the files according to the mapping
 for (const [oldName, newName] of Object.entries(renameMapping)) {
