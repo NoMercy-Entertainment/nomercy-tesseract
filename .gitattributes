@@ -1,0 +1,19 @@
+# Auto-detect and normalize
+* text=auto eol=lf
+
+# Text files
+*.yml           text
+*.yaml          text
+*.md            text diff=markdown
+*.js            text
+*.json          text
+
+# Shell scripts (force LF)
+*.sh            text eol=lf
+
+# Binary: trained models
+*.traineddata   binary
+*.bin           binary
+*.gguf          binary
+*.pt            binary
+*.onnx          binary
