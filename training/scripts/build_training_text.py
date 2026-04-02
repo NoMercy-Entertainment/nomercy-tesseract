@@ -286,6 +286,7 @@ def get_languages_from_tessdata(tessdata_dir: Path) -> List[str]:
 
 LANG_SENTENCES: Dict[str, List[str]] = {
     "eng": [
+        # Dialogue
         "I don't know what you're talking about.",
         "She looked at him and smiled.",
         "They never found out the truth.",
@@ -294,11 +295,6 @@ LANG_SENTENCES: Dict[str, List[str]] = {
         "Previously on...",
         "To be continued.",
         "- Yes.  - No.",
-        "[ Door creaks ]",
-        "[ Applause ]",
-        "[ Music playing ]",
-        "( sighs )",
-        "( laughs )",
         'He said: "I\'ll be back."',
         '"Wait for me!" she cried.',
         "...I don't know.",
@@ -318,10 +314,78 @@ LANG_SENTENCES: Dict[str, List[str]] = {
         "You were right all along.",
         "We made it.",
         "It's over.",
+        "We need to talk about what happened last night.",
+        "I can't believe you just said that to me.",
+        "How much time do we have left before they arrive?",
+        "She said she would come back, but she never did.",
+        "They were supposed to be here an hour ago.",
+        "Something doesn't feel right about this place.",
+        "I thought we agreed not to talk about this.",
+        "Do you remember what happened yesterday afternoon?",
+        "The police are on their way, just stay calm.",
+        "Everything is going to be okay, I promise you.",
+        # SDH (Subtitles for Deaf/Hard of Hearing)
+        "[ Door creaks loudly in the background ]",
+        "[ Suspenseful music playing softly ]",
+        "[ Thunder rumbling in the distance ]",
+        "[ Footsteps approaching from behind ]",
+        "[ Glass shattering on the floor ]",
+        "[ Phone ringing in the other room ]",
+        "[ Birds chirping in the morning ]",
+        "[ Engine revving loudly outside ]",
+        "[ Crowd cheering in the stadium ]",
+        "[ Wind howling through the trees ]",
+        "( sighs deeply and looks away )",
+        "( laughs nervously at the joke )",
+        "( gasps in shock and disbelief )",
+        "( whispers ) Can you hear me now?",
+        "( sobbing ) I can't do this anymore.",
+        "( clears throat ) As I was saying...",
+        "( speaking in foreign language )",
+        "( inaudible ) ...something happened.",
+        "- Are you absolutely sure about this?",
+        "- I've never been more sure in my life.",
+        "- What do you mean by that exactly?",
+        "- It's complicated. I'll explain later.",
+        # Music note lines — heavily represented for ♪ training
         "\u266a Never gonna give you up \u266a",
-        "\u266a La la la la la \u266a",
-        "\u266a Singing in the rain \u266a",
-        "\u266a Don't stop believin' \u266a",
+        "\u266a Never gonna let you down \u266a",
+        "\u266a Never gonna run around and desert you \u266a",
+        "\u266a La la la la la la la la \u266a",
+        "\u266a Singing in the rain, just singing in the rain \u266a",
+        "\u266a Don't stop believin', hold on to that feeling \u266a",
+        "\u266a Somewhere over the rainbow, way up high \u266a",
+        "\u266a Happy birthday to you, happy birthday \u266a",
+        "\u266a We are the champions, my friends \u266a",
+        "\u266a Twinkle twinkle little star, how I wonder \u266a",
+        "\u266a Jingle bells, jingle bells, jingle all the way \u266a",
+        "\u266a Yesterday, all my troubles seemed so far away \u266a",
+        "\u266a Let it be, let it be, let it be, let it be \u266a",
+        "\u266a Row row row your boat, gently down the stream \u266a",
+        "\u266a Amazing grace, how sweet the sound \u266a",
+        "\u266a You are my sunshine, my only sunshine \u266a",
+        "\u266a When the saints go marching in \u266a",
+        "\u266a Take me out to the ball game, take me out \u266a",
+        "\u266a This land is your land, this land is my land \u266a",
+        "\u266a I will always love you, and I \u266a",
+        "\u266a Bohemian Rhapsody, is this the real life \u266a",
+        "\u266a Hey Jude, don't make it bad, take a sad song \u266a",
+        "\u266a Imagine all the people, living for today \u266a",
+        "\u266a What a wonderful world, I see trees of green \u266a",
+        "\u266a Like a rolling stone, how does it feel \u266a",
+        "\u266a Bridge over troubled water, I will lay me down \u266a",
+        "\u266a Hotel California, such a lovely place \u266a",
+        "\u266a We will, we will rock you, rock you \u266a",
+        "\u266a Another one bites the dust, and another one \u266a",
+        "\u266a Under pressure, pushing down on me \u266a",
+        "\u266a Sweet child o' mine, she's got a smile \u266a",
+        "\u266a Smells like teen spirit, with the lights out \u266a",
+        "\u266a Come as you are, as you were, as I want you \u266a",
+        "\u266a Billie Jean is not my lover, she's just a girl \u266a",
+        "\u266b Singing in the rain, just singing in the rain \u266b",
+        "\u266b What a glorious feeling, I'm happy again \u266b",
+        "\u266b Do re mi fa sol la ti do, do ti la sol \u266b",
+        "\u266a Stairway to heaven, and she's buying \u266a",
     ],
     "fra": [
         "Je ne sais pas ce que tu veux dire.",
@@ -1097,90 +1161,13 @@ LANG_SENTENCES["kat_old"] = LANG_SENTENCES["kat"]
 LANG_SENTENCES["bos"] = LANG_SENTENCES["hrv"]
 
 
-# Universal music note lines — these appear in subtitles across ALL languages.
-# Heavily represented because ♪ is the #1 reason for this training pipeline.
-# Each line must be 30+ chars (LSTM needs sequence context to learn).
-_MUSIC_LINES = [
-    "\u266a Never gonna give you up \u266a",
-    "\u266a Never gonna let you down \u266a",
-    "\u266a Never gonna run around and desert you \u266a",
-    "\u266a La la la la la la la la \u266a",
-    "\u266a Singing in the rain, just singing in the rain \u266a",
-    "\u266a Don't stop believin', hold on to that feeling \u266a",
-    "\u266a Somewhere over the rainbow, way up high \u266a",
-    "\u266a Happy birthday to you, happy birthday \u266a",
-    "\u266a We are the champions, my friends \u266a",
-    "\u266a Twinkle twinkle little star, how I wonder \u266a",
-    "\u266a Jingle bells, jingle bells, jingle all the way \u266a",
-    "\u266a Yesterday, all my troubles seemed so far away \u266a",
-    "\u266a Let it be, let it be, let it be, let it be \u266a",
-    "\u266a Row row row your boat, gently down the stream \u266a",
-    "\u266a Amazing grace, how sweet the sound \u266a",
-    "\u266a You are my sunshine, my only sunshine \u266a",
-    "\u266a When the saints go marching in \u266a",
-    "\u266a Take me out to the ball game, take me out \u266a",
-    "\u266a It's a small world after all \u266a",
-    "\u266a This land is your land, this land is my land \u266a",
-    "\u266b Singing in the rain, just singing in the rain \u266b",
-    "\u266b What a glorious feeling, I'm happy again \u266b",
-    "\u266b Do re mi fa sol la ti do, do ti la sol \u266b",
-    "\u266a I will always love you, and I \u266a",
-    "\u266a Bohemian Rhapsody, is this the real life \u266a",
-    "\u266a Hey Jude, don't make it bad, take a sad song \u266a",
-    "\u266a Imagine all the people, living for today \u266a",
-    "\u266a What a wonderful world, I see trees of green \u266a",
-    "\u266a Like a rolling stone, how does it feel \u266a",
-    "\u266a Bridge over troubled water, I will lay me down \u266a",
-    "\u266a Hotel California, such a lovely place \u266a",
-    "\u266a Stairway to heaven, and she's buying \u266a",
-    "\u266a Bohemian Rhapsody, easy come, easy go \u266a",
-    "\u266a We will, we will rock you, rock you \u266a",
-    "\u266a Another one bites the dust, and another one \u266a",
-    "\u266a Under pressure, pushing down on me \u266a",
-    "\u266a Sweet child o' mine, she's got a smile \u266a",
-    "\u266a Smells like teen spirit, with the lights out \u266a",
-    "\u266a Come as you are, as you were, as I want you \u266a",
-    "\u266a Billie Jean is not my lover, she's just a girl \u266a",
-]
-
-# SDH (Subtitles for the Deaf and Hard of Hearing) formatting lines.
-# These contain brackets, parens, dashes — common subtitle punctuation.
-_SDH_LINES = [
-    "[ Door creaks loudly in the background ]",
-    "[ Suspenseful music playing softly ]",
-    "[ Thunder rumbling in the distance ]",
-    "[ Footsteps approaching from behind ]",
-    "[ Glass shattering on the floor ]",
-    "[ Phone ringing in the other room ]",
-    "[ Birds chirping in the morning ]",
-    "[ Engine revving loudly outside ]",
-    "[ Crowd cheering in the stadium ]",
-    "[ Wind howling through the trees ]",
-    "( sighs deeply and looks away )",
-    "( laughs nervously at the joke )",
-    "( gasps in shock and disbelief )",
-    "( whispers ) Can you hear me now?",
-    "( sobbing ) I can't do this anymore.",
-    "( clears throat ) As I was saying...",
-    "( speaking in foreign language )",
-    "( inaudible ) ...something happened.",
-    "- Are you absolutely sure about this?",
-    "- I've never been more sure in my life.",
-    "- What do you mean by that exactly?",
-    "- It's complicated. I'll explain later.",
-]
-
-
 def build_training_lines(lang: str, chars: List[str]) -> List[str]:
     """
     Generate training text lines for a specific language.
 
-    Rules based on Tesseract LSTM fine-tuning research:
-    - NO single-character lines (LSTM needs sequence context)
-    - Every line should be 30-60 chars (real subtitle length)
-    - 70% normal sentences, 30% sentences with special characters
-    - ♪ must appear in many natural lyric-line contexts
-    - Special characters embedded in real sentences, never isolated
+    All training data comes from LANG_SENTENCES — real localized sentences
+    with ♪, SDH formatting, and special characters already embedded.
+    No English content leaks into non-English languages.
     """
     unique_lines: List[str] = []
     seen: Set[str] = set()
@@ -1191,37 +1178,8 @@ def build_training_lines(lang: str, chars: List[str]) -> List[str]:
             seen.add(line)
             unique_lines.append(line)
 
-    # 1. Real localized subtitle sentences (~70% of training data)
-    sentences = LANG_SENTENCES.get(lang, [])
-    for line in sentences:
+    for line in LANG_SENTENCES.get(lang, []):
         add(line)
-
-    # 2. Music note lines — heavily represented for ♪ learning
-    for line in _MUSIC_LINES:
-        add(line)
-
-    # 3. SDH formatting lines — brackets, parens, dashes
-    for line in _SDH_LINES:
-        add(line)
-
-    # 4. Special characters embedded in natural sentences (never isolated)
-    # Build lines where special chars appear within real text context
-    specials = [c for c in chars if not c.isalnum() and len(c) == 1]
-    templates = [
-        'She said "{c}" and then walked away quickly.',
-        'The sign read "{c}" in bold red letters.',
-        'I noticed a {c} symbol on the document here.',
-        'He pointed at the {c} mark on the screen.',
-        'There was a {c} character in the subtitle text.',
-        'The display showed {c} next to the title.',
-        'Look at the {c} right there in the corner.',
-        'Can you see the {c} at the end of the line?',
-    ]
-    rng = random.Random(42)
-    for c in specials:
-        # Pick 2 random templates per special char
-        for template in rng.sample(templates, k=min(2, len(templates))):
-            add(template.format(c=c))
 
     return unique_lines
 
