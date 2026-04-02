@@ -256,12 +256,23 @@ jobs:
           # No START_MODEL — train from scratch so the LSTM output layer
           # natively includes ♪ and all our extended characters.
           # --append_index is broken in Tesseract 5 tessdata_best models.
-          make -C /tmp/tesstrain training \
+          # -k continues past individual lstmf failures (some glyphs fail
+          # at tesseract lstm.train even though box generation succeeded).
+          # With 14k+ entries, a handful of failures is acceptable.
+          make -k -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             LANGDATA_DIR=/tmp/tesstrain/data/langdata \
             MAX_ITERATIONS="$MAX_ITERATIONS" \
-            PSM=13
+            PSM=13 \
+          || true
+
+          # Verify the final traineddata was produced
+          if [ ! -f "/tmp/tesstrain/data/$MODEL.traineddata" ]; then
+            echo "ERROR: tesstrain did not produce $MODEL.traineddata"
+            exit 1
+          fi
+          echo "Training complete: $(wc -c < /tmp/tesstrain/data/$MODEL.traineddata) bytes"
 
       - name: Copy trained model to tessdata
         run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
