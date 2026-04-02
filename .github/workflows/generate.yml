@@ -36,9 +36,9 @@ jobs:
       - name: Generate images
         run: |
           if [ -n "${{ github.event.inputs.language }}" ]; then
-            python3 training/scripts/generate-training-data.py --lang "${{ github.event.inputs.language }}"
+            python3 training/scripts/generate_training_data.py --lang "${{ github.event.inputs.language }}"
           else
-            python3 training/scripts/generate-training-data.py
+            python3 training/scripts/generate_training_data.py
           fi
 
       - name: Report

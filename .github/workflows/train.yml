@@ -70,7 +70,6 @@ jobs:
 
       - name: Install Tesseract 5 and training tools
         run: |
-          # Tesseract apt packages use hyphens where language codes use underscores
           APT_LANG=$(echo "$LANG_CODE" | tr '_' '-')
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
@@ -83,17 +82,99 @@ jobs:
         run: tesseract --version 2>&1 | grep -qE "^tesseract 5\." || exit 1
 
       - name: Prepare working directory
-        run: mkdir -p "$WORK_DIR/lstmf" "$WORK_DIR/output"
+        run: mkdir -p "$WORK_DIR/images" "$WORK_DIR/output"
 
-      - name: Extract base LSTM model
+      - name: Extract base model and extend unicharset
         run: |
-          cp "$TESSDATA_PREFIX/${LANG_CODE}.traineddata" "$WORK_DIR/"
-          combine_tessdata -e "$WORK_DIR/${LANG_CODE}.traineddata" "$WORK_DIR/${LANG_CODE}.lstm"
+          cp "$TESSDATA_PREFIX/${LANG_CODE}.traineddata" "$WORK_DIR/base.traineddata"
+
+          # Extract all components from the base model
+          combine_tessdata -e "$WORK_DIR/base.traineddata" "$WORK_DIR/base."
+          echo "Base model components:"
+          ls -la "$WORK_DIR/base."* 2>/dev/null || true
+
+          # Extract the LSTM model for fine-tuning
+          combine_tessdata -e "$WORK_DIR/base.traineddata" "$WORK_DIR/${LANG_CODE}.lstm"
+
+          # Read new characters from config and add them to the unicharset
+          python3 - <<'PYEOF'
+          import sys, os
+          from pathlib import Path
+
+          work_dir = Path(os.environ["WORK_DIR"])
+          lang = os.environ["LANG_CODE"]
+
+          # Parse the grouped characters.txt to get chars for this language
+          sys.path.insert(0, str(Path("training/scripts")))
+          from generate_training_data import parse_characters, get_chars_for_lang, repo_root
+
+          root = repo_root()
+          groups = parse_characters(root / "training" / "config" / "characters.txt")
+          new_chars = get_chars_for_lang(lang, groups)
+
+          # Read existing unicharset
+          unicharset_path = work_dir / "base.lstm-unicharset"
+          if not unicharset_path.exists():
+              # Try alternate naming
+              for p in work_dir.glob("base.*unicharset*"):
+                  unicharset_path = p
+                  break
+
+          if not unicharset_path.exists():
+              print(f"WARNING: no unicharset found, skipping extension")
+              sys.exit(0)
+
+          lines = unicharset_path.read_text(encoding="utf-8").splitlines()
+          # First line is the count
+          count = int(lines[0])
+          existing_chars = set()
+          for line in lines[1:count+1]:
+              parts = line.split()
+              if parts:
+                  existing_chars.add(parts[0])
+
+          # Add new characters not already in the unicharset
+          added = 0
+          new_lines = list(lines)
+          for char in new_chars:
+              if char not in existing_chars:
+                  # Format: char properties (use defaults matching Tesseract convention)
+                  # Properties: isalpha islower isupper isdigit ispunctuation
+                  new_lines.append(f"{char} 1 0,0,0,0,0,0,0,0,0,0 script=Common 0")
+                  count += 1
+                  added += 1
+                  existing_chars.add(char)
+
+          if added > 0:
+              new_lines[0] = str(count)
+              unicharset_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+              print(f"Extended unicharset: added {added} characters (total: {count})")
+          else:
+              print(f"Unicharset already contains all {len(new_chars)} target characters")
+          PYEOF
+
+          # Rebuild the traineddata with extended unicharset
+          combine_tessdata -o "$WORK_DIR/${LANG_CODE}.traineddata" \
+            "$WORK_DIR/base.lstm" \
+            "$WORK_DIR/base.lstm-unicharset" \
+            "$WORK_DIR/base.lstm-recoder" \
+            "$WORK_DIR/base.lstm-number-dawg" \
+            "$WORK_DIR/base.lstm-punc-dawg" \
+            "$WORK_DIR/base.lstm-word-dawg" 2>/dev/null \
+            || combine_tessdata -o "$WORK_DIR/${LANG_CODE}.traineddata" \
+              "$WORK_DIR/base.lstm" \
+              "$WORK_DIR/base.lstm-unicharset" \
+              "$WORK_DIR/base.lstm-recoder" 2>/dev/null \
+            || {
+              echo "WARNING: could not rebuild traineddata with extended unicharset, using base"
+              cp "$WORK_DIR/base.traineddata" "$WORK_DIR/${LANG_CODE}.traineddata"
+            }
+
+          echo "Extended traineddata size: $(wc -c < "$WORK_DIR/${LANG_CODE}.traineddata") bytes"
 
       - name: Collect training images
         run: |
           DEST="$WORK_DIR/images"
-          mkdir -p "$DEST"
 
           # Pre-generated synthetic images (committed to repo)
           if [ -d "training/generated/$LANG_CODE" ]; then
@@ -117,15 +198,28 @@ jobs:
           TRAIN_LIST="$WORK_DIR/train_list.txt"
           > "$TRAIN_LIST"
 
+          fail=0
+          success=0
           for png in *.png; do
             stem="${png%.png}"
             [ -f "${stem}.gt.txt" ] || continue
-            tesseract "$png" "$stem" --psm 7 --tessdata-dir "$TESSDATA_PREFIX" -l "$LANG_CODE" lstm.train 2>/dev/null || continue
-            echo "$WORK_DIR/images/${stem}.lstmf" >> "$TRAIN_LIST"
+
+            if tesseract "$png" "$stem" --psm 7 \
+                --tessdata-dir "$WORK_DIR" \
+                -l "$LANG_CODE" \
+                lstm.train 2>&1; then
+              echo "$WORK_DIR/images/${stem}.lstmf" >> "$TRAIN_LIST"
+              success=$((success + 1))
+            else
+              echo "  FAILED: $stem (gt: $(cat ${stem}.gt.txt))"
+              fail=$((fail + 1))
+            fi
           done
 
+          echo ""
+          echo "Results: $success succeeded, $fail failed"
           total=$(wc -l < "$TRAIN_LIST")
-          echo "Generated $total .lstmf files"
+          echo "Training list entries: $total"
           [ "$total" -gt 0 ] || { echo "ERROR: no .lstmf files generated"; exit 1; }
 
       - name: Fine-tune LSTM model
@@ -172,11 +266,10 @@ jobs:
           git add "tessdata/$LANG_CODE.traineddata"
           git diff --cached --quiet && exit 0
 
-          # Retry loop to handle concurrent push conflicts from parallel jobs
           for attempt in 1 2 3 4 5; do
             git pull --rebase origin master || true
             if git commit -m "chore(tessdata): fine-tune $LANG_CODE [skip ci]" 2>/dev/null; then
-              true  # commit succeeded (or was already committed above)
+              true
             fi
             if git push origin master; then
               echo "Pushed $LANG_CODE (attempt $attempt)"
@@ -240,7 +333,6 @@ jobs:
               total = r.get("total", 0)
               status = r.get("status", "unknown")
               failures = r.get("failures", [])
-              acc = f"{passed}/{total}" if total > 0 else "N/A"
               pct = f"{(passed/total*100):.0f}%" if total > 0 else "—"
               fail_summary = f"{len(failures)} failures" if failures else "—"
 
@@ -269,7 +361,6 @@ jobs:
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as fh:
               fh.write(summary)
 
-          # Also write as JSON for machine consumption
           result = {
               "total_passed": total_passed,
               "total_total": total_total,
