@@ -36,7 +36,7 @@ jobs:
 
   setup:
     name: Resolve language matrix
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
@@ -70,7 +70,7 @@ jobs:
   train:
     name: Train [${{ matrix.lang }}]
     needs: setup
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
 
     strategy:
       # Train all languages in parallel; do not cancel others if one fails
