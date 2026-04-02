@@ -235,7 +235,8 @@ def main() -> None:
         status = "no_data"
         print(
             "WARNING: no ground-truth images were found for the selected languages.\n"
-            "Add .png / .gt.txt pairs to training/ground-truth/ to enable validation."
+            "Training will proceed but the model is UNTESTED.\n"
+            "Add .png / .gt.txt pairs to training/ground-truth/ for proper validation."
         )
     else:
         print("\nValidation PASSED — tessdata/ is ready to commit.")

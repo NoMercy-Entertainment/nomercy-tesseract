@@ -1,7 +1,7 @@
 name: Generate training images
 
 # Manual only — run once, commit results, reuse forever.
-# Only re-run when characters.txt or the generate script changes.
+# Re-run when characters.txt, fonts, or the generate script changes.
 on:
   workflow_dispatch:
     inputs:
@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install fonts
+      - name: Install fonts and dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
@@ -29,8 +29,9 @@ jobs:
             fonts-noto \
             fonts-noto-cjk \
             fonts-noto-cjk-extra \
-            fonts-noto-color-emoji \
-            fonts-noto-extra
+            fonts-noto-extra \
+            fonts-noto-ui-core \
+            fonts-noto-core
 
       - name: Generate images
         run: |
@@ -40,10 +41,27 @@ jobs:
             python3 training/scripts/generate-training-data.py
           fi
 
+      - name: Report
+        run: |
+          echo "## Generated Training Images" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Language | Images |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          total=0
+          for dir in training/generated/*/; do
+            lang=$(basename "$dir")
+            count=$(ls "$dir"/*.png 2>/dev/null | wc -l)
+            echo "| $lang | $count |" >> $GITHUB_STEP_SUMMARY
+            total=$((total + count))
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total: $total images**" >> $GITHUB_STEP_SUMMARY
+
       - name: Commit generated images
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: "training/generated/"
-          message: "chore: regenerate training images [skip ci]"
-          default_author: github_actions
-          push: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add training/generated/
+          git diff --cached --quiet && { echo "No changes"; exit 0; }
+          git commit -m "chore: regenerate training images [skip ci]"
+          git push origin master

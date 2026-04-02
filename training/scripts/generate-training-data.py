@@ -111,7 +111,9 @@ def find_fonts() -> List[Path]:
         p = Path(search_dir)
         if not p.is_dir():
             continue
-        for font_file in p.rglob("*.[tToO][tTfF][fFtT]"):
+        for font_file in p.rglob("*"):
+            if font_file.suffix.lower() not in (".ttf", ".otf", ".ttc"):
+                continue
             stem = font_file.stem.lower().replace("-", "").replace("_", "")
             for name in SUBTITLE_FONT_NAMES:
                 target = name.lower().replace("-", "").replace("_", "")
