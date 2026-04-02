@@ -2,32 +2,24 @@
 """
 generate-training-data.py
 =========================
-Generates synthetic Tesseract LSTM training images that mimic DVD and Blu-ray
-subtitle bitmaps.
+Generates synthetic Tesseract LSTM training images that mimic DVD/Blu-ray
+subtitle bitmaps. Each language gets only characters relevant to its script,
+plus universal characters (music notes, punctuation).
 
-This script is meant to be run ONCE (locally or via manual workflow dispatch).
-The output is committed to the repo and reused by every training run.
-Do NOT run this on every CI build — it's wasteful and unnecessary.
+Run ONCE (locally or via manual workflow dispatch). Output is committed to
+the repo and reused by every training run.
 
 Usage:
-    # Generate all languages
-    python training/scripts/generate-training-data.py
-
-    # Single language
-    python training/scripts/generate-training-data.py --lang eng
-
-    # Preview (show images, don't write)
-    python training/scripts/generate-training-data.py --preview
-
-Requirements:
-    pip install Pillow
+    python training/scripts/generate-training-data.py           # all languages
+    python training/scripts/generate-training-data.py --lang eng # single
+    python training/scripts/generate-training-data.py --preview  # show samples
 """
 
 import argparse
 import re
 import sys
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Set, Tuple
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -36,47 +28,62 @@ except ImportError:
     sys.exit(1)
 
 
+# ── Language-to-character-group mapping ──────────────────────────────────────
+
+LANG_GROUPS: Dict[str, List[str]] = {
+    "eng": ["latin"],
+    "spa": ["latin"],
+    "fra": ["latin"],
+    "deu": ["latin"],
+    "ita": ["latin"],
+    "por": ["latin"],
+    "nld": ["latin"],
+    "pol": ["latin"],
+    "swe": ["latin"],
+    "nor": ["latin"],
+    "dan": ["latin"],
+    "fin": ["latin"],
+    "tur": ["latin"],
+    "rus": ["cyrillic"],
+    "ukr": ["cyrillic"],
+    "bul": ["cyrillic"],
+    "ell": ["greek"],
+    "jpn": ["japanese"],
+    "kor": ["korean"],
+    "chi_sim": ["chinese"],
+    "chi_tra": ["chinese"],
+    "ara": ["arabic"],
+    "hin": ["hindi"],
+    "tha": ["thai"],
+}
+
 # ── Curated subtitle fonts ──────────────────────────────────────────────────
-# Only fonts commonly used in DVD/Blu-ray subtitle rendering.
-# Searched by name across platform font directories.
+
 SUBTITLE_FONT_NAMES = [
-    # Latin/European
     "Arial", "arial",
-    "LiberationSans-Regular", "liberation-sans",
+    "LiberationSans", "liberation-sans",
     "DejaVuSans", "dejavu-sans",
     "NotoSans-Regular", "NotoSans",
     "FreeSans",
-    # CJK
-    "NotoSansCJK-Regular", "NotoSansCJKsc-Regular",
-    "NotoSansCJKjp-Regular", "NotoSansCJKkr-Regular",
-    "NotoSansCJKtc-Regular",
+    "NotoSansCJK", "NotoSansCJKsc", "NotoSansCJKjp", "NotoSansCJKkr", "NotoSansCJKtc",
     "DroidSansFallback",
-    # Arabic/Hebrew/Thai/Hindi
-    "NotoSansArabic-Regular",
-    "NotoSansHebrew-Regular",
-    "NotoSansThai-Regular",
-    "NotoSansDevanagari-Regular",
+    "NotoSansArabic", "NotoSansHebrew", "NotoSansThai", "NotoSansDevanagari",
+    "NotoSansBengali", "NotoSansKorean",
 ]
 
 FONT_SEARCH_DIRS = [
-    # Linux (apt-installed)
-    "/usr/share/fonts/truetype",
-    "/usr/share/fonts/opentype",
     "/usr/share/fonts",
-    # macOS
     "/System/Library/Fonts",
     "/Library/Fonts",
-    # Windows
     "C:\\Windows\\Fonts",
 ]
 
 COLOUR_SCHEMES: List[Tuple[Tuple[int, int, int], Tuple[int, int, int]]] = [
-    ((255, 255, 255), (0, 0, 0)),   # white on black (most common)
-    ((255, 255, 0), (0, 0, 0)),     # yellow on black (songs/karaoke)
+    ((255, 255, 255), (0, 0, 0)),
+    ((255, 255, 0), (0, 0, 0)),
 ]
 
 FONT_SIZES = [32, 48, 64]
-
 PADDING = 8
 OUTLINE_WIDTH = 1
 
@@ -92,21 +99,49 @@ def repo_root() -> Path:
     return Path(__file__).resolve().parent.parent.parent
 
 
-def load_lines(path: Path) -> List[str]:
-    lines = []
+def parse_characters(path: Path) -> Dict[str, List[str]]:
+    """Parse grouped characters.txt into {group_name: [characters]}."""
+    groups: Dict[str, List[str]] = {}
+    current_group = "universal"
+    groups[current_group] = []
+
     for raw in path.read_text(encoding="utf-8").splitlines():
         stripped = raw.strip()
-        if stripped and not stripped.startswith("#"):
-            # Split space-separated characters on a single line
-            for token in stripped.split():
-                lines.append(token)
-    return lines
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("[") and stripped.endswith("]"):
+            current_group = stripped[1:-1]
+            groups.setdefault(current_group, [])
+            continue
+        for token in stripped.split():
+            groups[current_group].append(token)
+
+    return groups
+
+
+def get_chars_for_lang(lang: str, groups: Dict[str, List[str]]) -> List[str]:
+    """Get characters relevant to a specific language."""
+    chars: List[str] = list(groups.get("universal", []))
+    lang_groups = LANG_GROUPS.get(lang, [])
+    for group_name in lang_groups:
+        chars.extend(groups.get(group_name, []))
+    # Deduplicate preserving order
+    seen: Set[str] = set()
+    unique: List[str] = []
+    for c in chars:
+        if c not in seen:
+            seen.add(c)
+            unique.append(c)
+    return unique
+
+
+def load_lines(path: Path) -> List[str]:
+    return [l.strip() for l in path.read_text(encoding="utf-8").splitlines()
+            if l.strip() and not l.strip().startswith("#")]
 
 
 def find_fonts() -> List[Path]:
-    """Find curated subtitle fonts from system directories."""
-    found: dict[str, Path] = {}
-
+    found: Dict[str, Path] = {}
     for search_dir in FONT_SEARCH_DIRS:
         p = Path(search_dir)
         if not p.is_dir():
@@ -120,12 +155,10 @@ def find_fonts() -> List[Path]:
                 if target in stem and name.lower() not in found:
                     found[name.lower()] = font_file
                     break
-
     return list(found.values())
 
 
 def can_render(font: ImageFont.FreeTypeFont, text: str) -> bool:
-    """Check if a font can render the given text (no missing glyphs)."""
     try:
         probe = Image.new("RGB", (1, 1))
         draw = ImageDraw.Draw(probe)
@@ -147,21 +180,15 @@ def render_image(
 
     text_w = bbox[2] - bbox[0]
     text_h = bbox[3] - bbox[1]
-    img_w = max(text_w + PADDING * 2, 32)
-    img_h = max(text_h + PADDING * 2, 24)
-
-    img = Image.new("RGB", (img_w, img_h), color=bg)
+    img = Image.new("RGB", (max(text_w + PADDING * 2, 32), max(text_h + PADDING * 2, 24)), color=bg)
     draw = ImageDraw.Draw(img)
-    x = PADDING - bbox[0]
-    y = PADDING - bbox[1]
+    x, y = PADDING - bbox[0], PADDING - bbox[1]
 
-    # Outline
     if OUTLINE_WIDTH > 0:
         for dx in range(-OUTLINE_WIDTH, OUTLINE_WIDTH + 1):
             for dy in range(-OUTLINE_WIDTH, OUTLINE_WIDTH + 1):
-                if dx == 0 and dy == 0:
-                    continue
-                draw.text((x + dx, y + dy), text, font=font, fill=bg)
+                if dx or dy:
+                    draw.text((x + dx, y + dy), text, font=font, fill=bg)
 
     draw.text((x, y), text, font=font, fill=fg)
     return img
@@ -179,7 +206,6 @@ def generate(
         lang_out.mkdir(parents=True, exist_ok=True)
 
     count = 0
-
     for font_path in fonts:
         for size in FONT_SIZES:
             try:
@@ -190,16 +216,14 @@ def generate(
             font_tag = re.sub(r"[^a-zA-Z0-9]", "_", font_path.stem.lower())
 
             for char in characters:
-                # Skip characters this font can't render
                 if not can_render(font, char):
                     continue
 
                 for template in TEMPLATES:
                     text = template.format(c=char)
-
                     for fg, bg in COLOUR_SCHEMES:
                         img = render_image(text, font, fg, bg)
-                        colour_tag = "w" if fg[0] == 255 and fg[1] == 255 and fg[2] == 255 else "y"
+                        colour_tag = "w" if fg == (255, 255, 255) else "y"
                         stem = f"{lang}_{font_tag}_{size}px_{colour_tag}_{count:06d}"
                         count += 1
 
@@ -222,34 +246,35 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Generate synthetic subtitle training images.")
     parser.add_argument("--lang", default=None, help="Single language code (default: all)")
-    parser.add_argument("--output", type=Path, default=default_out, help="Output directory")
-    parser.add_argument("--preview", action="store_true", help="Show samples, don't write files")
+    parser.add_argument("--output", type=Path, default=default_out)
+    parser.add_argument("--preview", action="store_true")
     args = parser.parse_args()
 
-    characters = load_lines(config_dir / "characters.txt")
+    char_groups = parse_characters(config_dir / "characters.txt")
     languages = load_lines(config_dir / "languages.txt")
     fonts = find_fonts()
 
     if not fonts:
         print("FATAL: no usable fonts found.", file=sys.stderr)
-        print("Install fonts-noto-cjk, fonts-dejavu, fonts-liberation, or place .ttf in training/fonts/", file=sys.stderr)
         sys.exit(1)
 
     print(f"Fonts: {len(fonts)} ({', '.join(f.stem for f in fonts)})")
-    print(f"Characters: {len(characters)}")
+    print(f"Character groups: {', '.join(char_groups.keys())}")
     print(f"Sizes: {FONT_SIZES}")
-    print(f"Colours: {len(COLOUR_SCHEMES)}")
     print()
 
     target_langs = [args.lang] if args.lang else languages
+    total = 0
 
     for lang in target_langs:
-        print(f"[{lang}] ", end="", flush=True)
-        n = generate(lang, args.output, fonts, characters, preview=args.preview)
+        chars = get_chars_for_lang(lang, char_groups)
+        print(f"[{lang}] {len(chars)} characters ... ", end="", flush=True)
+        n = generate(lang, args.output, fonts, chars, preview=args.preview)
         print(f"{n} images")
+        total += n
 
     if not args.preview:
-        print(f"\nOutput: {args.output}")
+        print(f"\nTotal: {total} images -> {args.output}")
 
 
 if __name__ == "__main__":

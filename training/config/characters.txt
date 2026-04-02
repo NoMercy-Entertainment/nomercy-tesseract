@@ -1,73 +1,77 @@
-# Extra characters to include in fine-tuning training data.
-# One character (or sequence) per line.
-# Lines starting with # are comments.
+# Character sets for Tesseract fine-tuning.
+# Format: [language_group] header followed by characters.
+# "universal" applies to ALL languages.
+# Other groups map to specific language codes.
 
-# ── Music notation ─────────────────────────────────────────
-# Most commonly misread as &, J, I, or ' by Tesseract
-♪
-♫
-♩
-♬
-♭
-♮
-♯
+[universal]
+# Music notation — misread as &, J, I, ' by Tesseract
+♪ ♫ ♩ ♬ ♭ ♮ ♯
+# Subtitle punctuation
+… – — " " ' ' « »
 
-# ── Subtitle punctuation ──────────────────────────────────
-…
-–
-—
-"
-"
-'
-'
-«
-»
+[latin]
+# lang: eng, spa, fra, deu, ita, por, nld, pol, swe, nor, dan, fin, tur
+À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ñ Ò Ó Ô Õ Ö Ø Ù Ú Û Ü Ý ß
+à á â ã ä å æ ç è é ê ë ì í î ï ñ ò ó ô õ ö ø ù ú û ü ý ÿ
+# Polish specific
+Ą ą Ć ć Ę ę Ł ł Ń ń Ś ś Ź ź Ż ż
+# Turkish specific
+Ğ ğ İ ı Ş ş
+# Scandinavian specific
+Ð ð Þ þ
 
-# ── Accented Latin (European subtitles) ───────────────────
-À Á Â Ã Ä Å Æ
-Ç
-È É Ê Ë
-Ì Í Î Ï
-Ñ
-Ò Ó Ô Õ Ö Ø
-Ù Ú Û Ü
-Ý
-ß
-à á â ã ä å æ
-ç
-è é ê ë
-ì í î ï
-ñ
-ò ó ô õ ö ø
-ù ú û ü
-ý ÿ
-
-# ── Cyrillic (Russian, Ukrainian, Bulgarian, etc.) ────────
+[cyrillic]
+# lang: rus, ukr, bul
 А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
 а б в г д е ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
 Ё ё Є є Ґ ґ І і Ї ї
 
-# ── Greek ─────────────────────────────────────────────────
+[greek]
+# lang: ell
 Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
 α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+ά έ ή ί ό ύ ώ ϊ ϋ ΐ ΰ
 
-# ── CJK common (Japanese hiragana basics) ─────────────────
+[japanese]
+# lang: jpn
 あ い う え お か き く け こ さ し す せ そ
 た ち つ て と な に ぬ ね の は ひ ふ へ ほ
 ま み む め も や ゆ よ ら り る れ ろ わ を ん
-
-# ── CJK common (Japanese katakana basics) ─────────────────
 ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ
 タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ
 マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン
+# Common kanji
+日 本 語 人 大 学 生 会 社 国 年 時 中 出 見
+行 事 前 後 間 気 手 子 女 男 名 話 食 飲 読
 
-# ── Korean (common Hangul syllables) ─────────────────────
+[korean]
+# lang: kor
 가 나 다 라 마 바 사 아 자 차 카 타 파 하
 고 노 도 로 모 보 소 오 조 초 코 토 포 호
 구 누 두 루 무 부 수 우 주 추 쿠 투 푸 후
 은 는 이 가 을 를 에 의 로 으
+# Common syllables
+한 국 말 영 화 음 악 자 막 번 역 재 생
 
-# ── Chinese (common simplified characters) ────────────────
+[chinese]
+# lang: chi_sim, chi_tra
 的 一 是 不 了 人 我 在 有 他 这 中 大 来 上
 到 说 们 为 子 和 你 地 出 会 时 要 就 可 以
 也 对 生 能 而 那 学 下 自 之 过 年 后 作 里
+字 幕 电 影 音 乐 播 放 暂 停 快 进 退 集 剧
+
+[arabic]
+# lang: ara
+ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي
+أ إ آ ؤ ئ ة ى ء
+
+[hindi]
+# lang: hin
+अ आ इ ई उ ऊ ए ऐ ओ औ अं अः
+क ख ग घ च छ ज झ ट ठ ड ढ ण
+त थ द ध न प फ ब भ म य र ल व
+श ष स ह
+
+[thai]
+# lang: tha
+ก ข ค ง จ ฉ ช ซ ญ ด ต ถ ท ธ น บ ป ผ ฝ พ ฟ ภ ม ย ร ล ว ศ ษ ส ห อ ฮ
