@@ -101,7 +101,7 @@ jobs:
           GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
           mkdir -p "$GT_DIR"
 
-          # Read font list (first font used as primary)
+          # Read font list
           FONTLIST=""
           if [ -f "training/generated/$MODEL/$MODEL.fonts" ]; then
             while IFS= read -r font; do
@@ -109,7 +109,6 @@ jobs:
             done < "training/generated/$MODEL/$MODEL.fonts"
           fi
           [ -z "$FONTLIST" ] && FONTLIST="Noto Sans,DejaVu Sans"
-          PRIMARY_FONT="${FONTLIST%%,*}"
 
           TRAINING_TEXT="training/generated/$MODEL/$MODEL.training_text"
           if [ ! -f "$TRAINING_TEXT" ]; then
@@ -119,52 +118,52 @@ jobs:
 
           TOTAL_LINES=$(wc -l < "$TRAINING_TEXT")
           NCPU=$(nproc)
-          echo "Rendering $TOTAL_LINES lines with text2image ($NCPU parallel workers)..."
+          echo "Rendering $TOTAL_LINES lines with text2image ($NCPU cores)..."
 
-          # Create a helper script for xargs to call per line
-          cat > /tmp/render_line.sh << 'RENDEREOF'
-          #!/bin/bash
-          LINE_NUM="$1"
-          LINE="$2"
-          GT_DIR="$3"
-          MODEL="$4"
-          FONT="$5"
-          FONTLIST="$6"
+          # Split training text into per-line temp files for parallel processing.
+          # Each line becomes a tiny text file that text2image reads directly —
+          # avoids all shell quoting issues with xargs.
+          SPLIT_DIR="/tmp/text2image_split"
+          mkdir -p "$SPLIT_DIR"
+          awk -v dir="$SPLIT_DIR" -v model="$MODEL" '{
+            num = sprintf("%06d", NR-1)
+            file = dir "/" model "_" num ".txt"
+            print > file
+          }' "$TRAINING_TEXT"
 
-          [ -z "$LINE" ] && exit 0
-          STEM=$(printf "%s_%06d" "$MODEL" "$LINE_NUM")
-          OUTBASE="$GT_DIR/$STEM"
+          # Render all split files in parallel
+          render_one() {
+            local txtfile="$1"
+            local stem
+            stem=$(basename "${txtfile%.txt}")
+            local outbase="$GT_DIR/$stem"
+            local IFS=','
+            for font in $FONTLIST; do
+              if text2image \
+                --text "$txtfile" \
+                --outputbase "$outbase" \
+                --font "$font" \
+                --fonts_dir /usr/share/fonts \
+                --ptsize 32 \
+                --xsize 3600 \
+                --ysize 480 \
+                --margin 10 \
+                --leading 32 2>/dev/null; then
+                cp "$txtfile" "${outbase}.gt.txt"
+                return 0
+              fi
+            done
+            return 1
+          }
+          export -f render_one
+          export GT_DIR FONTLIST
 
-          # Try primary font first, then fallbacks
-          IFS=','
-          for font in $FONTLIST; do
-            if text2image \
-              --text <(echo "$LINE") \
-              --outputbase "$OUTBASE" \
-              --font "$font" \
-              --fonts_dir /usr/share/fonts \
-              --ptsize 32 \
-              --xsize 3600 \
-              --ysize 480 \
-              --margin 10 \
-              --leading 32 2>/dev/null; then
-              echo -n "$LINE" > "${OUTBASE}.gt.txt"
-              exit 0
-            fi
-          done
-          exit 1
-          RENDEREOF
-          chmod +x /tmp/render_line.sh
+          find "$SPLIT_DIR" -name "${MODEL}_*.txt" -print0 | \
+            xargs -0 -P "$NCPU" -n 1 bash -c 'render_one "$1"' _
 
-          # Number each line and run in parallel
-          awk '{printf "%06d\t%s\n", NR-1, $0}' "$TRAINING_TEXT" | \
-            xargs -P "$NCPU" -I {} bash -c '
-              NUM="${1%%	*}"
-              LINE="${1#*	}"
-              /tmp/render_line.sh "$NUM" "$LINE" "'"$GT_DIR"'" "'"$MODEL"'" "'"$PRIMARY_FONT"'" "'"$FONTLIST"'"
-            ' _ {}
+          rm -rf "$SPLIT_DIR"
 
-          # Count results
+          # Count results and report
           COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
           echo "Generated $COUNT ground-truth pairs for $MODEL"
           [ "$COUNT" -gt 0 ] || { echo "ERROR: no images generated for $MODEL"; exit 1; }
