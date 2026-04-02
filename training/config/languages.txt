@@ -1,11 +1,8 @@
 # Languages to fine-tune.
 # One ISO 639-2 Tesseract language code per line.
-# The pipeline will download the corresponding base traineddata from
-# https://github.com/tesseract-ocr/tessdata and fine-tune each one.
-#
 # Only add languages here if you actually have subtitle content for them.
-# More languages = longer CI runs.
 
+# Western European
 eng
 spa
 fra
@@ -13,8 +10,30 @@ deu
 ita
 por
 nld
-pol
+
+# Nordic
 swe
 nor
 dan
 fin
+
+# Eastern European
+pol
+rus
+ukr
+bul
+
+# Greek
+ell
+
+# CJK
+jpn
+kor
+chi_sim
+chi_tra
+
+# Other
+tur
+ara
+hin
+tha

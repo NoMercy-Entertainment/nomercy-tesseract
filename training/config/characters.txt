@@ -1,8 +1,9 @@
 # Extra characters to include in fine-tuning training data.
 # One character (or sequence) per line.
-# Lines starting with # are comments and are ignored by the training scripts.
+# Lines starting with # are comments.
 
-# Music notation symbols — most commonly misread as &, J, I, or '
+# ── Music notation ─────────────────────────────────────────
+# Most commonly misread as &, J, I, or ' by Tesseract
 ♪
 ♫
 ♩
@@ -11,7 +12,7 @@
 ♮
 ♯
 
-# Common subtitle punctuation often misread
+# ── Subtitle punctuation ──────────────────────────────────
 …
 –
 —
@@ -22,7 +23,7 @@
 «
 »
 
-# Accented Latin characters (common in European subtitle tracks)
+# ── Accented Latin (European subtitles) ───────────────────
 À Á Â Ã Ä Å Æ
 Ç
 È É Ê Ë
@@ -40,3 +41,33 @@
 ò ó ô õ ö ø
 ù ú û ü
 ý ÿ
+
+# ── Cyrillic (Russian, Ukrainian, Bulgarian, etc.) ────────
+А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
+а б в г д е ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
+Ё ё Є є Ґ ґ І і Ї ї
+
+# ── Greek ─────────────────────────────────────────────────
+Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
+α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+
+# ── CJK common (Japanese hiragana basics) ─────────────────
+あ い う え お か き く け こ さ し す せ そ
+た ち つ て と な に ぬ ね の は ひ ふ へ ほ
+ま み む め も や ゆ よ ら り る れ ろ わ を ん
+
+# ── CJK common (Japanese katakana basics) ─────────────────
+ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ
+タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ
+マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン
+
+# ── Korean (common Hangul syllables) ─────────────────────
+가 나 다 라 마 바 사 아 자 차 카 타 파 하
+고 노 도 로 모 보 소 오 조 초 코 토 포 호
+구 누 두 루 무 부 수 우 주 추 쿠 투 푸 후
+은 는 이 가 을 를 에 의 로 으
+
+# ── Chinese (common simplified characters) ────────────────
+的 一 是 不 了 人 我 在 有 他 这 中 大 来 上
+到 说 们 为 子 和 你 地 出 会 时 要 就 可 以
+也 对 生 能 而 那 学 下 自 之 过 年 后 作 里

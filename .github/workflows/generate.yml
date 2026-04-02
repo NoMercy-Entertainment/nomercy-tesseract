@@ -1,0 +1,49 @@
+name: Generate training images
+
+# Manual only — run once, commit results, reuse forever.
+# Only re-run when characters.txt or the generate script changes.
+on:
+  workflow_dispatch:
+    inputs:
+      language:
+        description: "Single language code (blank = all)"
+        required: false
+        default: ""
+
+jobs:
+  generate:
+    name: Generate training images
+    runs-on: [self-hosted, beast-unit]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            python3-pil \
+            fonts-dejavu \
+            fonts-liberation \
+            fonts-freefont-ttf \
+            fonts-noto \
+            fonts-noto-cjk \
+            fonts-noto-cjk-extra \
+            fonts-noto-color-emoji \
+            fonts-noto-extra
+
+      - name: Generate images
+        run: |
+          if [ -n "${{ github.event.inputs.language }}" ]; then
+            python3 training/scripts/generate-training-data.py --lang "${{ github.event.inputs.language }}"
+          else
+            python3 training/scripts/generate-training-data.py
+          fi
+
+      - name: Commit generated images
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "training/generated/"
+          message: "chore: regenerate training images [skip ci]"
+          default_author: github_actions
+          push: true
