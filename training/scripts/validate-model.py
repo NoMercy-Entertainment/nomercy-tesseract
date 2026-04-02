@@ -198,7 +198,11 @@ def main() -> None:
         print(f"ERROR: tessdata directory does not exist: {args.tessdata}", file=sys.stderr)
         sys.exit(1)
 
-    languages = load_lines(config_dir / "languages.txt")
+    # Discover languages from tessdata/ (languages.txt is deprecated)
+    languages = sorted(
+        p.stem for p in args.tessdata.glob("*.traineddata")
+        if p.stem not in ("osd", "equ")
+    )
     target_langs = [args.lang] if args.lang else languages
 
     overall_passed = 0

@@ -15,7 +15,7 @@ on:
         required: false
         default: ""
       max_iterations:
-        description: "lstmtraining max iterations"
+        description: "tesstrain MAX_ITERATIONS"
         required: false
         default: "400"
 
@@ -67,7 +67,6 @@ jobs:
     env:
       LANG_CODE:      ${{ matrix.lang }}
       MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '400' }}
-      TESSDATA_PREFIX: /usr/share/tesseract-ocr/5/tessdata
       WORK_DIR:       /tmp/tess-train/${{ matrix.lang }}
 
     steps:
@@ -75,177 +74,95 @@ jobs:
 
       - name: Install Tesseract 5 and training tools
         run: |
-          APT_LANG=$(echo "$LANG_CODE" | tr '_' '-')
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
             tesseract-ocr \
-            tesseract-ocr-$APT_LANG \
             libtesseract-dev \
-            python3-pil
+            fonts-noto \
+            fonts-noto-cjk \
+            fonts-noto-cjk-extra \
+            fonts-noto-extra \
+            fonts-noto-ui-core \
+            fonts-noto-core \
+            fonts-dejavu \
+            fonts-liberation
 
       - name: Verify Tesseract 5
-        run: tesseract --version 2>&1 | grep -qE "^tesseract 5\." || exit 1
+        run: tesseract --version
 
-      - name: Prepare working directory
-        run: mkdir -p "$WORK_DIR/images" "$WORK_DIR/output"
+      - name: Clone tesstrain
+        run: git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
 
-      - name: Extract base model and extend unicharset
+      - name: Prepare tesstrain data directory
         run: |
-          cp "$TESSDATA_PREFIX/${LANG_CODE}.traineddata" "$WORK_DIR/base.traineddata"
+          MODEL="$LANG_CODE"
+          DATA_DIR="/tmp/tesstrain/data/$MODEL"
+          GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
+          mkdir -p "$DATA_DIR" "$GT_DIR"
 
-          # Extract all components from the base model
-          combine_tessdata -e "$WORK_DIR/base.traineddata" "$WORK_DIR/base."
-          echo "Base model components:"
-          ls -la "$WORK_DIR/base."* 2>/dev/null || true
-
-          # Extract the LSTM model for fine-tuning
-          combine_tessdata -e "$WORK_DIR/base.traineddata" "$WORK_DIR/${LANG_CODE}.lstm"
-
-          # Read new characters from config and add them to the unicharset
-          python3 - <<'PYEOF'
-          import sys, os
-          from pathlib import Path
-
-          work_dir = Path(os.environ["WORK_DIR"])
-          lang = os.environ["LANG_CODE"]
-
-          # Parse the grouped characters.txt to get chars for this language
-          sys.path.insert(0, str(Path("training/scripts")))
-          from generate_training_data import parse_characters, get_chars_for_lang, repo_root
-
-          root = repo_root()
-          groups = parse_characters(root / "training" / "config" / "characters.txt")
-          new_chars = get_chars_for_lang(lang, groups)
-
-          # Read existing unicharset
-          unicharset_path = work_dir / "base.lstm-unicharset"
-          if not unicharset_path.exists():
-              # Try alternate naming
-              for p in work_dir.glob("base.*unicharset*"):
-                  unicharset_path = p
-                  break
-
-          if not unicharset_path.exists():
-              print(f"WARNING: no unicharset found, skipping extension")
-              sys.exit(0)
-
-          lines = unicharset_path.read_text(encoding="utf-8").splitlines()
-          # First line is the count
-          count = int(lines[0])
-          existing_chars = set()
-          for line in lines[1:count+1]:
-              parts = line.split()
-              if parts:
-                  existing_chars.add(parts[0])
-
-          # Add new characters not already in the unicharset
-          added = 0
-          new_lines = list(lines)
-          for char in new_chars:
-              if char not in existing_chars:
-                  # Format: char properties (use defaults matching Tesseract convention)
-                  # Properties: isalpha islower isupper isdigit ispunctuation
-                  new_lines.append(f"{char} 1 0,0,0,0,0,0,0,0,0,0 script=Common 0")
-                  count += 1
-                  added += 1
-                  existing_chars.add(char)
-
-          if added > 0:
-              new_lines[0] = str(count)
-              unicharset_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
-              print(f"Extended unicharset: added {added} characters (total: {count})")
-          else:
-              print(f"Unicharset already contains all {len(new_chars)} target characters")
-          PYEOF
-
-          # Rebuild the traineddata with extended unicharset
-          combine_tessdata -o "$WORK_DIR/${LANG_CODE}.traineddata" \
-            "$WORK_DIR/base.lstm" \
-            "$WORK_DIR/base.lstm-unicharset" \
-            "$WORK_DIR/base.lstm-recoder" \
-            "$WORK_DIR/base.lstm-number-dawg" \
-            "$WORK_DIR/base.lstm-punc-dawg" \
-            "$WORK_DIR/base.lstm-word-dawg" 2>/dev/null \
-            || combine_tessdata -o "$WORK_DIR/${LANG_CODE}.traineddata" \
-              "$WORK_DIR/base.lstm" \
-              "$WORK_DIR/base.lstm-unicharset" \
-              "$WORK_DIR/base.lstm-recoder" 2>/dev/null \
-            || {
-              echo "WARNING: could not rebuild traineddata with extended unicharset, using base"
-              cp "$WORK_DIR/base.traineddata" "$WORK_DIR/${LANG_CODE}.traineddata"
-            }
-
-          echo "Extended traineddata size: $(wc -c < "$WORK_DIR/${LANG_CODE}.traineddata") bytes"
-
-      - name: Collect training images
-        run: |
-          DEST="$WORK_DIR/images"
-
-          # Pre-generated synthetic images (committed to repo)
-          if [ -d "training/generated/$LANG_CODE" ]; then
-            cp training/generated/$LANG_CODE/*.png "$DEST/" 2>/dev/null || true
-            cp training/generated/$LANG_CODE/*.gt.txt "$DEST/" 2>/dev/null || true
+          # Copy training text generated by generate.yml
+          if [ -f "training/generated/$MODEL/$MODEL.training_text" ]; then
+            cp "training/generated/$MODEL/$MODEL.training_text" "$DATA_DIR/"
+          else
+            echo "WARNING: No training text for $MODEL — will use ground-truth only"
           fi
 
-          # Manual ground-truth corrections
-          for png in training/ground-truth/${LANG_CODE}_*.png; do
+          # Copy ground-truth images (hand-verified)
+          for png in training/ground-truth/${MODEL}_*.png; do
             [ -f "$png" ] || continue
-            cp "$png" "${png%.png}.gt.txt" "$DEST/" 2>/dev/null || true
+            stem=$(basename "${png%.png}")
+            cp "$png" "$GT_DIR/${stem}.png"
+            gt="${png%.png}.gt.txt"
+            [ -f "$gt" ] && cp "$gt" "$GT_DIR/${stem}.gt.txt"
           done
 
-          count=$(ls "$DEST"/*.png 2>/dev/null | wc -l)
-          echo "Training images for $LANG_CODE: $count"
-          [ "$count" -gt 0 ] || { echo "ERROR: no training images found"; exit 1; }
+          # Read font list
+          FONTLIST=""
+          if [ -f "training/generated/$MODEL/$MODEL.fonts" ]; then
+            while IFS= read -r font; do
+              [ -n "$font" ] && FONTLIST="${FONTLIST:+$FONTLIST }$font"
+            done < "training/generated/$MODEL/$MODEL.fonts"
+          fi
 
-      - name: Generate .lstmf files
+          # Fallback font list if none specified
+          [ -z "$FONTLIST" ] && FONTLIST="Noto Sans DejaVu Sans"
+
+          echo "FONTLIST=$FONTLIST" >> $GITHUB_ENV
+          echo "MODEL=$MODEL" >> $GITHUB_ENV
+          echo "DATA_DIR=$DATA_DIR" >> $GITHUB_ENV
+          echo "GT_DIR=$GT_DIR" >> $GITHUB_ENV
+
+      - name: Copy tessdata as base for tesstrain
         run: |
-          cd "$WORK_DIR/images"
-          TRAIN_LIST="$WORK_DIR/train_list.txt"
-          > "$TRAIN_LIST"
+          mkdir -p /tmp/tesstrain/usr/share/tessdata
+          cp "tessdata/$MODEL.traineddata" /tmp/tesstrain/usr/share/tessdata/
 
-          fail=0
-          success=0
-          for png in *.png; do
-            stem="${png%.png}"
-            [ -f "${stem}.gt.txt" ] || continue
-
-            if tesseract "$png" "$stem" --psm 7 \
-                --tessdata-dir "$WORK_DIR" \
-                -l "$LANG_CODE" \
-                lstm.train 2>&1; then
-              echo "$WORK_DIR/images/${stem}.lstmf" >> "$TRAIN_LIST"
-              success=$((success + 1))
-            else
-              echo "  FAILED: $stem (gt: $(cat ${stem}.gt.txt))"
-              fail=$((fail + 1))
-            fi
-          done
-
-          echo ""
-          echo "Results: $success succeeded, $fail failed"
-          total=$(wc -l < "$TRAIN_LIST")
-          echo "Training list entries: $total"
-          [ "$total" -gt 0 ] || { echo "ERROR: no .lstmf files generated"; exit 1; }
-
-      - name: Fine-tune LSTM model
+      - name: Run tesstrain
         run: |
-          lstmtraining \
-            --continue_from "$WORK_DIR/${LANG_CODE}.lstm" \
-            --model_output "$WORK_DIR/output/${LANG_CODE}" \
-            --traineddata "$WORK_DIR/${LANG_CODE}.traineddata" \
-            --train_listfile "$WORK_DIR/train_list.txt" \
-            --max_iterations "$MAX_ITERATIONS"
+          HAS_TEXT=false
+          HAS_GT=false
+          [ -f "$DATA_DIR/$MODEL.training_text" ] && HAS_TEXT=true
+          [ "$(ls -A "$GT_DIR" 2>/dev/null)" ] && HAS_GT=true
 
-      - name: Package traineddata
-        run: |
-          CHECKPOINT="$WORK_DIR/output/${LANG_CODE}_checkpoint"
-          [ -f "$CHECKPOINT" ] || { echo "ERROR: no checkpoint"; exit 1; }
+          if [ "$HAS_TEXT" = false ] && [ "$HAS_GT" = false ]; then
+            echo "ERROR: No training data for $MODEL"
+            exit 1
+          fi
 
-          lstmtraining \
-            --stop_training \
-            --continue_from "$CHECKPOINT" \
-            --traineddata "$WORK_DIR/${LANG_CODE}.traineddata" \
-            --model_output "tessdata/${LANG_CODE}.traineddata"
+          make -C /tmp/tesstrain training \
+            MODEL_NAME="$MODEL" \
+            START_MODEL="$MODEL" \
+            TESSDATA=/tmp/tesstrain/usr/share/tessdata \
+            MAX_ITERATIONS="$MAX_ITERATIONS" \
+            FONTS_DIR=/usr/share/fonts \
+            PSM=7 \
+          || {
+            echo "ERROR: tesstrain make failed for $MODEL"
+            exit 1
+          }
+
+      - name: Copy trained model to tessdata
+        run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
 
       - name: Validate model
         run: |
@@ -273,9 +190,7 @@ jobs:
 
           for attempt in 1 2 3 4 5; do
             git pull --rebase origin master || true
-            if git commit -m "chore(tessdata): fine-tune $LANG_CODE [skip ci]" 2>/dev/null; then
-              true
-            fi
+            git diff --cached --quiet || git commit -m "chore(tessdata): fine-tune $LANG_CODE [skip ci]"
             if git push origin master; then
               echo "Pushed $LANG_CODE (attempt $attempt)"
               break
@@ -284,7 +199,7 @@ jobs:
             sleep $((attempt * 2))
           done
 
-      - name: Upload artifact
+      - name: Upload tessdata artifact
         uses: actions/upload-artifact@v4
         with:
           name: tessdata-${{ matrix.lang }}
@@ -294,7 +209,7 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: rm -rf "$WORK_DIR"
+        run: rm -rf /tmp/tesstrain /tmp/tess-train
 
   report:
     name: Training report
@@ -338,10 +253,10 @@ jobs:
               total = r.get("total", 0)
               status = r.get("status", "unknown")
               failures = r.get("failures", [])
-              pct = f"{(passed/total*100):.0f}%" if total > 0 else "—"
-              fail_summary = f"{len(failures)} failures" if failures else "—"
+              pct = f"{(passed/total*100):.0f}%" if total > 0 else "-"
+              fail_summary = f"{len(failures)} failures" if failures else "-"
 
-              icon = "✅" if status == "passed" else "❌" if status == "failed" else "⚠️"
+              icon = "OK" if status == "passed" else "FAIL" if status == "failed" else "WARN"
               summary += f"| {lang} | {icon} {status} | {passed} | {total} | {pct} | {fail_summary} |\n"
 
               total_passed += passed
@@ -361,7 +276,7 @@ jobs:
                       summary += f"- **{r['lang']}**: expected `{f.get('expected')}` got `{f.get('actual')}` ({f.get('accuracy', '?')})\n"
 
           if not reports:
-              summary += "\n⚠️ No reports collected — all training jobs may have failed before validation.\n"
+              summary += "\nNo reports collected — all training jobs may have failed before validation.\n"
 
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as fh:
               fh.write(summary)

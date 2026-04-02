@@ -1,7 +1,7 @@
-name: Generate training images
+name: Generate training data
 
 # Manual only — run once, commit results, reuse forever.
-# Re-run when characters.txt, fonts, or the generate script changes.
+# Re-run when characters.txt or the generate script changes.
 on:
   workflow_dispatch:
     inputs:
@@ -12,28 +12,18 @@ on:
 
 jobs:
   generate:
-    name: Generate training images
+    name: Generate training text
     runs-on: [self-hosted, beast-unit]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install fonts and dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends \
-            python3-pil \
-            fonts-dejavu \
-            fonts-liberation \
-            fonts-freefont-ttf \
-            fonts-noto \
-            fonts-noto-cjk \
-            fonts-noto-cjk-extra \
-            fonts-noto-extra \
-            fonts-noto-ui-core \
-            fonts-noto-core
+          sudo apt-get install -y --no-install-recommends python3
 
-      - name: Generate images
+      - name: Generate training text files
         run: |
           if [ -n "${{ github.event.inputs.language }}" ]; then
             python3 training/scripts/generate_training_data.py --lang "${{ github.event.inputs.language }}"
@@ -43,25 +33,33 @@ jobs:
 
       - name: Report
         run: |
-          echo "## Generated Training Images" >> $GITHUB_STEP_SUMMARY
+          echo "## Generated Training Data" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Language | Images |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Language | Lines | Fonts |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|-------|" >> $GITHUB_STEP_SUMMARY
           total=0
           for dir in training/generated/*/; do
+            [ -d "$dir" ] || continue
             lang=$(basename "$dir")
-            count=$(ls "$dir"/*.png 2>/dev/null | wc -l)
-            echo "| $lang | $count |" >> $GITHUB_STEP_SUMMARY
-            total=$((total + count))
+            lines=0
+            fonts=0
+            if [ -f "$dir/${lang}.training_text" ]; then
+              lines=$(wc -l < "$dir/${lang}.training_text")
+            fi
+            if [ -f "$dir/${lang}.fonts" ]; then
+              fonts=$(wc -l < "$dir/${lang}.fonts")
+            fi
+            echo "| $lang | $lines | $fonts |" >> $GITHUB_STEP_SUMMARY
+            total=$((total + lines))
           done
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Total: $total images**" >> $GITHUB_STEP_SUMMARY
+          echo "**Total: $total training lines**" >> $GITHUB_STEP_SUMMARY
 
-      - name: Commit generated images
+      - name: Commit training data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add training/generated/
           git diff --cached --quiet && { echo "No changes"; exit 0; }
-          git commit -m "chore: regenerate training images [skip ci]"
+          git commit -m "chore: regenerate training text data [skip ci]"
           git push origin master
