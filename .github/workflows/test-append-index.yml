@@ -53,29 +53,43 @@ jobs:
           ls -la $HOME/eng.*
           echo "Extracted components"
 
-      - name: Prepare minimal training data
+      - name: Create minimal training data
         run: |
-          # Generate a few ground-truth pairs with text2image
+          TESS=$HOME/tesseract-install/bin
+          export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:$LD_LIBRARY_PATH
+
+          # Generate a ground-truth pair
           mkdir -p $HOME/test-gt
-          echo "Hello world test" > $HOME/test-line.txt
-          $HOME/tesseract-install/bin/text2image \
+          echo "Hello world test line" > $HOME/test-line.txt
+          $TESS/text2image \
             --text $HOME/test-line.txt \
             --outputbase $HOME/test-gt/test_000 \
             --font "Noto Sans" \
             --fonts_dir /usr/share/fonts \
-            --ptsize 32 2>&1 || echo "text2image done"
-          echo "Hello world test" > $HOME/test-gt/test_000.gt.txt
-          ls -la $HOME/test-gt/
+            --ptsize 32
+          echo "Hello world test line" > $HOME/test-gt/test_000.gt.txt
+
+          # Generate lstmf from the image
+          cd $HOME/test-gt
+          $TESS/tesseract test_000.tif test_000 \
+            --tessdata-dir $HOME/tessdata \
+            -l eng --psm 13 lstm.train 2>&1 || true
+          ls -la *.lstmf
+
+          # Create train list
+          echo "$HOME/test-gt/test_000.lstmf" > $HOME/train_list.txt
+          echo "$HOME/test-gt/test_000.lstmf" > $HOME/eval_list.txt
+          cd -
 
       - name: Test --append_index with diagnostic
         run: |
-          echo "Testing --append_index with patched lstmtraining..."
-          echo "This will show the actual network type and whether the assert passes."
+          TESS=$HOME/tesseract-install/bin
+          export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:$LD_LIBRARY_PATH
+
+          echo "=== Testing --append_index with patched lstmtraining ==="
           echo ""
 
-          # We need a proto model with extended unicharset first.
-          # For now just test with the base model to see the diagnostic.
-          $HOME/tesseract-install/bin/lstmtraining \
+          $TESS/lstmtraining \
             --traineddata $HOME/tessdata/eng.traineddata \
             --old_traineddata $HOME/tessdata/eng.traineddata \
             --continue_from $HOME/eng.lstm \
@@ -84,9 +98,9 @@ jobs:
             --net_mode 192 \
             --learning_rate 0.001 \
             --model_output $HOME/test_output \
+            --train_listfile $HOME/train_list.txt \
+            --eval_listfile $HOME/eval_list.txt \
             --max_iterations 1 2>&1 || true
 
           echo ""
           echo "=== Test complete ==="
-          echo "Check the output above for 'Network type for --append_index' line."
-          echo "If it shows a type other than NT_SERIES, that's our bug."
