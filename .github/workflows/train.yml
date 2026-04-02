@@ -262,26 +262,31 @@ jobs:
 
       - name: Run tesstrain (from scratch with extended unicharset)
         run: |
-          # From-scratch training with extended unicharset (includes ♪).
           GT_FILES=$(ls /tmp/tesstrain/data/${MODEL}-ground-truth/*.gt.txt 2>/dev/null | wc -l)
           echo "Starting tesstrain: $GT_FILES ground-truth files, $MAX_ITERATIONS max iterations"
           echo "  Model: $MODEL (from scratch, no START_MODEL)"
-          echo "  This step runs: lstmf generation → unicharset → proto model → lstmtraining"
-          echo "  lstmtraining will log BCER progress every 100 iterations..."
           echo ""
-          make -k -C /tmp/tesstrain training \
-            MODEL_NAME="$MODEL" \
-            TESSDATA=/tmp/tesstrain/usr/share/tessdata \
-            LANGDATA_DIR=/tmp/tesstrain/data/langdata \
-            MAX_ITERATIONS="$MAX_ITERATIONS" \
-            PSM=13 \
-          || true
 
-          # Verify the final traineddata was produced
-          if [ ! -f "/tmp/tesstrain/data/$MODEL.traineddata" ]; then
-            echo "ERROR: tesstrain did not produce $MODEL.traineddata"
-            exit 1
-          fi
+          MAKE_ARGS="MODEL_NAME=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata MAX_ITERATIONS=$MAX_ITERATIONS PSM=13"
+
+          # Step 1: Generate lstmf files, unicharset, lists, proto model.
+          # Use -k to continue past individual lstmf failures (a few bad
+          # glyphs out of 14k is fine — the list file skips them).
+          echo "Phase 1: generating lstmf files + proto model..."
+          make -k -C /tmp/tesstrain proto-model lists $MAKE_ARGS || true
+
+          # Verify we have training lists
+          TRAIN_COUNT=$(wc -l < /tmp/tesstrain/data/$MODEL/list.train 2>/dev/null || echo 0)
+          EVAL_COUNT=$(wc -l < /tmp/tesstrain/data/$MODEL/list.eval 2>/dev/null || echo 0)
+          echo "Training list: $TRAIN_COUNT files, Eval list: $EVAL_COUNT files"
+          [ "$TRAIN_COUNT" -gt 0 ] || { echo "ERROR: no training files"; exit 1; }
+
+          # Step 2: Run the actual LSTM training (no -k needed, inputs are clean).
+          echo ""
+          echo "Phase 2: LSTM training ($MAX_ITERATIONS iterations)..."
+          echo "  BCER progress logged every 100 iterations..."
+          make -C /tmp/tesstrain training $MAKE_ARGS
+
           echo "Training complete: $(wc -c < /tmp/tesstrain/data/$MODEL.traineddata) bytes"
 
       - name: Copy trained model to tessdata
