@@ -117,13 +117,23 @@ jobs:
             exit 1
           fi
 
+          TOTAL_LINES=$(wc -l < "$TRAINING_TEXT")
+          echo "Rendering $TOTAL_LINES lines with text2image..."
+
           COUNT=0
           FAIL=0
+          PROCESSED=0
           IFS=$'\n'
           while read -r line; do
             [ -z "$line" ] && continue
+            PROCESSED=$((PROCESSED + 1))
             STEM=$(printf "%s_%06d" "$MODEL" "$COUNT")
             OUTBASE="$GT_DIR/$STEM"
+
+            # Progress every 500 lines
+            if [ $((PROCESSED % 500)) -eq 0 ]; then
+              echo "  text2image: $PROCESSED/$TOTAL_LINES rendered ($COUNT ok, $FAIL failed)"
+            fi
 
             # Try each font until one succeeds
             RENDERED=false
@@ -141,7 +151,6 @@ jobs:
                 --ysize 480 \
                 --margin 10 \
                 --leading 32 2>/dev/null; then
-                # text2image creates .tif — tesstrain expects .tif + .gt.txt
                 echo -n "$line" > "${OUTBASE}.gt.txt"
                 RENDERED=true
                 break
@@ -190,14 +199,21 @@ jobs:
         run: |
           # Generate box files and remove any pair where box generation fails.
           # This ensures tesstrain's make won't hit broken entries.
-          echo "Validating ground-truth pairs (generating boxes)..."
+          GT_COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          echo "Validating $GT_COUNT ground-truth pairs (generating boxes)..."
           VALID=0
           REMOVED=0
+          CHECKED=0
           cd /tmp/tesstrain
           for gt in "$GT_DIR"/*.gt.txt; do
             [ -f "$gt" ] || continue
+            CHECKED=$((CHECKED + 1))
             STEM="${gt%.gt.txt}"
-            BASENAME=$(basename "$STEM")
+
+            # Progress every 500 files
+            if [ $((CHECKED % 500)) -eq 0 ]; then
+              echo "  validate: $CHECKED/$GT_COUNT checked ($VALID ok, $REMOVED removed)"
+            fi
 
             # Check tif exists and has reasonable size
             if [ ! -f "${STEM}.tif" ] || [ "$(wc -c < "${STEM}.tif")" -lt 200 ]; then
@@ -232,13 +248,17 @@ jobs:
             "https://github.com/tesseract-ocr/langdata_lstm/raw/main/radical-stroke.txt" || true
 
           # Download script unicharsets that tesstrain needs
-          for script in Latin Cyrillic Greek Arabic Hebrew Devanagari Bengali Tamil Telugu \
-                        Kannada Malayalam Gujarati Gurmukhi Thai Khmer Lao Myanmar Sinhala \
-                        Ethiopic Georgian Armenian Han Hiragana Katakana Hangul Bopomofo \
-                        Canadian_Aboriginal Cherokee Ogham Oriya Runic Syriac; do
+          echo "Downloading script unicharsets..."
+          SCRIPTS="Latin Cyrillic Greek Arabic Hebrew Devanagari Bengali Tamil Telugu
+                   Kannada Malayalam Gujarati Gurmukhi Thai Khmer Lao Myanmar Sinhala
+                   Ethiopic Georgian Armenian Han Hiragana Katakana Hangul Bopomofo
+                   Canadian_Aboriginal Cherokee Ogham Oriya Runic Syriac"
+          DL_COUNT=0
+          for script in $SCRIPTS; do
             wget -q -O "$LANGDATA_DIR/${script}.unicharset" \
-              "https://github.com/tesseract-ocr/langdata_lstm/raw/main/${script}.unicharset" 2>/dev/null || true
+              "https://github.com/tesseract-ocr/langdata_lstm/raw/main/${script}.unicharset" 2>/dev/null && DL_COUNT=$((DL_COUNT + 1)) || true
           done
+          echo "Downloaded $DL_COUNT script unicharsets"
 
           # Create wordlist/punc/numbers in OUTPUT_DIR (where Makefile expects them)
           touch "$OUTPUT_DIR/$MODEL.wordlist"
@@ -253,12 +273,13 @@ jobs:
 
       - name: Run tesstrain (from scratch with extended unicharset)
         run: |
-          # No START_MODEL — train from scratch so the LSTM output layer
-          # natively includes ♪ and all our extended characters.
-          # --append_index is broken in Tesseract 5 tessdata_best models.
-          # -k continues past individual lstmf failures (some glyphs fail
-          # at tesseract lstm.train even though box generation succeeded).
-          # With 14k+ entries, a handful of failures is acceptable.
+          # From-scratch training with extended unicharset (includes ♪).
+          GT_FILES=$(ls /tmp/tesstrain/data/${MODEL}-ground-truth/*.gt.txt 2>/dev/null | wc -l)
+          echo "Starting tesstrain: $GT_FILES ground-truth files, $MAX_ITERATIONS max iterations"
+          echo "  Model: $MODEL (from scratch, no START_MODEL)"
+          echo "  This step runs: lstmf generation → unicharset → proto model → lstmtraining"
+          echo "  lstmtraining will log BCER progress every 100 iterations..."
+          echo ""
           make -k -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
