@@ -1,0 +1,19 @@
+# Generated training images — do not commit (can be GBs in size)
+training/generated/
+
+# Tesseract working artefacts
+*.lstmf
+*.lstm
+*_checkpoint
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# OS
+.DS_Store
+Thumbs.db

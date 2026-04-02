@@ -1,0 +1,312 @@
+name: Fine-tune Tesseract models
+
+# Triggers:
+#   1. Push that touches anything under training/ — auto-retrain on new GT data or script changes
+#   2. Manual dispatch — rebuild on demand (useful when Tesseract upstream releases a patch)
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "training/**"
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: >
+          Comma-separated language codes to retrain (e.g. eng,fra).
+          Leave blank to retrain all languages in config/languages.txt.
+        required: false
+        default: ""
+      max_iterations:
+        description: "lstmtraining max iterations (default: 400)"
+        required: false
+        default: "400"
+
+# Only allow one run at a time per branch — a second push cancels the in-progress run.
+concurrency:
+  group: tesseract-train-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job: train
+  # One matrix entry per language.  Matrix is resolved in a tiny setup job so
+  # we can read config/languages.txt without hardcoding values here.
+  # ---------------------------------------------------------------------------
+
+  setup:
+    name: Resolve language matrix
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build language matrix
+        id: matrix
+        shell: python3 {0}
+        run: |
+          import json, os, re
+
+          override = "${{ github.event.inputs.languages }}".strip()
+
+          if override:
+              langs = [l.strip() for l in override.split(",") if l.strip()]
+          else:
+              raw = open("training/config/languages.txt", encoding="utf-8").readlines()
+              langs = [
+                  l.strip()
+                  for l in raw
+                  if l.strip() and not l.strip().startswith("#")
+              ]
+
+          matrix = {"lang": langs}
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"value={json.dumps(matrix)}\n")
+
+          print(f"Languages to train: {langs}")
+
+  train:
+    name: Train [${{ matrix.lang }}]
+    needs: setup
+    runs-on: ubuntu-24.04
+
+    strategy:
+      # Train all languages in parallel; do not cancel others if one fails
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+
+    env:
+      LANG_CODE:      ${{ matrix.lang }}
+      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '400' }}
+      # Tesseract 5.x apt source (Ubuntu 24.04 ships 5.3.x natively)
+      TESSDATA_PREFIX: /usr/share/tesseract-ocr/5/tessdata
+      # Working directories inside the runner
+      WORK_DIR:        /tmp/tess-train
+      GENERATED_DIR:   /tmp/tess-train/generated
+      OUTPUT_DIR:      /tmp/tess-train/output
+
+    steps:
+      # ------------------------------------------------------------------
+      # 1. Checkout
+      # ------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------------
+      # 2. Install Tesseract 5 + training tools + fonts
+      # ------------------------------------------------------------------
+      - name: Install Tesseract 5 and training utilities
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            tesseract-ocr \
+            tesseract-ocr-${{ matrix.lang }} \
+            libtesseract-dev \
+            tesseract-ocr-all \
+            fonts-dejavu \
+            fonts-liberation \
+            fonts-freefont-ttf \
+            fonts-noto \
+            python3-pip \
+            python3-pil
+
+      - name: Verify Tesseract version
+        run: |
+          tesseract --version
+          # Ensure we have a 5.x build
+          tesseract --version 2>&1 | grep -E "^tesseract 5\." || {
+            echo "ERROR: Tesseract 5.x is required but a different version was found."
+            exit 1
+          }
+
+      # ------------------------------------------------------------------
+      # 3. Create working directories
+      # ------------------------------------------------------------------
+      - name: Create working directories
+        run: mkdir -p "$WORK_DIR" "$GENERATED_DIR/$LANG_CODE" "$OUTPUT_DIR"
+
+      # ------------------------------------------------------------------
+      # 4. Copy base traineddata
+      # The apt package installs language packs to TESSDATA_PREFIX.
+      # We need a writable copy in our work dir.
+      # ------------------------------------------------------------------
+      - name: Prepare base traineddata
+        run: |
+          TD_SRC="$TESSDATA_PREFIX/${LANG_CODE}.traineddata"
+          if [ ! -f "$TD_SRC" ]; then
+            echo "ERROR: Base traineddata not found: $TD_SRC"
+            echo "Ensure tesseract-ocr-${LANG_CODE} is installed."
+            exit 1
+          fi
+          cp "$TD_SRC" "$WORK_DIR/${LANG_CODE}.traineddata"
+          echo "Base traineddata size: $(wc -c < "$WORK_DIR/${LANG_CODE}.traineddata") bytes"
+
+      # ------------------------------------------------------------------
+      # 5. Extract the LSTM model from base traineddata
+      # ------------------------------------------------------------------
+      - name: Extract LSTM from base traineddata
+        run: |
+          combine_tessdata -e \
+            "$WORK_DIR/${LANG_CODE}.traineddata" \
+            "$WORK_DIR/${LANG_CODE}.lstm"
+          echo "LSTM model size: $(wc -c < "$WORK_DIR/${LANG_CODE}.lstm") bytes"
+
+      # ------------------------------------------------------------------
+      # 6. Generate synthetic training images
+      # ------------------------------------------------------------------
+      - name: Generate synthetic subtitle training images
+        run: |
+          python3 training/scripts/generate-training-data.py \
+            --lang "$LANG_CODE" \
+            --output "$GENERATED_DIR"
+          echo "Generated images:"
+          ls "$GENERATED_DIR/$LANG_CODE" | head -20
+          echo "Total: $(ls "$GENERATED_DIR/$LANG_CODE"/*.png 2>/dev/null | wc -l) images"
+
+      # ------------------------------------------------------------------
+      # 7. Add manual ground-truth pairs to the generated set
+      # We copy them so they are included in the .lstmf generation step.
+      # ------------------------------------------------------------------
+      - name: Include ground-truth corrections
+        run: |
+          GT_SRC="training/ground-truth"
+          GT_DEST="$GENERATED_DIR/$LANG_CODE"
+          count=0
+          for png in "$GT_SRC/${LANG_CODE}"_*.png; do
+            [ -f "$png" ] || continue
+            stem="${png%.png}"
+            gt="${stem}.gt.txt"
+            [ -f "$gt" ] || continue
+            cp "$png" "$GT_DEST/"
+            cp "$gt"  "$GT_DEST/"
+            count=$((count + 1))
+          done
+          echo "Copied $count ground-truth pairs for language: $LANG_CODE"
+
+      # ------------------------------------------------------------------
+      # 8. Convert PNG+gt.txt pairs to .lstmf training files
+      # tesseract in lstm.train mode reads a .png and writes a .lstmf
+      # ------------------------------------------------------------------
+      - name: Generate .lstmf training files
+        run: |
+          cd "$GENERATED_DIR/$LANG_CODE"
+          TRAIN_LIST="$WORK_DIR/train_list.txt"
+          > "$TRAIN_LIST"
+
+          fail=0
+          for png in *.png; do
+            stem="${png%.png}"
+            gt="${stem}.gt.txt"
+            if [ ! -f "$gt" ]; then
+              echo "  SKIP (no gt.txt): $png"
+              continue
+            fi
+            # tesseract expects a .box or .gt.txt alongside the image
+            # --psm 7 = single text line
+            tesseract "$png" "$stem" \
+              --psm 7 \
+              --tessdata-dir "$TESSDATA_PREFIX" \
+              -l "$LANG_CODE" \
+              lstm.train 2>/dev/null || {
+                echo "  WARN: failed to generate .lstmf for $stem"
+                fail=$((fail + 1))
+                continue
+              }
+            echo "$GENERATED_DIR/$LANG_CODE/${stem}.lstmf" >> "$TRAIN_LIST"
+          done
+
+          total=$(wc -l < "$TRAIN_LIST")
+          echo "Training list entries: $total"
+          if [ "$total" -lt 1 ]; then
+            echo "ERROR: no .lstmf files generated — cannot train."
+            exit 1
+          fi
+          if [ "$fail" -gt "$((total / 2))" ]; then
+            echo "ERROR: more than half of the images failed to convert."
+            exit 1
+          fi
+
+      # ------------------------------------------------------------------
+      # 9. Fine-tune the LSTM model
+      # We continue from the base model rather than training from scratch.
+      # Iterations kept low (300-500) to avoid overfitting a small char set.
+      # ------------------------------------------------------------------
+      - name: Fine-tune LSTM model
+        run: |
+          mkdir -p "$OUTPUT_DIR"
+          lstmtraining \
+            --continue_from "$WORK_DIR/${LANG_CODE}.lstm" \
+            --model_output  "$OUTPUT_DIR/${LANG_CODE}" \
+            --traineddata   "$WORK_DIR/${LANG_CODE}.traineddata" \
+            --train_listfile "$WORK_DIR/train_list.txt" \
+            --max_iterations "$MAX_ITERATIONS"
+
+          # List checkpoint files produced
+          echo "Checkpoint files:"
+          ls -lh "$OUTPUT_DIR/"
+
+      # ------------------------------------------------------------------
+      # 10. Package the fine-tuned model back into a .traineddata file
+      # ------------------------------------------------------------------
+      - name: Package fine-tuned traineddata
+        run: |
+          CHECKPOINT="$OUTPUT_DIR/${LANG_CODE}_checkpoint"
+          if [ ! -f "$CHECKPOINT" ]; then
+            echo "ERROR: checkpoint file not found: $CHECKPOINT"
+            echo "Training may have failed.  Files in output dir:"
+            ls -la "$OUTPUT_DIR/"
+            exit 1
+          fi
+
+          # Stop training and merge checkpoint into traineddata
+          lstmtraining \
+            --stop_training \
+            --continue_from "$CHECKPOINT" \
+            --traineddata   "$WORK_DIR/${LANG_CODE}.traineddata" \
+            --model_output  "tessdata/${LANG_CODE}.traineddata"
+
+          echo "Fine-tuned traineddata size: $(wc -c < "tessdata/${LANG_CODE}.traineddata") bytes"
+
+      # ------------------------------------------------------------------
+      # 11. Validate the model against ground-truth images
+      # ------------------------------------------------------------------
+      - name: Validate fine-tuned model
+        run: |
+          python3 training/scripts/validate-model.py \
+            --tessdata tessdata/ \
+            --lang "$LANG_CODE" \
+            --gt-dir training/ground-truth
+
+      # ------------------------------------------------------------------
+      # 12. Commit updated traineddata back to the repository
+      # Only runs if validation passed (step 11 exits 0).
+      # Uses the GITHUB_TOKEN — no extra secrets required.
+      # ------------------------------------------------------------------
+      - name: Commit updated tessdata
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "tessdata/${{ matrix.lang }}.traineddata"
+          message: |
+            chore(tessdata): fine-tune ${{ matrix.lang }} model [skip ci]
+
+            - Max iterations : ${{ env.MAX_ITERATIONS }}
+            - Tesseract      : 5.x (Ubuntu 24.04 apt)
+            - Trigger        : ${{ github.event_name }}
+            - SHA            : ${{ github.sha }}
+          default_author: github_actions
+          # Push to the branch that triggered the workflow (usually master)
+          push: true
+
+      # ------------------------------------------------------------------
+      # 13. Upload fine-tuned traineddata as a build artifact
+      # Retained for 90 days so you can download and test locally.
+      # ------------------------------------------------------------------
+      - name: Upload tessdata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessdata-${{ matrix.lang }}
+          path: tessdata/${{ matrix.lang }}.traineddata
+          retention-days: 90
+          if-no-files-found: error

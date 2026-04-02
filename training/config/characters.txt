@@ -1,0 +1,42 @@
+# Extra characters to include in fine-tuning training data.
+# One character (or sequence) per line.
+# Lines starting with # are comments and are ignored by the training scripts.
+
+# Music notation symbols — most commonly misread as &, J, I, or '
+♪
+♫
+♩
+♬
+♭
+♮
+♯
+
+# Common subtitle punctuation often misread
+…
+–
+—
+"
+"
+'
+'
+«
+»
+
+# Accented Latin characters (common in European subtitle tracks)
+À Á Â Ã Ä Å Æ
+Ç
+È É Ê Ë
+Ì Í Î Ï
+Ñ
+Ò Ó Ô Õ Ö Ø
+Ù Ú Û Ü
+Ý
+ß
+à á â ã ä å æ
+ç
+è é ê ë
+ì í î ï
+ñ
+ò ó ô õ ö ø
+ù ú û ü
+ý ÿ
