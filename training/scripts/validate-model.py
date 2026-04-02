@@ -24,6 +24,7 @@ Requirements
 """
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -185,6 +186,12 @@ def main() -> None:
         default=gt_dir,
         help=f"Ground-truth directory (default: {gt_dir})",
     )
+    parser.add_argument(
+        "--report",
+        type=Path,
+        default=None,
+        help="Write JSON report to this path (for CI consumption)",
+    )
     args = parser.parse_args()
 
     if not args.tessdata.is_dir():
@@ -214,7 +221,9 @@ def main() -> None:
     print("\n" + "=" * 60)
     print(f"Overall: {overall_passed}/{overall_total} ground-truth images passed")
 
+    status = "passed"
     if all_failures:
+        status = "failed"
         print("\nFAILURES:")
         for msg in all_failures:
             print(msg)
@@ -222,17 +231,43 @@ def main() -> None:
             "\nValidation FAILED — tessdata/ will NOT be committed.\n"
             "Fix the model or add more training iterations and retry."
         )
-        sys.exit(1)
+    elif overall_total == 0:
+        status = "no_data"
+        print(
+            "WARNING: no ground-truth images were found for the selected languages.\n"
+            "Add .png / .gt.txt pairs to training/ground-truth/ to enable validation."
+        )
     else:
-        if overall_total == 0:
-            print(
-                "WARNING: no ground-truth images were found for the selected languages.\n"
-                "Add .png / .gt.txt pairs to training/ground-truth/ to enable validation."
-            )
-            # Exit 0 so CI does not block on repos with no GT data yet
-            sys.exit(0)
         print("\nValidation PASSED — tessdata/ is ready to commit.")
-        sys.exit(0)
+
+    # Write JSON report for CI
+    if args.report:
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        failure_details = []
+        for msg in all_failures:
+            # Parse failure messages into structured data
+            parts = msg.strip().split("   ")
+            detail = {"raw": msg.strip()}
+            for part in parts:
+                if part.startswith("expected="):
+                    detail["expected"] = part.split("=", 1)[1].strip("'\"")
+                elif part.startswith("actual="):
+                    detail["actual"] = part.split("=", 1)[1].strip("'\"")
+                elif part.startswith("accuracy="):
+                    detail["accuracy"] = part.split("=", 1)[1]
+            failure_details.append(detail)
+
+        report = {
+            "lang": args.lang or "all",
+            "status": status,
+            "passed": overall_passed,
+            "total": overall_total,
+            "failures": failure_details,
+        }
+        args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nReport written to: {args.report}")
+
+    sys.exit(1 if status == "failed" else 0)
 
 
 if __name__ == "__main__":

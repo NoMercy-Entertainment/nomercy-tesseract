@@ -151,7 +151,17 @@ jobs:
           python3 training/scripts/validate-model.py \
             --tessdata tessdata/ \
             --lang "$LANG_CODE" \
-            --gt-dir training/ground-truth
+            --gt-dir training/ground-truth \
+            --report "$WORK_DIR/report.json"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-${{ matrix.lang }}
+          path: ${{ env.WORK_DIR }}/report.json
+          retention-days: 7
+          if-no-files-found: ignore
 
       - name: Commit updated tessdata
         uses: EndBug/add-and-commit@v9
@@ -172,3 +182,93 @@ jobs:
       - name: Cleanup
         if: always()
         run: rm -rf "$WORK_DIR"
+
+  report:
+    name: Training report
+    needs: [setup, train]
+    if: always()
+    runs-on: [self-hosted, beast-unit]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: report-*
+          path: reports/
+          merge-multiple: false
+
+      - name: Generate summary
+        shell: python3 {0}
+        run: |
+          import json, os, glob
+
+          reports = []
+          for f in sorted(glob.glob("reports/report-*/report.json")):
+              try:
+                  reports.append(json.load(open(f)))
+              except Exception:
+                  continue
+
+          summary = "## Tesseract Training Report\n\n"
+          summary += "| Language | Status | Passed | Total | Accuracy | Failures |\n"
+          summary += "|----------|--------|--------|-------|----------|----------|\n"
+
+          total_passed = 0
+          total_total = 0
+          failed_langs = []
+
+          for r in reports:
+              lang = r.get("lang", "?")
+              passed = r.get("passed", 0)
+              total = r.get("total", 0)
+              status = r.get("status", "unknown")
+              failures = r.get("failures", [])
+              acc = f"{passed}/{total}" if total > 0 else "N/A"
+              pct = f"{(passed/total*100):.0f}%" if total > 0 else "—"
+              fail_summary = f"{len(failures)} failures" if failures else "—"
+
+              icon = "✅" if status == "passed" else "❌" if status == "failed" else "⚠️"
+              summary += f"| {lang} | {icon} {status} | {passed} | {total} | {pct} | {fail_summary} |\n"
+
+              total_passed += passed
+              total_total += total
+              if status == "failed":
+                  failed_langs.append(lang)
+
+          summary += f"\n**Overall: {total_passed}/{total_total} passed**\n"
+
+          if failed_langs:
+              summary += f"\n**Failed languages: {', '.join(failed_langs)}**\n"
+              summary += "\n### Failure Details\n\n"
+              for r in reports:
+                  if r.get("status") != "failed":
+                      continue
+                  for f in r.get("failures", []):
+                      summary += f"- **{r['lang']}**: expected `{f.get('expected')}` got `{f.get('actual')}` ({f.get('accuracy', '?')})\n"
+
+          if not reports:
+              summary += "\n⚠️ No reports collected — all training jobs may have failed before validation.\n"
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as fh:
+              fh.write(summary)
+
+          # Also write as JSON for machine consumption
+          result = {
+              "total_passed": total_passed,
+              "total_total": total_total,
+              "failed_languages": failed_langs,
+              "reports": reports,
+          }
+          with open("training-report.json", "w") as fh:
+              json.dump(result, fh, indent=2)
+
+          print(summary)
+
+      - name: Upload consolidated report
+        uses: actions/upload-artifact@v4
+        with:
+          name: training-report
+          path: training-report.json
+          retention-days: 90
