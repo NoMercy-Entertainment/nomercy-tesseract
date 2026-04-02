@@ -283,15 +283,21 @@ jobs:
           echo "Net spec: $NET_SPEC"
 
           TRAINED=false
-          for IDX in 4 3 5 6 2 1 7; do
-            echo "=== Trying --append_index $IDX ==="
+          # Try without --net_mode first (indices 1,2 showed Series access),
+          # then with --net_mode 192 for other indices
+          for ATTEMPT in "1:" "2:" "1:192" "2:192" "3:192" "4:192" "5:192" "6:192" "7:192"; do
+            IDX="${ATTEMPT%%:*}"
+            MODE="${ATTEMPT##*:}"
+            MODE_FLAG=""
+            [ -n "$MODE" ] && MODE_FLAG="--net_mode $MODE"
+            echo "=== Trying --append_index $IDX $MODE_FLAG ==="
             if lstmtraining \
               --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
               --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
               --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
               --append_index "$IDX" \
               --net_spec "$NET_SPEC" \
-              --net_mode 192 \
+              $MODE_FLAG \
               --learning_rate 0.001 \
               --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
               --train_listfile "$OUTPUT_DIR/list.train" \
