@@ -31,30 +31,50 @@ except ImportError:
 # ── Language-to-character-group mapping ──────────────────────────────────────
 
 LANG_GROUPS: Dict[str, List[str]] = {
-    # Western European
+    # ── Western European ────────────────────────────────────────
     "eng": ["latin_western"],
+    "enm": ["latin_western"],
     "spa": ["latin_western"],
+    "spa_old": ["latin_western"],
     "fra": ["latin_western"],
+    "frm": ["latin_western"],
     "deu": ["latin_western"],
+    "deu_frak": ["latin_western"],
+    "deu_latf": ["latin_western"],
+    "ger": ["latin_western"],
     "ita": ["latin_western"],
+    "ita_old": ["latin_western"],
     "por": ["latin_western"],
     "nld": ["latin_western"],
+    "dut": ["latin_western"],
     "cat": ["latin_western"],
     "glg": ["latin_western"],
-    # Nordic
+    "eus": ["latin_western"],
+    "oci": ["latin_western"],
+    "cos": ["latin_western"],
+    "hat": ["latin_western"],
+    "epo": ["latin_western"],
+    "lat": ["latin_western"],
+    "fry": ["latin_western"],
+    "ltz": ["latin_western"],
+    "bre": ["latin_western"],
+    "gla": ["latin_western"],
+    # ── Nordic ──────────────────────────────────────────────────
     "swe": ["latin_western", "latin_nordic"],
     "nor": ["latin_western", "latin_nordic"],
     "dan": ["latin_western", "latin_nordic"],
+    "dan_frak": ["latin_western", "latin_nordic"],
     "fin": ["latin_western", "latin_nordic"],
     "isl": ["latin_western", "latin_nordic"],
-    # Central/Eastern European
+    "fao": ["latin_western", "latin_nordic"],
+    # ── Central/Eastern European ────────────────────────────────
     "pol": ["latin_western", "latin_polish"],
     "ces": ["latin_western", "latin_czech_slovak"],
     "slk": ["latin_western", "latin_czech_slovak"],
+    "slk_frak": ["latin_western", "latin_czech_slovak"],
     "hun": ["latin_western", "latin_hungarian"],
     "ron": ["latin_western", "latin_romanian"],
     "hrv": ["latin_western", "latin_croatian_serbian_latin"],
-    "srp": ["cyrillic"],
     "srp_latn": ["latin_western", "latin_croatian_serbian_latin"],
     "slv": ["latin_western", "latin_croatian_serbian_latin"],
     "bos": ["latin_western", "latin_croatian_serbian_latin"],
@@ -62,63 +82,111 @@ LANG_GROUPS: Dict[str, List[str]] = {
     "est": ["latin_western", "latin_estonian"],
     "lav": ["latin_western", "latin_latvian_lithuanian"],
     "lit": ["latin_western", "latin_latvian_lithuanian"],
-    # Turkic
+    # ── Turkic ──────────────────────────────────────────────────
     "tur": ["latin_western", "latin_turkish"],
     "aze": ["latin_western", "latin_turkish"],
-    # Cyrillic
+    "aze_cyrl": ["cyrillic"],
+    "tat": ["cyrillic"],
+    "uzb": ["latin_western"],
+    "uzb_cyrl": ["cyrillic"],
+    "kir": ["cyrillic"],
+    "tgk": ["cyrillic"],
+    "uig": ["arabic"],
+    # ── Cyrillic ────────────────────────────────────────────────
     "rus": ["cyrillic"],
     "ukr": ["cyrillic"],
     "bul": ["cyrillic"],
     "mkd": ["cyrillic"],
     "bel": ["cyrillic"],
+    "srp": ["cyrillic"],
     "kaz": ["cyrillic"],
     "mon": ["cyrillic"],
-    # Greek
+    # ── Greek ───────────────────────────────────────────────────
     "ell": ["greek"],
-    # CJK
+    "grc": ["greek"],
+    # ── CJK ─────────────────────────────────────────────────────
     "jpn": ["japanese"],
+    "jpn_vert": ["japanese"],
     "kor": ["korean"],
+    "kor_vert": ["korean"],
     "chi_sim": ["chinese"],
+    "chi_sim_vert": ["chinese"],
     "chi_tra": ["chinese"],
-    # Arabic script
+    "chi_tra_vert": ["chinese"],
+    # ── Arabic script ───────────────────────────────────────────
     "ara": ["arabic"],
     "fas": ["arabic"],
     "urd": ["arabic"],
-    # Indic
+    "pus": ["arabic"],
+    "snd": ["arabic"],
+    "div": ["arabic"],
+    "syr": ["arabic"],
+    "kmr": ["latin_western"],
+    # ── Hebrew ──────────────────────────────────────────────────
+    "heb": ["hebrew"],
+    "yid": ["hebrew"],
+    # ── Indic ───────────────────────────────────────────────────
     "hin": ["hindi"],
     "mar": ["hindi"],
     "nep": ["hindi"],
+    "san": ["hindi"],
+    "ori": ["hindi"],
+    "bod": ["hindi"],
     "ben": ["bengali"],
+    "asm": ["bengali"],
     "tam": ["tamil"],
     "tel": ["telugu"],
     "kan": ["kannada"],
     "mal": ["malayalam"],
     "guj": ["gujarati"],
     "pan": ["punjabi"],
-    # Southeast Asian
+    # ── Southeast Asian ─────────────────────────────────────────
     "tha": ["thai"],
     "khm": ["khmer"],
     "lao": ["lao"],
     "mya": ["burmese"],
     "vie": ["latin_western", "latin_vietnamese"],
-    "ind": [],  # standard Latin
-    "msa": [],  # standard Latin
+    "ind": [],
+    "msa": [],
     "tgl": ["latin_tagalog"],
-    # Other scripts
-    "heb": ["hebrew"],
+    "fil": ["latin_tagalog"],
+    "ceb": [],
+    "jav": [],
+    "sun": [],
+    # ── Other scripts ───────────────────────────────────────────
     "kat": ["georgian"],
+    "kat_old": ["georgian"],
     "hye": ["armenian"],
     "amh": ["ethiopic"],
     "tir": ["ethiopic"],
     "sin": ["sinhala"],
-    # Celtic
+    "chr": [],
+    "iku": [],
+    "dzo": [],
+    "ton": [],
+    "que": ["latin_western"],
+    "mri": [],
+    "yor": [],
+    # ── Celtic ──────────────────────────────────────────────────
     "cym": ["latin_western", "latin_welsh"],
     "gle": ["latin_western", "latin_irish"],
-    # African
-    "swa": [],  # standard Latin
-    # Maltese
+    # ── African ─────────────────────────────────────────────────
+    "swa": [],
+    "afr": ["latin_western"],
+    # ── Maltese ─────────────────────────────────────────────────
     "mlt": ["latin_western", "latin_maltese"],
+    # ── Special ─────────────────────────────────────────────────
+    "equ": [],
+    "osd": [],
 }
+
+
+def get_languages_from_tessdata(tessdata_dir: Path) -> List[str]:
+    """Discover all languages from .traineddata files in tessdata/."""
+    return sorted(
+        p.stem for p in tessdata_dir.glob("*.traineddata")
+        if p.stem not in ("osd", "equ")  # skip non-language models
+    )
 
 # ── Curated subtitle fonts ──────────────────────────────────────────────────
 
@@ -314,7 +382,8 @@ def main() -> None:
     args = parser.parse_args()
 
     char_groups = parse_characters(config_dir / "characters.txt")
-    languages = load_lines(config_dir / "languages.txt")
+    tessdata_dir = root / "tessdata"
+    languages = get_languages_from_tessdata(tessdata_dir)
     fonts = find_fonts()
 
     if not fonts:

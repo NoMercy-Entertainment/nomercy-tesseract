@@ -37,18 +37,23 @@ jobs:
         shell: python3 {0}
         run: |
           import json, os
+          from pathlib import Path
 
           override = "${{ github.event.inputs.languages }}".strip()
 
           if override:
               langs = [l.strip() for l in override.split(",") if l.strip()]
           else:
-              raw = open("training/config/languages.txt", encoding="utf-8").readlines()
-              langs = [l.strip() for l in raw if l.strip() and not l.strip().startswith("#")]
+              # Derive from tessdata/ — every .traineddata gets trained
+              skip = {"osd", "equ"}
+              langs = sorted(
+                  p.stem for p in Path("tessdata").glob("*.traineddata")
+                  if p.stem not in skip
+              )
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
               fh.write(f"value={json.dumps({'lang': langs})}\n")
-          print(f"Languages: {langs}")
+          print(f"Languages ({len(langs)}): {langs}")
 
   train:
     name: Train [${{ matrix.lang }}]
