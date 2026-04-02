@@ -35,6 +35,7 @@ jobs:
           make -j$(nproc)
           make install
           echo "Build complete"
+          chmod +x /tmp/tesseract-install/bin/*
           /tmp/tesseract-install/bin/tesseract --version
           ls -la /tmp/tesseract-install/bin/lstmtraining
 
