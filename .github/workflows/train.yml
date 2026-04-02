@@ -170,10 +170,19 @@ jobs:
           echo "MODEL=$MODEL" >> $GITHUB_ENV
           echo "GT_DIR=$GT_DIR" >> $GITHUB_ENV
 
-      - name: Copy tessdata as base for tesstrain
+      - name: Download tessdata_best model for fine-tuning
         run: |
+          # Our repo has fast/int models which CANNOT be fine-tuned.
+          # tessdata_best has float models required for LSTM training.
           mkdir -p /tmp/tesstrain/usr/share/tessdata
-          cp "tessdata/$MODEL.traineddata" /tmp/tesstrain/usr/share/tessdata/
+          BEST_URL="https://github.com/tesseract-ocr/tessdata_best/raw/main/${MODEL}.traineddata"
+          echo "Downloading tessdata_best for $MODEL..."
+          wget -q -O "/tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata" "$BEST_URL" || {
+            echo "ERROR: Failed to download tessdata_best for $MODEL from $BEST_URL"
+            echo "This language may not exist in tessdata_best — skipping"
+            exit 1
+          }
+          echo "Downloaded $(wc -c < /tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata) bytes"
 
       - name: Run tesstrain
         run: |
