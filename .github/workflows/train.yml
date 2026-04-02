@@ -269,15 +269,20 @@ jobs:
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
+          # Read unicharset size for the output layer spec
+          UNICHARSET_SIZE=$(head -1 "$OUTPUT_DIR/unicharset")
+          echo "Unicharset size: $UNICHARSET_SIZE"
+
           # --append_index 5 replaces the top (output) LSTM layer so the
-          # model can learn new characters (♪) that aren't in the base
-          # unicharset. Learning rate 0.001 because the output layer
-          # trains from scratch.
+          # model can learn new characters (♪) not in the base unicharset.
+          # --net_spec defines the replacement output layer (O1c<size>).
+          # Learning rate 0.001 because the output layer trains from scratch.
           lstmtraining \
             --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
             --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
             --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
             --append_index 5 \
+            --net_spec "O1c$UNICHARSET_SIZE" \
             --net_mode 192 \
             --learning_rate 0.001 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
