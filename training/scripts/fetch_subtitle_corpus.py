@@ -199,7 +199,18 @@ TESS_TO_OPUS: Dict[str, Optional[str]] = {
 }
 
 # OPUS base URL
-_OPUS_BASE = "https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2018/mono"
+# OPUS corpus sources in priority order — try each until we get enough lines.
+# OpenSubtitles is best (actual subtitle text), then TED2020 (spoken language
+# with subtitle timing), then general text corpora as fallbacks.
+_OPUS_SOURCES = [
+    ("OpenSubtitles", "https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2018/mono"),
+    ("TED2020", "https://object.pouta.csc.fi/OPUS-TED2020/v1/mono"),
+    ("Tatoeba", "https://object.pouta.csc.fi/OPUS-Tatoeba/v2023-04-12/mono"),
+    ("QED", "https://object.pouta.csc.fi/OPUS-QED/v2.0a/mono"),
+    ("GlobalVoices", "https://object.pouta.csc.fi/OPUS-GlobalVoices/v2018q4/mono"),
+    ("WikiMatrix", "https://object.pouta.csc.fi/OPUS-WikiMatrix/v1/mono"),
+    ("CCAligned", "https://object.pouta.csc.fi/OPUS-CCAligned/v1/mono"),
+]
 
 # Cache directory for downloaded .gz files
 _CACHE_DIR = Path("/tmp/opus_cache")
@@ -217,51 +228,36 @@ _NOTE_PAIRS = [
 
 # ── Download ──────────────────────────────────────────────────────────────────
 
-def _opus_url(opus_code: str) -> str:
-    return f"{_OPUS_BASE}/{opus_code}.txt.gz"
+def _opus_url(source_base: str, opus_code: str) -> str:
+    return f"{source_base}/{opus_code}.txt.gz"
 
 
-def _cache_path(opus_code: str) -> Path:
+def _cache_path(source_name: str, opus_code: str) -> Path:
     _CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    return _CACHE_DIR / f"{opus_code}.txt.gz"
+    return _CACHE_DIR / f"{source_name}_{opus_code}.txt.gz"
 
 
-def stream_clean_lines(opus_code: str, max_lines: int) -> Optional[List[str]]:
+def _stream_from_source(source_name: str, source_base: str, opus_code: str,
+                        seen: set, result: List[str], max_lines: int) -> int:
     """
-    Stream-download and clean lines from OPUS, capping at max_lines.
-    Never loads the full file into memory — processes line by line
-    through gzip streaming. English OPUS is ~4GB; this uses ~10MB.
-    Returns cleaned lines on success, None on download failure.
+    Stream lines from one OPUS source. Appends to result, respects seen set.
+    Returns number of new lines added.
     """
-    import io
-    import shutil
+    cached = _cache_path(source_name, opus_code)
+    url = _opus_url(source_base, opus_code)
+    added = 0
 
-    cached = _cache_path(opus_code)
-    url = _opus_url(opus_code)
-
-    # Open a streaming source (cached file or HTTP)
     try:
         if cached.exists():
             raw_stream = open(cached, "rb")
         else:
             resp = urllib.request.urlopen(url, timeout=120)
-            # Stream to cache file while reading (tee pattern)
             cached.parent.mkdir(parents=True, exist_ok=True)
             cache_file = open(cached, "wb")
             raw_stream = _TeeReader(resp, cache_file)
-    except urllib.error.HTTPError as exc:
-        print(f"  WARNING: HTTP {exc.code} fetching {url}", file=sys.stderr)
-        return None
-    except urllib.error.URLError as exc:
-        print(f"  WARNING: Network error fetching {url}: {exc.reason}", file=sys.stderr)
-        return None
-    except OSError as exc:
-        print(f"  WARNING: IO error fetching {url}: {exc}", file=sys.stderr)
-        return None
+    except (urllib.error.HTTPError, urllib.error.URLError, OSError):
+        return 0
 
-    # Stream through gzip, clean line by line, stop at max_lines
-    seen: set = set()
-    result: List[str] = []
     try:
         with gzip.open(raw_stream, "rt", encoding="utf-8", errors="replace") as gz:
             for raw in gz:
@@ -271,12 +267,36 @@ def stream_clean_lines(opus_code: str, max_lines: int) -> Optional[List[str]]:
                 if cleaned and cleaned not in seen:
                     seen.add(cleaned)
                     result.append(cleaned)
-    except Exception as exc:
-        print(f"  WARNING: Error reading stream: {exc}", file=sys.stderr)
+                    added += 1
+    except Exception:
+        pass
     finally:
         raw_stream.close()
 
-    return result
+    return added
+
+
+def stream_clean_lines(opus_code: str, max_lines: int) -> Optional[List[str]]:
+    """
+    Stream-download and clean lines from ALL OPUS sources until max_lines
+    is reached. Tries each source in priority order: OpenSubtitles first,
+    then TED2020, Tatoeba, QED, GlobalVoices, WikiMatrix, CCAligned.
+
+    Never loads full files into memory — streams through gzip line by line.
+    """
+    seen: set = set()
+    result: List[str] = []
+
+    for source_name, source_base in _OPUS_SOURCES:
+        if len(result) >= max_lines:
+            break
+        remaining = max_lines - len(result)
+        added = _stream_from_source(source_name, source_base, opus_code,
+                                     seen, result, max_lines)
+        if added > 0:
+            print(f"    {source_name}: +{added:,} lines")
+
+    return result if result else None
 
 
 class _TeeReader:
@@ -447,14 +467,14 @@ def fetch_for_lang(
         print(f"[{tess_lang}] No OPUS mapping — skipping download", file=sys.stderr)
         return []
 
-    print(f"[{tess_lang}] Streaming from OPUS ({opus_code}), cap {max_lines:,} lines...")
+    print(f"[{tess_lang}] Fetching from OPUS sources ({opus_code}), cap {max_lines:,}...")
     cleaned = stream_clean_lines(opus_code, max_lines)
 
-    if cleaned is None:
-        print(f"[{tess_lang}] Download failed — output will be empty", file=sys.stderr)
+    if cleaned is None or len(cleaned) == 0:
+        print(f"[{tess_lang}] No data from any OPUS source", file=sys.stderr)
         return []
 
-    print(f"[{tess_lang}] {len(cleaned):,} clean lines streamed")
+    print(f"[{tess_lang}] {len(cleaned):,} clean lines total")
 
     if not cleaned:
         print(f"[{tess_lang}] WARNING: no usable lines after cleaning", file=sys.stderr)
