@@ -251,95 +251,20 @@ jobs:
 
           echo "Langdata and output dir prepared"
 
-      - name: Prepare training (unicharset, lstmf, proto model)
+      - name: Run tesstrain (from scratch with extended unicharset)
         run: |
-          make -C /tmp/tesstrain unicharset lists proto-model \
+          # No START_MODEL — train from scratch so the LSTM output layer
+          # natively includes ♪ and all our extended characters.
+          # --append_index is broken in Tesseract 5 tessdata_best models.
+          make -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
-            START_MODEL="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             LANGDATA_DIR=/tmp/tesstrain/data/langdata \
+            MAX_ITERATIONS="$MAX_ITERATIONS" \
             PSM=13
 
-      - name: Train LSTM with replaced output layer
-        run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
-          mkdir -p "$OUTPUT_DIR/checkpoints"
-
-          # The base LSTM has no output node for ♪. We must replace
-          # the output layer with --append_index to add new characters.
-          # Read unicharset size for the output layer spec.
-          # Extract the proto model's unicharset and count entries.
-          # The warning "given outputs N not equal to unicharset of M"
-          # means we need M, not N. Extract and count from the proto model.
-          combine_tessdata -u "$OUTPUT_DIR/$MODEL.traineddata" "$OUTPUT_DIR/proto_"
-          NCHARS=$(head -1 "$OUTPUT_DIR/proto_lstm-unicharset" 2>/dev/null || echo "113")
-          # If the file doesn't have the expected format, count entries
-          if ! [[ "$NCHARS" =~ ^[0-9]+$ ]]; then
-            NCHARS=$(wc -l < "$OUTPUT_DIR/proto_lstm-unicharset")
-          fi
-          echo "Unicharset has $NCHARS characters"
-          NET_SPEC="O1c${NCHARS}"
-          echo "Net spec: $NET_SPEC"
-
-          TRAINED=false
-          # Try without --net_mode first (indices 1,2 showed Series access),
-          # then with --net_mode 192 for other indices
-          for ATTEMPT in "1:" "2:" "1:192" "2:192" "3:192" "4:192" "5:192" "6:192" "7:192"; do
-            IDX="${ATTEMPT%%:*}"
-            MODE="${ATTEMPT##*:}"
-            MODE_FLAG=""
-            [ -n "$MODE" ] && MODE_FLAG="--net_mode $MODE"
-            echo "=== Trying --append_index $IDX $MODE_FLAG ==="
-            if lstmtraining \
-              --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
-              --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
-              --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-              --append_index "$IDX" \
-              --net_spec "$NET_SPEC" \
-              $MODE_FLAG \
-              --learning_rate 0.001 \
-              --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
-              --train_listfile "$OUTPUT_DIR/list.train" \
-              --eval_listfile "$OUTPUT_DIR/list.eval" \
-              --max_iterations "$MAX_ITERATIONS" \
-              --target_error_rate 0.01 2>&1; then
-              TRAINED=true
-              echo "Success with --append_index $IDX"
-              break
-            else
-              RC=$?
-              echo "Failed with --append_index $IDX (exit $RC), trying next..."
-              rm -f "$OUTPUT_DIR"/checkpoints/* 2>/dev/null
-            fi
-          done
-
-          if [ "$TRAINED" = false ]; then
-            echo "All --append_index values failed. Falling back to standard fine-tuning."
-            lstmtraining \
-              --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
-              --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
-              --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-              --learning_rate 0.0001 \
-              --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
-              --train_listfile "$OUTPUT_DIR/list.train" \
-              --eval_listfile "$OUTPUT_DIR/list.eval" \
-              --max_iterations "$MAX_ITERATIONS" \
-              --target_error_rate 0.01
-          fi
-
-      - name: Package traineddata
-        run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
-          [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
-          echo "Using checkpoint: $CHECKPOINT"
-
-          lstmtraining \
-            --stop_training \
-            --continue_from "$CHECKPOINT" \
-            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
-            --model_output "tessdata/$LANG_CODE.traineddata"
+      - name: Copy trained model to tessdata
+        run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
 
       - name: Validate model
         continue-on-error: true
