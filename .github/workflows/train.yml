@@ -91,7 +91,9 @@ jobs:
         run: tesseract --version
 
       - name: Clone tesstrain
-        run: git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
+        run: |
+          rm -rf /tmp/tesstrain
+          git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
 
       - name: Generate ground-truth with text2image
         run: |
