@@ -269,9 +269,12 @@ jobs:
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          # Read unicharset size for the output layer spec
-          UNICHARSET_SIZE=$(head -1 "$OUTPUT_DIR/unicharset")
-          echo "Unicharset size: $UNICHARSET_SIZE"
+          # Count actual unicharset entries (lines after header line).
+          # The header line is the count, but lstmtraining expects the
+          # net_spec output size to match the traineddata's internal count
+          # which can differ from the raw file header.
+          UNICHARSET_SIZE=$(tail -n +2 "$OUTPUT_DIR/unicharset" | wc -l)
+          echo "Unicharset size for net_spec: $UNICHARSET_SIZE"
 
           # --append_index 5 replaces the top (output) LSTM layer so the
           # model can learn new characters (♪) not in the base unicharset.
