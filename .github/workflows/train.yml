@@ -251,61 +251,22 @@ jobs:
 
           echo "Langdata and output dir prepared"
 
-      - name: Prepare training (unicharset, lstmf, proto model)
+      - name: Run tesstrain
         run: |
-          # Use tesstrain to build everything up to the training lists.
-          # We run lstmtraining ourselves to pass --append_index 5.
-          make -C /tmp/tesstrain unicharset lists proto-model \
+          # tesstrain's Makefile handles the full pipeline including
+          # --old_traineddata for character mapping when START_MODEL is set.
+          # The proto model has our extended unicharset (with ♪).
+          make -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
             START_MODEL="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             LANGDATA_DIR=/tmp/tesstrain/data/langdata \
+            MAX_ITERATIONS="$MAX_ITERATIONS" \
+            LEARNING_RATE=0.001 \
             PSM=13
 
-      - name: Train LSTM with --append_index
-        run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
-
-          mkdir -p "$OUTPUT_DIR/checkpoints"
-
-          # Count actual unicharset entries (lines after header line).
-          # The header line is the count, but lstmtraining expects the
-          # net_spec output size to match the traineddata's internal count
-          # which can differ from the raw file header.
-          UNICHARSET_SIZE=$(tail -n +2 "$OUTPUT_DIR/unicharset" | wc -l)
-          echo "Unicharset size for net_spec: $UNICHARSET_SIZE"
-
-          # --append_index 5 replaces the top (output) LSTM layer so the
-          # model can learn new characters (♪) not in the base unicharset.
-          # --net_spec defines the replacement output layer (O1c<size>).
-          # Learning rate 0.001 because the output layer trains from scratch.
-          lstmtraining \
-            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
-            --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
-            --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-            --append_index 5 \
-            --net_spec "O1c$UNICHARSET_SIZE" \
-            --net_mode 192 \
-            --learning_rate 0.001 \
-            --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
-            --train_listfile "$OUTPUT_DIR/list.train" \
-            --eval_listfile "$OUTPUT_DIR/list.eval" \
-            --max_iterations "$MAX_ITERATIONS" \
-            --target_error_rate 0.01
-
-      - name: Package traineddata
-        run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
-          [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
-          echo "Using checkpoint: $CHECKPOINT"
-
-          lstmtraining \
-            --stop_training \
-            --continue_from "$CHECKPOINT" \
-            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
-            --model_output "tessdata/$LANG_CODE.traineddata"
+      - name: Copy trained model to tessdata
+        run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
 
       - name: Validate model
         continue-on-error: true
