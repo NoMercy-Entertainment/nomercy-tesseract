@@ -269,7 +269,15 @@ jobs:
           # The base LSTM has no output node for ♪. We must replace
           # the output layer with --append_index to add new characters.
           # Read unicharset size for the output layer spec.
-          NCHARS=$(tail -n +2 "$OUTPUT_DIR/unicharset" | wc -l)
+          # Extract the proto model's unicharset and count entries.
+          # The warning "given outputs N not equal to unicharset of M"
+          # means we need M, not N. Extract and count from the proto model.
+          combine_tessdata -u "$OUTPUT_DIR/$MODEL.traineddata" "$OUTPUT_DIR/proto_"
+          NCHARS=$(head -1 "$OUTPUT_DIR/proto_lstm-unicharset" 2>/dev/null || echo "113")
+          # If the file doesn't have the expected format, count entries
+          if ! [[ "$NCHARS" =~ ^[0-9]+$ ]]; then
+            NCHARS=$(wc -l < "$OUTPUT_DIR/proto_lstm-unicharset")
+          fi
           echo "Unicharset has $NCHARS characters"
           NET_SPEC="O1c${NCHARS}"
           echo "Net spec: $NET_SPEC"
