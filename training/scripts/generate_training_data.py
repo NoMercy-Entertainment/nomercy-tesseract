@@ -2,17 +2,16 @@
 """
 generate_training_data.py
 =========================
-Thin orchestrator that drives build_training_text.py to produce
-.training_text and .fonts files for every target language.
-
-Replaces the old Pillow-based image generation approach. No PIL dependency.
+Orchestrates training data generation:
+1. Fetches real subtitle text from OpenSubtitles corpus
+2. Merges with hand-crafted LANG_SENTENCES
+3. Injects ♪ music note lines at 30% ratio
+4. Writes .training_text and .fonts files per language
 
 Usage:
     python3 training/scripts/generate_training_data.py            # all languages
     python3 training/scripts/generate_training_data.py --lang eng # single language
-
-Output goes to training/generated/<lang>/<lang>.training_text
-                 training/generated/<lang>/<lang>.fonts
+    python3 training/scripts/generate_training_data.py --no-fetch # skip corpus download
 """
 
 import argparse
@@ -33,6 +32,19 @@ from build_training_text import (
 )
 
 
+def fetch_corpus(lang: str, max_lines: int = 10000) -> list:
+    """Fetch subtitle corpus for a language. Returns list of cleaned lines with ♪ injected."""
+    try:
+        from fetch_subtitle_corpus import fetch_for_lang
+        return fetch_for_lang(lang, max_lines=max_lines)
+    except ImportError:
+        print(f"  WARNING: fetch_subtitle_corpus.py not found, skipping corpus", file=sys.stderr)
+        return []
+    except Exception as exc:
+        print(f"  WARNING: corpus fetch failed for {lang}: {exc}", file=sys.stderr)
+        return []
+
+
 def main() -> None:
     root = repo_root()
     config_dir = root / "training" / "config"
@@ -47,6 +59,10 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=default_out,
                         metavar="DIR",
                         help="Output directory (default: training/generated/)")
+    parser.add_argument("--max-lines", type=int, default=10000,
+                        help="Max corpus lines per language (default: 10000)")
+    parser.add_argument("--no-fetch", action="store_true",
+                        help="Skip corpus download, use only LANG_SENTENCES")
     args = parser.parse_args()
 
     # Load character groups once
@@ -68,23 +84,30 @@ def main() -> None:
 
     print(f"Output directory : {args.output_dir}")
     print(f"Languages        : {len(target_langs)}")
-    print(f"Character groups : {', '.join(char_groups.keys())}")
+    print(f"Corpus fetch     : {'disabled' if args.no_fetch else f'up to {args.max_lines} lines'}")
     print()
 
     # Header row
-    print(f"  {'Lang':<16} {'Chars':>6}   {'Lines':>6}   Fonts")
-    print(f"  {'-'*16} {'-'*6}   {'-'*6}   {'-'*40}")
+    print(f"  {'Lang':<16} {'Corpus':>7} {'Total':>7}   Fonts")
+    print(f"  {'-'*16} {'-'*7} {'-'*7}   {'-'*40}")
 
     errors: list = []
 
     for lang in target_langs:
         try:
             chars = get_chars_for_lang(lang, char_groups)
-            txt_path = write_training_text(lang, chars, args.output_dir)
+
+            # Fetch corpus (unless disabled)
+            corpus_lines = []
+            if not args.no_fetch:
+                corpus_lines = fetch_corpus(lang, max_lines=args.max_lines)
+
+            txt_path = write_training_text(lang, chars, args.output_dir,
+                                           corpus_lines=corpus_lines)
             write_fonts_file(lang, args.output_dir)
             line_count = txt_path.read_text(encoding="utf-8").count("\n")
             fonts = get_fonts_for_lang(lang)
-            print(f"  {lang:<16} {len(chars):>6}   {line_count:>6}   {', '.join(fonts)}")
+            print(f"  {lang:<16} {len(corpus_lines):>7} {line_count:>7}   {', '.join(fonts)}")
         except Exception as exc:
             print(f"  {lang:<16} ERROR: {exc}", file=sys.stderr)
             errors.append((lang, exc))

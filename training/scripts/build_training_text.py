@@ -1161,16 +1161,25 @@ LANG_SENTENCES["kat_old"] = LANG_SENTENCES["kat"]
 LANG_SENTENCES["bos"] = LANG_SENTENCES["hrv"]
 
 
-def build_training_lines(lang: str, chars: List[str]) -> List[str]:
+def build_training_lines(
+    lang: str,
+    chars: List[str],
+    corpus_lines: List[str] | None = None,
+    music_ratio: float = 0.30,
+) -> List[str]:
     """
-    Generate training text lines for a specific language.
+    Build the final training text for a language.
 
-    All training data comes from LANG_SENTENCES — real localized sentences
-    with ♪, SDH formatting, and special characters already embedded.
-    No English content leaks into non-English languages.
+    Merges three sources:
+    1. Corpus lines (real subtitle text from OpenSubtitles)
+    2. LANG_SENTENCES (hand-crafted subtitle sentences)
+    3. Music note injection (♪ bookends on random corpus lines)
+
+    Target: ~30% of total lines contain ♪/♫ for music note training.
     """
     unique_lines: List[str] = []
     seen: Set[str] = set()
+    rng = random.Random(42)
 
     def add(line: str) -> None:
         line = line.strip()
@@ -1178,20 +1187,50 @@ def build_training_lines(lang: str, chars: List[str]) -> List[str]:
             seen.add(line)
             unique_lines.append(line)
 
+    # 1. Hand-crafted sentences (always included, high quality)
     for line in LANG_SENTENCES.get(lang, []):
         add(line)
+
+    # 2. Corpus lines (bulk of training data)
+    if corpus_lines:
+        for line in corpus_lines:
+            add(line)
+
+    # 3. Music note injection — only when corpus data is NOT provided
+    #    (corpus data from fetch_subtitle_corpus already has ♪ injected).
+    #    When using LANG_SENTENCES only, inject ♪ to reach target ratio.
+    if not corpus_lines:
+        base_lines = list(unique_lines)
+        if base_lines:
+            current_music = sum(1 for l in base_lines if "\u266a" in l or "\u266b" in l)
+            total = len(base_lines)
+            target_music = int(total * music_ratio / (1.0 - music_ratio))
+            needed = max(0, target_music - current_music)
+
+            candidates = [l for l in base_lines if "\u266a" not in l and "\u266b" not in l
+                           and len(l) >= 15]
+            if candidates and needed > 0:
+                for i in range(needed):
+                    src = candidates[rng.randint(0, len(candidates) - 1)]
+                    note = "\u266a" if i % 3 != 2 else "\u266b"
+                    add(f"{note} {src} {note}")
 
     return unique_lines
 
 
 # ── Output helpers ────────────────────────────────────────────────────────────
 
-def write_training_text(lang: str, chars: List[str], output_dir: Path) -> Path:
+def write_training_text(
+    lang: str,
+    chars: List[str],
+    output_dir: Path,
+    corpus_lines: List[str] | None = None,
+) -> Path:
     """Write <output_dir>/<lang>/<lang>.training_text and return the path."""
     lang_dir = output_dir / lang
     lang_dir.mkdir(parents=True, exist_ok=True)
 
-    lines = build_training_lines(lang, chars)
+    lines = build_training_lines(lang, chars, corpus_lines=corpus_lines)
     out_path = lang_dir / f"{lang}.training_text"
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return out_path

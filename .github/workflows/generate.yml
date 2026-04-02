@@ -9,6 +9,10 @@ on:
         description: "Single language code (blank = all)"
         required: false
         default: ""
+      max_lines:
+        description: "Max corpus lines per language"
+        required: false
+        default: "10000"
 
 jobs:
   generate:
@@ -25,11 +29,13 @@ jobs:
 
       - name: Generate training text files
         run: |
+          LANG_FLAG=""
           if [ -n "${{ github.event.inputs.language }}" ]; then
-            python3 training/scripts/generate_training_data.py --lang "${{ github.event.inputs.language }}"
-          else
-            python3 training/scripts/generate_training_data.py
+            LANG_FLAG="--lang ${{ github.event.inputs.language }}"
           fi
+          python3 training/scripts/generate_training_data.py \
+            $LANG_FLAG \
+            --max-lines "${{ github.event.inputs.max_lines || '10000' }}"
 
       - name: Report
         run: |
