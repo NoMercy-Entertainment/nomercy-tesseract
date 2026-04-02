@@ -1,0 +1,91 @@
+name: Test --append_index fix
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build patched Tesseract and test --append_index
+    runs-on: [self-hosted, beast-unit]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            g++ cmake make pkg-config \
+            libleptonica-dev libicu-dev libpango1.0-dev libcairo2-dev \
+            fonts-noto fonts-dejavu \
+            wget
+
+      - name: Clone and build patched Tesseract
+        run: |
+          echo "Cloning NoMercy fork with --append_index diagnostic..."
+          git clone --depth 1 --branch fix/append-index-lstmrecognizer \
+            https://github.com/NoMercy-Entertainment/tesseract.git /tmp/tesseract-src
+
+          cd /tmp/tesseract-src
+          mkdir build && cd build
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TRAINING_TOOLS=ON \
+            -DCMAKE_INSTALL_PREFIX=/tmp/tesseract-install
+          make -j$(nproc)
+          make install
+          echo "Build complete"
+          /tmp/tesseract-install/bin/tesseract --version
+          ls -la /tmp/tesseract-install/bin/lstmtraining
+
+      - name: Download tessdata_best eng
+        run: |
+          mkdir -p /tmp/tessdata
+          wget -q -O /tmp/tessdata/eng.traineddata \
+            "https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata"
+          echo "Downloaded eng.traineddata: $(wc -c < /tmp/tessdata/eng.traineddata) bytes"
+
+      - name: Extract LSTM from tessdata_best
+        run: |
+          cd /tmp
+          /tmp/tesseract-install/bin/combine_tessdata -u /tmp/tessdata/eng.traineddata /tmp/eng.
+          ls -la /tmp/eng.*
+          echo "Extracted components"
+
+      - name: Prepare minimal training data
+        run: |
+          # Generate a few ground-truth pairs with text2image
+          mkdir -p /tmp/test-gt
+          echo "Hello world test" > /tmp/test-line.txt
+          /tmp/tesseract-install/bin/text2image \
+            --text /tmp/test-line.txt \
+            --outputbase /tmp/test-gt/test_000 \
+            --font "Noto Sans" \
+            --fonts_dir /usr/share/fonts \
+            --ptsize 32 2>&1 || echo "text2image done"
+          echo "Hello world test" > /tmp/test-gt/test_000.gt.txt
+          ls -la /tmp/test-gt/
+
+      - name: Test --append_index with diagnostic
+        run: |
+          echo "Testing --append_index with patched lstmtraining..."
+          echo "This will show the actual network type and whether the assert passes."
+          echo ""
+
+          # We need a proto model with extended unicharset first.
+          # For now just test with the base model to see the diagnostic.
+          /tmp/tesseract-install/bin/lstmtraining \
+            --traineddata /tmp/tessdata/eng.traineddata \
+            --old_traineddata /tmp/tessdata/eng.traineddata \
+            --continue_from /tmp/eng.lstm \
+            --append_index 5 \
+            --net_spec "O1c113" \
+            --net_mode 192 \
+            --learning_rate 0.001 \
+            --model_output /tmp/test_output \
+            --max_iterations 1 2>&1 || true
+
+          echo ""
+          echo "=== Test complete ==="
+          echo "Check the output above for 'Network type for --append_index' line."
+          echo "If it shows a type other than NT_SERIES, that's our bug."
