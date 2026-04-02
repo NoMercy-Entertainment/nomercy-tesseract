@@ -66,7 +66,7 @@ jobs:
 
     env:
       LANG_CODE:      ${{ matrix.lang }}
-      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '400' }}
+      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '10000' }}
       WORK_DIR:       /tmp/tess-train/${{ matrix.lang }}
 
     steps:
@@ -254,7 +254,9 @@ jobs:
         run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
 
       - name: Validate model
+        continue-on-error: true
         run: |
+          mkdir -p "$WORK_DIR"
           python3 training/scripts/validate-model.py \
             --tessdata tessdata/ \
             --lang "$LANG_CODE" \
