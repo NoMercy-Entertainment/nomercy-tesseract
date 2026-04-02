@@ -186,15 +186,43 @@ jobs:
 
       - name: Run tesstrain
         run: |
-          make -C /tmp/tesstrain training \
+          # Run tesstrain — use -k to continue past individual lstmf failures
+          # (some characters may not be renderable by the installed fonts)
+          #
+          # Before training, remove any ground-truth pairs where text2image
+          # produced a blank/zero-byte .tif (unrenderable characters)
+          echo "Cleaning unrenderable ground-truth entries..."
+          CLEANED=0
+          for tif in "$GT_DIR"/*.tif; do
+            [ -f "$tif" ] || continue
+            # Remove entries with zero-size or tiny tif files (blank renders)
+            SIZE=$(wc -c < "$tif")
+            if [ "$SIZE" -lt 100 ]; then
+              STEM="${tif%.tif}"
+              rm -f "$STEM".tif "$STEM".gt.txt "$STEM".box "$STEM".lstmf
+              CLEANED=$((CLEANED + 1))
+            fi
+          done
+          echo "Removed $CLEANED blank/unrenderable entries"
+          REMAINING=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          echo "Remaining ground-truth entries: $REMAINING"
+          [ "$REMAINING" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
+
+          make -k -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
             START_MODEL="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             MAX_ITERATIONS="$MAX_ITERATIONS" \
             PSM=7 \
           || {
-            echo "ERROR: tesstrain make failed for $MODEL"
-            exit 1
+            # -k means make continues past errors but still returns non-zero
+            # Check if the final .traineddata was actually produced
+            if [ -f "/tmp/tesstrain/data/$MODEL.traineddata" ]; then
+              echo "WARNING: tesstrain had errors but produced $MODEL.traineddata — continuing"
+            else
+              echo "ERROR: tesstrain failed and did not produce $MODEL.traineddata"
+              exit 1
+            fi
           }
 
       - name: Copy trained model to tessdata
