@@ -36,7 +36,7 @@ jobs:
 
   setup:
     name: Resolve language matrix
-    runs-on: self-hosted
+    runs-on: [self-hosted, beast-unit]
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
@@ -70,10 +70,9 @@ jobs:
   train:
     name: Train [${{ matrix.lang }}]
     needs: setup
-    runs-on: self-hosted
+    runs-on: [self-hosted, beast-unit]
 
     strategy:
-      # Train all languages in parallel; do not cancel others if one fails
       fail-fast: false
       matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
 
