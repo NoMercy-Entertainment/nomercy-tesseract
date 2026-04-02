@@ -184,23 +184,40 @@ jobs:
           }
           echo "Downloaded $(wc -c < /tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata) bytes"
 
-      - name: Clean blank renders
+      - name: Validate ground-truth pairs
         run: |
-          echo "Cleaning unrenderable ground-truth entries..."
-          CLEANED=0
-          for tif in "$GT_DIR"/*.tif; do
-            [ -f "$tif" ] || continue
-            SIZE=$(wc -c < "$tif")
-            if [ "$SIZE" -lt 200 ]; then
-              STEM="${tif%.tif}"
-              rm -f "$STEM".tif "$STEM".gt.txt "$STEM".box "$STEM".lstmf
-              CLEANED=$((CLEANED + 1))
+          # Generate box files and remove any pair where box generation fails.
+          # This ensures tesstrain's make won't hit broken entries.
+          echo "Validating ground-truth pairs (generating boxes)..."
+          VALID=0
+          REMOVED=0
+          cd /tmp/tesstrain
+          for gt in "$GT_DIR"/*.gt.txt; do
+            [ -f "$gt" ] || continue
+            STEM="${gt%.gt.txt}"
+            BASENAME=$(basename "$STEM")
+
+            # Check tif exists and has reasonable size
+            if [ ! -f "${STEM}.tif" ] || [ "$(wc -c < "${STEM}.tif")" -lt 200 ]; then
+              rm -f "${STEM}".tif "${STEM}".gt.txt
+              REMOVED=$((REMOVED + 1))
+              continue
             fi
+
+            # Try generating box file — if it fails or is empty, remove the pair
+            python3 generate_line_box.py -i "${STEM}.tif" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
+            if [ ! -s "${STEM}.box" ]; then
+              rm -f "${STEM}".tif "${STEM}".gt.txt "${STEM}".box
+              REMOVED=$((REMOVED + 1))
+              continue
+            fi
+
+            VALID=$((VALID + 1))
           done
-          echo "Removed $CLEANED blank/unrenderable entries"
-          REMAINING=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
-          echo "Remaining ground-truth entries: $REMAINING"
-          [ "$REMAINING" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
+          cd -
+
+          echo "Valid: $VALID, Removed: $REMOVED"
+          [ "$VALID" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
 
       - name: Prepare langdata and output dir for tesstrain
         run: |
@@ -234,21 +251,13 @@ jobs:
 
       - name: Run tesstrain
         run: |
-          make -k -C /tmp/tesstrain training \
+          make -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
             START_MODEL="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             LANGDATA_DIR=/tmp/tesstrain/data/langdata \
             MAX_ITERATIONS="$MAX_ITERATIONS" \
-            PSM=7 \
-          || {
-            if [ -f "/tmp/tesstrain/data/$MODEL.traineddata" ]; then
-              echo "WARNING: tesstrain had errors but produced $MODEL.traineddata — continuing"
-            else
-              echo "ERROR: tesstrain failed and did not produce $MODEL.traineddata"
-              exit 1
-            fi
-          }
+            PSM=7
 
       - name: Copy trained model to tessdata
         run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
