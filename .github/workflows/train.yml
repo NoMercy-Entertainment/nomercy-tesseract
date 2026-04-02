@@ -268,16 +268,21 @@ jobs:
 
           # The base LSTM has no output node for ♪. We must replace
           # the output layer with --append_index to add new characters.
-          # Try multiple index values — the correct one depends on the
-          # model's serialized network structure.
+          # Read unicharset size for the output layer spec.
+          NCHARS=$(tail -n +2 "$OUTPUT_DIR/unicharset" | wc -l)
+          echo "Unicharset has $NCHARS characters"
+          NET_SPEC="O1c${NCHARS}"
+          echo "Net spec: $NET_SPEC"
+
           TRAINED=false
-          for IDX in 4 3 5 6 2; do
+          for IDX in 4 3 5 6 2 1 7; do
             echo "=== Trying --append_index $IDX ==="
             if lstmtraining \
               --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
               --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
               --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
               --append_index "$IDX" \
+              --net_spec "$NET_SPEC" \
               --net_mode 192 \
               --learning_rate 0.001 \
               --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
