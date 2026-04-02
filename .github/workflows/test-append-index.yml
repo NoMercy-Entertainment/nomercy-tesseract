@@ -24,48 +24,48 @@ jobs:
         run: |
           echo "Cloning NoMercy fork with --append_index diagnostic..."
           git clone --depth 1 --branch fix/append-index-lstmrecognizer \
-            https://github.com/NoMercy-Entertainment/tesseract.git /tmp/tesseract-src
+            https://github.com/NoMercy-Entertainment/tesseract.git $HOME/tesseract-src
 
-          cd /tmp/tesseract-src
+          cd $HOME/tesseract-src
           mkdir build && cd build
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_TRAINING_TOOLS=ON \
-            -DCMAKE_INSTALL_PREFIX=/tmp/tesseract-install
+            -DCMAKE_INSTALL_PREFIX=$HOME/tesseract-install
           make -j$(nproc)
           sudo make install
           sudo ldconfig
           echo "Build complete"
-          /tmp/tesseract-install/bin/tesseract --version
-          ls -la /tmp/tesseract-install/bin/lstmtraining
+          $HOME/tesseract-install/bin/tesseract --version
+          ls -la $HOME/tesseract-install/bin/lstmtraining
 
       - name: Download tessdata_best eng
         run: |
-          mkdir -p /tmp/tessdata
-          wget -q -O /tmp/tessdata/eng.traineddata \
+          mkdir -p $HOME/tessdata
+          wget -q -O $HOME/tessdata/eng.traineddata \
             "https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata"
-          echo "Downloaded eng.traineddata: $(wc -c < /tmp/tessdata/eng.traineddata) bytes"
+          echo "Downloaded eng.traineddata: $(wc -c < $HOME/tessdata/eng.traineddata) bytes"
 
       - name: Extract LSTM from tessdata_best
         run: |
           cd /tmp
-          /tmp/tesseract-install/bin/combine_tessdata -u /tmp/tessdata/eng.traineddata /tmp/eng.
-          ls -la /tmp/eng.*
+          $HOME/tesseract-install/bin/combine_tessdata -u $HOME/tessdata/eng.traineddata $HOME/eng.
+          ls -la $HOME/eng.*
           echo "Extracted components"
 
       - name: Prepare minimal training data
         run: |
           # Generate a few ground-truth pairs with text2image
-          mkdir -p /tmp/test-gt
-          echo "Hello world test" > /tmp/test-line.txt
-          /tmp/tesseract-install/bin/text2image \
-            --text /tmp/test-line.txt \
-            --outputbase /tmp/test-gt/test_000 \
+          mkdir -p $HOME/test-gt
+          echo "Hello world test" > $HOME/test-line.txt
+          $HOME/tesseract-install/bin/text2image \
+            --text $HOME/test-line.txt \
+            --outputbase $HOME/test-gt/test_000 \
             --font "Noto Sans" \
             --fonts_dir /usr/share/fonts \
             --ptsize 32 2>&1 || echo "text2image done"
-          echo "Hello world test" > /tmp/test-gt/test_000.gt.txt
-          ls -la /tmp/test-gt/
+          echo "Hello world test" > $HOME/test-gt/test_000.gt.txt
+          ls -la $HOME/test-gt/
 
       - name: Test --append_index with diagnostic
         run: |
@@ -75,15 +75,15 @@ jobs:
 
           # We need a proto model with extended unicharset first.
           # For now just test with the base model to see the diagnostic.
-          /tmp/tesseract-install/bin/lstmtraining \
-            --traineddata /tmp/tessdata/eng.traineddata \
-            --old_traineddata /tmp/tessdata/eng.traineddata \
-            --continue_from /tmp/eng.lstm \
+          $HOME/tesseract-install/bin/lstmtraining \
+            --traineddata $HOME/tessdata/eng.traineddata \
+            --old_traineddata $HOME/tessdata/eng.traineddata \
+            --continue_from $HOME/eng.lstm \
             --append_index 5 \
             --net_spec "O1c113" \
             --net_mode 192 \
             --learning_rate 0.001 \
-            --model_output /tmp/test_output \
+            --model_output $HOME/test_output \
             --max_iterations 1 2>&1 || true
 
           echo ""
