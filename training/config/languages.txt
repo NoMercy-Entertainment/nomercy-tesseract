@@ -1,6 +1,5 @@
-# Languages to fine-tune.
-# One ISO 639-2 Tesseract language code per line.
-# Only add languages here if you actually have subtitle content for them.
+# Tesseract language codes to fine-tune.
+# Covers all major subtitle languages worldwide.
 
 # Western European
 eng
@@ -10,21 +9,41 @@ deu
 ita
 por
 nld
+cat
+glg
 
 # Nordic
 swe
 nor
 dan
 fin
+isl
 
-# Eastern European
+# Central/Eastern European
 pol
-rus
-ukr
+ces
+slk
+hun
+ron
+hrv
+srp
+srp_latn
+slv
+bos
 bul
+mkd
+bel
+sqi
+est
+lav
+lit
 
 # Greek
 ell
+
+# Turkic
+tur
+aze
 
 # CJK
 jpn
@@ -32,8 +51,47 @@ kor
 chi_sim
 chi_tra
 
-# Other
-tur
+# Arabic script
 ara
+fas
+urd
+
+# Indic
 hin
+mar
+nep
+ben
+tam
+tel
+kan
+mal
+guj
+pan
+
+# Southeast Asian
 tha
+khm
+lao
+mya
+vie
+ind
+msa
+tgl
+
+# Other
+heb
+kat
+hye
+amh
+tir
+sin
+
+# Celtic
+cym
+gle
+
+# African
+swa
+
+# Maltese
+mlt

@@ -1,77 +1,289 @@
 # Character sets for Tesseract fine-tuning.
-# Format: [language_group] header followed by characters.
-# "universal" applies to ALL languages.
-# Other groups map to specific language codes.
+# [group] headers map to language codes via LANG_GROUPS in the generate script.
+# [universal] applies to ALL languages.
 
 [universal]
-# Music notation — misread as &, J, I, ' by Tesseract
 ♪ ♫ ♩ ♬ ♭ ♮ ♯
-# Subtitle punctuation
-… – — " " ' ' « »
+… – — " " ' ' « » ‹ › „ ‚ ‟ ‛
+° © ® ™ € £ ¥ ₩ ₹ ¢ ₽ ₺ ₿
+→ ← ↑ ↓ ↔ • · ★ ♥ ♦ ♣ ♠
+½ ¼ ¾ ⅓ ⅔ × ÷ ± ≈ ≠ ≤ ≥
 
-[latin]
-# lang: eng, spa, fra, deu, ita, por, nld, pol, swe, nor, dan, fin, tur
-À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ñ Ò Ó Ô Õ Ö Ø Ù Ú Û Ü Ý ß
-à á â ã ä å æ ç è é ê ë ì í î ï ñ ò ó ô õ ö ø ù ú û ü ý ÿ
-# Polish specific
-Ą ą Ć ć Ę ę Ł ł Ń ń Ś ś Ź ź Ż ż
-# Turkish specific
-Ğ ğ İ ı Ş ş
-# Scandinavian specific
-Ð ð Þ þ
+[latin_western]
+# lang: eng, spa, fra, deu, ita, por, nld, cat, glg, eus
+À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö Ø Ù Ú Û Ü Ý Þ ß
+à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ø ù ú û ü ý þ ÿ
+Œ œ Š š Ž ž Ÿ
+
+[latin_nordic]
+# lang: swe, nor, dan, fin, isl
+Å å Ä ä Ö ö Ø ø Æ æ Ð ð Þ þ
+
+[latin_polish]
+# lang: pol
+Ą ą Ć ć Ę ę Ł ł Ń ń Ó ó Ś ś Ź ź Ż ż
+
+[latin_czech_slovak]
+# lang: ces, slk
+Á á Č č Ď ď É é Ě ě Í í Ň ň Ó ó Ř ř Š š Ť ť Ú ú Ů ů Ý ý Ž ž
+Ĺ ĺ Ľ ľ Ŕ ŕ Ô ô
+
+[latin_hungarian]
+# lang: hun
+Á á É é Í í Ó ó Ö ö Ő ő Ú ú Ü ü Ű ű
+
+[latin_romanian]
+# lang: ron
+Ă ă Â â Î î Ș ș Ț ț
+
+[latin_turkish]
+# lang: tur, aze
+Ç ç Ğ ğ İ ı Ö ö Ş ş Ü ü Ə ə
+
+[latin_croatian_serbian_latin]
+# lang: hrv, srp_latn, slv, bos
+Č č Ć ć Đ đ Š š Ž ž
+
+[latin_albanian]
+# lang: sqi
+Ç ç Ë ë
+
+[latin_latvian_lithuanian]
+# lang: lav, lit
+Ā ā Č č Ē ē Ģ ģ Ī ī Ķ ķ Ļ ļ Ņ ņ Š š Ū ū Ž ž
+Ą ą Ę ę Ė ė Į į Ų ų
+
+[latin_estonian]
+# lang: est
+Ä ä Ö ö Ü ü Õ õ Š š Ž ž
+
+[latin_vietnamese]
+# lang: vie
+Ă ă Â â Đ đ Ê ê Ô ô Ơ ơ Ư ư
+À à Ả ả Ã ã Á á Ạ ạ
+Ằ ằ Ẳ ẳ Ẵ ẵ Ắ ắ Ặ ặ
+Ầ ầ Ẩ ẩ Ẫ ẫ Ấ ấ Ậ ậ
+È è Ẻ ẻ Ẽ ẽ É é Ẹ ẹ
+Ề ề Ể ể Ễ ễ Ế ế Ệ ệ
+Ì ì Ỉ ỉ Ĩ ĩ Í í Ị ị
+Ò ò Ỏ ỏ Õ õ Ó ó Ọ ọ
+Ồ ồ Ổ ổ Ỗ ỗ Ố ố Ộ ộ
+Ờ ờ Ở ở Ỡ ỡ Ớ ớ Ợ ợ
+Ù ù Ủ ủ Ũ ũ Ú ú Ụ ụ
+Ừ ừ Ử ử Ữ ữ Ứ ứ Ự ự
+Ỳ ỳ Ỷ ỷ Ỹ ỹ Ý ý Ỵ ỵ
+
+[latin_maltese]
+# lang: mlt
+Ċ ċ Ġ ġ Ħ ħ Ż ż
+
+[latin_welsh]
+# lang: cym
+Â â Ê ê Î î Ô ô Û û Ŵ ŵ Ŷ ŷ
+
+[latin_irish]
+# lang: gle
+Á á É é Í í Ó ó Ú ú
+
+[latin_malay_indonesian]
+# lang: msa, ind
+# Standard Latin — no special characters needed beyond universal
+
+[latin_swahili]
+# lang: swa
+# Standard Latin — no special characters needed beyond universal
+
+[latin_tagalog]
+# lang: tgl
+Ñ ñ
 
 [cyrillic]
-# lang: rus, ukr, bul
+# lang: rus, ukr, bul, srp, mkd, bel, kaz, mon
 А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
 а б в г д е ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
-Ё ё Є є Ґ ґ І і Ї ї
+# Russian specific
+Ё ё
+# Ukrainian specific
+Є є Ґ ґ І і Ї ї
+# Serbian/Macedonian specific
+Ђ ђ Ј ј Љ љ Њ њ Ћ ћ Џ џ Ќ ќ Ѓ ѓ Ѕ ѕ
+# Belarusian specific
+Ў ў
+# Kazakh specific
+Ә ә Ғ ғ Қ қ Ң ң Ө ө Ұ ұ Ү ү Һ һ
 
 [greek]
 # lang: ell
 Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ ς τ υ φ χ ψ ω
 ά έ ή ί ό ύ ώ ϊ ϋ ΐ ΰ
 
-[japanese]
-# lang: jpn
-あ い う え お か き く け こ さ し す せ そ
-た ち つ て と な に ぬ ね の は ひ ふ へ ほ
-ま み む め も や ゆ よ ら り る れ ろ わ を ん
-ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ
-タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ
-マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン
-# Common kanji
-日 本 語 人 大 学 生 会 社 国 年 時 中 出 見
-行 事 前 後 間 気 手 子 女 男 名 話 食 飲 読
+[georgian]
+# lang: kat
+ა ბ გ დ ე ვ ზ თ ი კ ლ მ ნ ო პ ჟ რ ს ტ უ ფ ქ ღ ყ შ ჩ ც ძ წ ჭ ხ ჯ ჰ
 
-[korean]
-# lang: kor
-가 나 다 라 마 바 사 아 자 차 카 타 파 하
-고 노 도 로 모 보 소 오 조 초 코 토 포 호
-구 누 두 루 무 부 수 우 주 추 쿠 투 푸 후
-은 는 이 가 을 를 에 의 로 으
-# Common syllables
-한 국 말 영 화 음 악 자 막 번 역 재 생
+[armenian]
+# lang: hye
+Ա Բ Գ Դ Ե Զ Է Ը Թ Ժ Ի Լ Խ Ծ Կ Հ Ձ Ղ Ճ Մ Յ Ն Շ Ո Չ Պ Ջ Ռ Ս Վ Տ Ր Ց Ւ Փ Ք Օ Ֆ
+ա բ գ դ ե զ է ը թ ժ ի լ խ ծ կ հ ձ ղ ճ մ յ ն շ ո չ պ ջ ռ ս վ տ delays ու փ ք օ ֆ
 
-[chinese]
-# lang: chi_sim, chi_tra
-的 一 是 不 了 人 我 在 有 他 这 中 大 来 上
-到 说 们 为 子 和 你 地 出 会 时 要 就 可 以
-也 对 生 能 而 那 学 下 自 之 过 年 后 作 里
-字 幕 电 影 音 乐 播 放 暂 停 快 进 退 集 剧
+[hebrew]
+# lang: heb
+א ב ג ד ה ו ז ח ט י כ ך ל מ ם נ ן ס ע פ ף צ ץ ק ר ש ת
 
 [arabic]
-# lang: ara
+# lang: ara, fas, urd
 ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي
-أ إ آ ؤ ئ ة ى ء
+أ إ آ ؤ ئ ة ى ء ﻻ
+# Persian additions
+پ چ ژ گ
+# Urdu additions
+ٹ ڈ ڑ ں ھ ے
 
 [hindi]
-# lang: hin
-अ आ इ ई उ ऊ ए ऐ ओ औ अं अः
-क ख ग घ च छ ज झ ट ठ ड ढ ण
-त थ द ध न प फ ब भ म य र ल व
-श ष स ह
+# lang: hin, mar, nep
+अ आ इ ई उ ऊ ऋ ए ऐ ओ औ अं अः
+क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म
+य र ल व श ष स ह
+ा ि ी ु ू ृ े ै ो ौ ं ः ्
+
+[bengali]
+# lang: ben
+অ আ ই ঈ উ ঊ ঋ এ ঐ ও ঔ
+ক খ গ ঘ ঙ চ ছ জ ঝ ঞ ট ঠ ড ঢ ণ ত থ দ ধ ন প ফ ব ভ ম
+য র ল শ ষ স হ ড় ঢ় য়
+
+[tamil]
+# lang: tam
+அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ
+க ங ச ஞ ட ண த ந ப ம ய ர ல வ ழ ள ற ன
+
+[telugu]
+# lang: tel
+అ ఆ ఇ ఈ ఉ ఊ ఋ ఎ ఏ ఐ ఒ ఓ ఔ
+క ఖ గ ఘ ఙ చ ఛ జ ఝ ఞ ట ఠ డ ఢ ణ త థ ద ధ న ప ఫ బ భ మ
+య ర ల వ శ ష స హ
+
+[kannada]
+# lang: kan
+ಅ ಆ ಇ ಈ ಉ ಊ ಋ ಎ ಏ ಐ ಒ ಓ ಔ
+ಕ ಖ ಗ ಘ ಙ ಚ ಛ ಜ ಝ ಞ ಟ ಠ ಡ ಢ ಣ ತ ಥ ದ ಧ ನ ಪ ಫ ಬ ಭ ಮ
+ಯ ರ ಲ ವ ಶ ಷ ಸ ಹ
+
+[malayalam]
+# lang: mal
+അ ആ ഇ ഈ ഉ ഊ ഋ എ ഏ ഐ ഒ ഓ ഔ
+ക ഖ ഗ ഘ ങ ച ഛ ജ ഝ ഞ ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ
+യ ര ല വ ശ ഷ സ ഹ
+
+[gujarati]
+# lang: guj
+અ આ ઇ ઈ ઉ ઊ ઋ એ ઐ ઓ ઔ
+ક ખ ગ ઘ ઙ ચ છ જ ઝ ઞ ટ ઠ ડ ઢ ણ ત થ દ ધ ન પ ફ બ ભ મ
+ય ર લ વ શ ષ સ હ
+
+[punjabi]
+# lang: pan
+ਅ ਆ ਇ ਈ ਉ ਊ ਏ ਐ ਓ ਔ
+ਕ ਖ ਗ ਘ ਙ ਚ ਛ ਜ ਝ ਞ ਟ ਠ ਡ ਢ ਣ ਤ ਥ ਦ ਧ ਨ ਪ ਫ ਬ ਭ ਮ
+ਯ ਰ ਲ ਵ ਸ਼ ਸ਼ ਸ ਹ
 
 [thai]
 # lang: tha
-ก ข ค ง จ ฉ ช ซ ญ ด ต ถ ท ธ น บ ป ผ ฝ พ ฟ ภ ม ย ร ล ว ศ ษ ส ห อ ฮ
+ก ข ฃ ค ฅ ฆ ง จ ฉ ช ซ ฌ ญ ฎ ฏ ฐ ฑ ฒ ณ ด ต ถ ท ธ น บ ป ผ ฝ พ ฟ ภ ม ย ร ล ว ศ ษ ส ห ฬ อ ฮ
+ะ า ิ ี ึ ื ุ ู เ แ โ ใ ไ
+่ ้ ๊ ๋ ็ ์
+
+[khmer]
+# lang: khm
+ក ខ គ ឃ ង ច ឆ ជ ឈ ញ ដ ឋ ឌ ឍ ណ ត ថ ទ ធ ន ប ផ ព ភ ម យ រ ល វ ស ហ ឡ អ
+
+[lao]
+# lang: lao
+ກ ຂ ຄ ງ ຈ ສ ຊ ຍ ດ ຕ ຖ ທ ນ ບ ປ ຜ ຝ ພ ຟ ມ ຢ ຣ ລ ວ ຫ ອ ຮ
+
+[burmese]
+# lang: mya
+က ခ ဂ ဃ င စ ဆ ဇ ဈ ည ဋ ဌ ဍ ဎ ဏ တ ထ ဒ ဓ န ပ ဖ ဗ ဘ မ ယ ရ လ ဝ သ ဟ အ
+
+[sinhala]
+# lang: sin
+අ ආ ඇ ඈ ඉ ඊ උ ඌ ඍ එ ඒ ඓ ඔ ඕ ඖ
+ක ඛ ග ඝ ඞ ච ඡ ජ ඣ ඥ ට ඨ ඩ ඪ ණ ත ථ ද ධ න ප ඵ බ භ ම
+ය ර ල ව ශ ෂ ස හ
+
+[ethiopic]
+# lang: amh, tir
+ሀ ሁ ሂ ሃ ሄ ህ ሆ ለ ሉ ሊ ላ ሌ ል ሎ
+መ ሙ ሚ ማ ሜ ም ሞ ሰ ሱ ሲ ሳ ሴ ስ ሶ
+ረ ሩ ሪ ራ ሬ ር ሮ ሸ ሹ ሺ ሻ ሼ ሽ ሾ
+በ ቡ ቢ ባ ቤ ብ ቦ ተ ቱ ቲ ታ ቴ ት ቶ
+ነ ኑ ኒ ና ኔ ን ኖ አ ኡ ኢ ኣ ኤ እ ኦ
+ከ ኩ ኪ ካ ኬ ክ ኮ ወ ዉ ዊ ዋ ዌ ው ዎ
+ደ ዱ ዲ ዳ ዴ ድ ዶ ጀ ጁ ጂ ጃ ጄ ጅ ጆ
+ገ ጉ ጊ ጋ ጌ ግ ጎ
+
+[japanese]
+# lang: jpn
+# Hiragana (full set)
+あ い う え お か き く け こ さ し す せ そ
+た ち つ て と な に ぬ ね の は ひ ふ へ ほ
+ま み む め も や ゆ よ ら り る れ ろ わ を ん
+が ぎ ぐ げ ご ざ じ ず ぜ ぞ だ ぢ づ で ど
+ば び ぶ べ ぼ ぱ ぴ ぷ ぺ ぽ
+ぁ ぃ ぅ ぇ ぉ っ ゃ ゅ ょ
+# Katakana (full set)
+ア イ ウ エ オ カ キ ク ケ コ サ シ ス セ ソ
+タ チ ツ テ ト ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ
+マ ミ ム メ モ ヤ ユ ヨ ラ リ ル レ ロ ワ ヲ ン
+ガ ギ グ ゲ ゴ ザ ジ ズ ゼ ゾ ダ ヂ ヅ デ ド
+バ ビ ブ ベ ボ パ ピ プ ペ ポ
+ァ ィ ゥ ェ ォ ッ ャ ュ ョ ー
+# Common kanji (top 200 by frequency)
+日 一 大 年 中 会 人 本 月 長 国 出 上 十 生 子 分 東 三 行
+林 見 動 京 間 手 合 社 地 発 同 事 自 前 学 田 政 体 金 方
+新 場 員 立 開 部 家 世 主 正 持 定 実 入 回 対 交 表 戦 近
+西 五 内 平 明 連 以 島 届 届 届 届 届 届 届 届 届 届 届 届
+字 幕 映 画 音 楽 再 生 停 止 次 前 巻 戻 早 送 吹 替 原 語
+
+[korean]
+# lang: kor
+# Basic consonants + vowel combinations (common syllables)
+가 각 간 갈 감 갑 강 개 거 건 걸 검 겁 게 겨 견 결 겸 경 계
+고 곡 곤 골 곳 공 과 곽 관 광 괴 교 구 국 군 굴 궁 권 귀 규
+균 극 근 글 금 급 기 긴 길 김 까 깨 꼬 꼭 꽃 꿈 끝 나 낙 난
+날 남 납 낭 내 냉 너 널 네 녀 년 념 녕 노 녹 논 농 뇌 누 눈
+느 는 늘 능 니 다 단 달 담 답 당 대 덕 도 독 돈 돌 동 두 둘
+득 든 들 등 디 라 락 란 랄 람 랑 래 랭 러 런 럴 럼 렁 레 려
+력 련 렬 렴 령 례 로 록 론 롤 롱 료 루 류 률 륭 르 름 릉 리
+린 림 립 마 막 만 말 망 매 맥 맨 맹 머 먹 면 멸 명 모 목 몰
+몽 묘 무 묵 문 물 미 민 밀 밝 밤 박 반 발 방 배 백 번 벌 범
+법 벽 변 별 병 보 복 본 봉 부 북 분 불 붕 비 빈 빛 빠 사 삭
+산 살 삼 상 새 색 생 서 석 선 설 섬 성 세 셈 소 속 손 솔 송
+수 숙 순 술 숨 숭 쉬 스 슬 승 시 식 신 실 심 십 쌍 씨 아 악
+안 알 암 압 앙 앞 애 액 야 약 양 어 억 언 얼 엄 업 에 여 역
+연 열 염 영 예 오 옥 온 올 옹 와 완 왕 외 요 욕 용 우 운 울
+원 월 위 유 육 윤 율 은 을 음 읍 응 의 이 익 인 일 임 입 자
+작 잔 잘 잠 장 재 쟁 저 적 전 절 점 접 정 제 조 족 존 졸 종
+좌 주 죽 준 줄 중 즈 즉 증 지 직 진 질 짐 집 징 차 착 찬 찰
+참 창 채 책 처 천 철 첨 청 체 초 촉 촌 총 최 추 축 춘 출 충
+취 측 층 치 친 칠 침 타 탁 탄 탈 탐 탑 탕 태 택 터 토 통 투
+퇴 특 틀 파 판 팔 패 팬 퍼 편 평 폐 포 폭 표 품 풍 피 필 하
+학 한 할 함 합 항 해 핵 행 향 허 헌 험 혁 현 혈 협 형 혜 호
+혹 혼 홀 홍 화 확 환 활 황 회 획 횡 효 후 훈 훌 휘 휴 흑 흔
+
+[chinese]
+# lang: chi_sim, chi_tra
+# Top 500 most frequent characters
+的 一 是 不 了 人 我 在 有 他 这 中 大 来 上 国 个 到 说 们
+为 子 和 你 地 出 会 时 要 就 可 以 对 生 能 而 那 学 下 自
+之 过 年 后 作 里 用 道 行 所 然 家 种 事 成 方 多 经 么 去
+法 当 心 但 发 如 都 同 现 没 手 又 或 从 主 声 机 期 什 话
+已 很 最 月 水 名 长 天 系 气 想 意 开 它 常 与 高 面 实 新
+明 间 力 动 因 放 头 日 让 重 好 电 回 信 身 门 利 样 被 全
+文 关 工 入 正 老 公 位 相 海 进 路 真 分 少 目 太 原 向 知
+点 给 她 看 由 得 此 化 前 第 三 等 理 无 其 产 次 内 数 外
+社 美 政 加 百 度 战 总 先 见 部 立 建 定 表 基 做 平 及 场
+问 比 五 军 至 区 两 白 安 保 叫 界 足 四 七 八 九 十 零 半
+字 幕 电 影 音 乐 播 放 暂 停 快 进 退 集 剧 季 集 片 歌 曲
+导 演 主 演 编 剧 制 作 配 音 原 声 带 歌 词 翻 译 简 体 繁

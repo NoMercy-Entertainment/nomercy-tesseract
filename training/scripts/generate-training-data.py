@@ -31,30 +31,93 @@ except ImportError:
 # ── Language-to-character-group mapping ──────────────────────────────────────
 
 LANG_GROUPS: Dict[str, List[str]] = {
-    "eng": ["latin"],
-    "spa": ["latin"],
-    "fra": ["latin"],
-    "deu": ["latin"],
-    "ita": ["latin"],
-    "por": ["latin"],
-    "nld": ["latin"],
-    "pol": ["latin"],
-    "swe": ["latin"],
-    "nor": ["latin"],
-    "dan": ["latin"],
-    "fin": ["latin"],
-    "tur": ["latin"],
+    # Western European
+    "eng": ["latin_western"],
+    "spa": ["latin_western"],
+    "fra": ["latin_western"],
+    "deu": ["latin_western"],
+    "ita": ["latin_western"],
+    "por": ["latin_western"],
+    "nld": ["latin_western"],
+    "cat": ["latin_western"],
+    "glg": ["latin_western"],
+    # Nordic
+    "swe": ["latin_western", "latin_nordic"],
+    "nor": ["latin_western", "latin_nordic"],
+    "dan": ["latin_western", "latin_nordic"],
+    "fin": ["latin_western", "latin_nordic"],
+    "isl": ["latin_western", "latin_nordic"],
+    # Central/Eastern European
+    "pol": ["latin_western", "latin_polish"],
+    "ces": ["latin_western", "latin_czech_slovak"],
+    "slk": ["latin_western", "latin_czech_slovak"],
+    "hun": ["latin_western", "latin_hungarian"],
+    "ron": ["latin_western", "latin_romanian"],
+    "hrv": ["latin_western", "latin_croatian_serbian_latin"],
+    "srp": ["cyrillic"],
+    "srp_latn": ["latin_western", "latin_croatian_serbian_latin"],
+    "slv": ["latin_western", "latin_croatian_serbian_latin"],
+    "bos": ["latin_western", "latin_croatian_serbian_latin"],
+    "sqi": ["latin_western", "latin_albanian"],
+    "est": ["latin_western", "latin_estonian"],
+    "lav": ["latin_western", "latin_latvian_lithuanian"],
+    "lit": ["latin_western", "latin_latvian_lithuanian"],
+    # Turkic
+    "tur": ["latin_western", "latin_turkish"],
+    "aze": ["latin_western", "latin_turkish"],
+    # Cyrillic
     "rus": ["cyrillic"],
     "ukr": ["cyrillic"],
     "bul": ["cyrillic"],
+    "mkd": ["cyrillic"],
+    "bel": ["cyrillic"],
+    "kaz": ["cyrillic"],
+    "mon": ["cyrillic"],
+    # Greek
     "ell": ["greek"],
+    # CJK
     "jpn": ["japanese"],
     "kor": ["korean"],
     "chi_sim": ["chinese"],
     "chi_tra": ["chinese"],
+    # Arabic script
     "ara": ["arabic"],
+    "fas": ["arabic"],
+    "urd": ["arabic"],
+    # Indic
     "hin": ["hindi"],
+    "mar": ["hindi"],
+    "nep": ["hindi"],
+    "ben": ["bengali"],
+    "tam": ["tamil"],
+    "tel": ["telugu"],
+    "kan": ["kannada"],
+    "mal": ["malayalam"],
+    "guj": ["gujarati"],
+    "pan": ["punjabi"],
+    # Southeast Asian
     "tha": ["thai"],
+    "khm": ["khmer"],
+    "lao": ["lao"],
+    "mya": ["burmese"],
+    "vie": ["latin_western", "latin_vietnamese"],
+    "ind": [],  # standard Latin
+    "msa": [],  # standard Latin
+    "tgl": ["latin_tagalog"],
+    # Other scripts
+    "heb": ["hebrew"],
+    "kat": ["georgian"],
+    "hye": ["armenian"],
+    "amh": ["ethiopic"],
+    "tir": ["ethiopic"],
+    "sin": ["sinhala"],
+    # Celtic
+    "cym": ["latin_western", "latin_welsh"],
+    "gle": ["latin_western", "latin_irish"],
+    # African
+    "swa": [],  # standard Latin
+    # Maltese
+    "mlt": ["latin_western", "latin_maltese"],
 }
 
 # ── Curated subtitle fonts ──────────────────────────────────────────────────
