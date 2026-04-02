@@ -33,9 +33,9 @@ jobs:
             -DBUILD_TRAINING_TOOLS=ON \
             -DCMAKE_INSTALL_PREFIX=/tmp/tesseract-install
           make -j$(nproc)
-          make install
+          sudo make install
+          sudo ldconfig
           echo "Build complete"
-          chmod +x /tmp/tesseract-install/bin/*
           /tmp/tesseract-install/bin/tesseract --version
           ls -la /tmp/tesseract-install/bin/lstmtraining
 
