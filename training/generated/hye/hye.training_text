@@ -11,1059 +11,169 @@
 Որտեղ ես?
 Երևանը գեղեցիկ քաղաք է.
 ♪ Կիլիկիա ♪
-♪
-♫
-♩
-♬
-♭
-♮
-♯
-…
-–
-—
-"
-'
-«
-»
-‹
-›
-„
-‚
-‟
-‛
-°
-©
-®
-™
-€
-£
-¥
-₩
-₹
-¢
-₽
-₺
-₿
-→
-←
-↑
-↓
-↔
-•
-·
-★
-♥
-♦
-♣
-♠
-½
-¼
-¾
-⅓
-⅔
-×
-÷
-±
-≈
-≠
-≤
-≥
-Ա
-Բ
-Գ
-Դ
-Ե
-Զ
-Է
-Ը
-Թ
-Ժ
-Ի
-Լ
-Խ
-Ծ
-Կ
-Հ
-Ձ
-Ղ
-Ճ
-Մ
-Յ
-Ն
-Շ
-Ո
-Չ
-Պ
-Ջ
-Ռ
-Ս
-Վ
-Տ
-Ր
-Ց
-Ւ
-Փ
-Ք
-Օ
-Ֆ
-ա
-բ
-գ
-դ
-ե
-զ
-է
-ը
-թ
-ժ
-ի
-լ
-խ
-ծ
-կ
-հ
-ձ
-ղ
-ճ
-մ
-յ
-ն
-շ
-ո
-չ
-պ
-ջ
-ռ
-ս
-վ
-տ
-delays
-ու
-փ
-ք
-օ
-ֆ
-♪ ¢
-♪ …
-♪ Կ
-♫ Է
-♫ Բ
-♫ ↓
-♩ ₩
-♩ ™
-♩ կ
-♬ —
-♬ –
-♬ €
-♭ ≥
-♭ Դ
-♭ օ
-♮ …
-♮ ÷
-♮ ծ
-♯ Ա
-♯ յ
-♯ Հ
-… ♫
-… ♥
-… կ
-– Ր
-– Հ
-– ★
-— ≥
-— Տ
-— ₩
-" €
-" դ
-" £
-' Ք
-' Ց
-' Լ
-« '
-« ո
-« ₿
-» գ
-» ©
-» Մ
-‹ Օ
-‹ ×
-‹ ‟
-› '
-› Գ
-› Ճ
-„ ©
-„ Դ
-„ ¥
-‚ դ
-‚ Հ
-‚ շ
-‟ Ֆ
-‟ ♦
-‟ ա
-‛ Փ
-‛ ≠
-‛ Խ
-° ‟
-° ♠
-° Է
-© ♦
-© չ
-© դ
-® Ծ
-® Ա
-® Ռ
-™ ‹
-™ Գ
-™ –
-€ Չ
-€ թ
-€ Խ
-£ „
-£ ≤
-£ Չ
-¥ ≤
-¥ փ
-¥ ը
-₩ ո
-₩ ↔
-₩ Լ
-₹ ↓
-₹ Ը
-₹ Լ
-¢ հ
-¢ թ
-¢ Օ
-₽ Ա
-₽ ↓
-₽ ֆ
-₺ ու
-₺ ™
-₺ «
-₿ ₹
-₿ ★
-₿ ♥
-→ կ
-→ „
-→ ե
-← դ
-← պ
-← Թ
-↑ ♩
-↑ ¢
-↑ Խ
-↓ Ր
-↓ ₹
-↓ Մ
-↔ ղ
-↔ ♥
-↔ շ
-• ♪
-• Լ
-• ք
-· ¼
-· օ
-· ₩
-★ Յ
-★ օ
-★ ÷
-♥ ·
-♥ բ
-♥ ♦
-♦ ♪
-♦ Ջ
-♦ delays
-♣ ♭
-♣ ₹
-♣ Օ
-♠ Շ
-♠ Զ
-♠ ‹
-½ Զ
-½ °
-½ ©
-¼ տ
-¼ ‚
-¼ ₿
-¾ ₿
-¾ ռ
-¾ ♦
-⅓ Լ
-⅓ կ
-⅓ ≤
-⅔ ±
-⅔ Ո
-⅔ թ
-× բ
-× ճ
-× ն
-÷ ₽
-÷ Ը
-÷ Բ
-± „
-± Տ
-± ♮
-≈ Գ
-≈ Ա
-≈ ♫
-≠ ‟
-≠ ›
-≠ Գ
-≤ ‚
-≤ –
-≤ Ս
-≥ ‟
-≥ Ե
-≥ Հ
-Ա տ
-Ա ≠
-Ա →
-Բ ռ
-Բ Է
-Բ ի
-Գ ⅓
-Գ €
-Գ ձ
-Դ Փ
-Դ կ
-Դ լ
-Ե պ
-Ե »
-Ե £
-Զ ›
-Զ ժ
-Զ Տ
-Է ₩
-Է Ը
-Է ⅔
-Ը ⅓
-Ը յ
-Ը ↑
-Թ կ
-Թ ¼
-Թ Հ
-Ժ չ
-Ժ Է
-Ժ ‛
-Ի մ
-Ի £
-Ի «
-Լ ♬
-Լ ™
-Լ Դ
-Խ ♦
-Խ ի
-Խ տ
-Ծ վ
-Ծ ≠
-Ծ թ
-Կ ›
-Կ ♦
-Կ դ
-Հ ♪
-Հ զ
-Հ Ի
-Ձ շ
-Ձ Ղ
-Ձ կ
-Ղ տ
-Ղ ·
-Ղ ⅓
-Ճ Մ
-Ճ ≤
-Ճ ‹
-Մ ›
-Մ Չ
-Մ ‹
-Յ «
-Յ ս
-Յ ք
-Ն ★
-Ն ‹
-Ն ֆ
-Շ °
-Շ ¾
-Շ ‚
-Ո ‚
-Ո Դ
-Ո ժ
-Չ ₽
-Չ Է
-Չ "
-Պ °
-Պ ծ
-Պ Ո
-Ջ Ժ
-Ջ ±
-Ջ Ո
-Ռ Ե
-Ռ Ի
-Ռ ը
-Ս →
-Ս Մ
-Ս ո
-Վ Ո
-Վ ‟
-Վ ♩
-Տ ո
-Տ £
-Տ ‟
-Ր ≠
-Ր օ
-Ր Ի
-Ց →
-Ց Ւ
-Ց ‚
-Ւ Զ
-Ւ ա
-Ւ Հ
-Փ ★
-Փ ճ
-Փ Յ
-Ք ♩
-Ք Մ
-Ք ¥
-Օ ←
-Օ Ի
-Օ ¢
-Ֆ ₩
-Ֆ ·
-Ֆ Խ
-ա Հ
-ա ≈
-ա Տ
-բ ±
-բ Ի
-բ օ
-գ delays
-գ Ը
-գ »
-դ ™
-դ կ
-դ Ծ
-ե '
-ե ♪
-ե Ս
-զ →
-զ Ի
-զ ♥
-է մ
-է հ
-է ♩
-ը ₹
-ը ‛
-ը •
-թ —
-թ Ֆ
-թ ↔
-ժ ձ
-ժ ₿
-ժ "
-ի Ն
-ի Օ
-ի "
-լ Փ
-լ ≈
-լ Է
-խ ¥
-խ Ւ
-խ ժ
-ծ ·
-ծ Դ
-ծ ♥
-կ ½
-կ ի
-կ ♯
-հ ½
-հ Ս
-հ ի
-ձ Է
-ձ Լ
-ձ ★
-ղ ₩
-ղ գ
-ղ —
-ճ ջ
-ճ ≥
-ճ ÷
-մ ո
-մ Ց
-մ Ն
-յ Բ
-յ Ա
-յ ♯
-ն ⅔
-ն ը
-ն Ռ
-շ Կ
-շ ‚
-շ Ց
-ո ֆ
-ո ը
-ո Ռ
-չ …
-չ ¢
-չ Ժ
-պ ½
-պ Ի
-պ —
-ջ ₩
-ջ ձ
-ջ Ր
-ռ Ո
-ռ ձ
-ռ ֆ
-ս ¢
-ս դ
-ս ⅓
-վ Թ
-վ '
-վ ձ
-տ ♪
-տ ×
-տ Օ
-delays հ
-delays ‚
-delays Ռ
-ու Ո
-ու ₺
-ու Մ
-փ օ
-փ Շ
-փ ժ
-ք Ջ
-ք թ
-ք Ճ
-օ ₿
-օ ⅔
-օ խ
-ֆ գ
-ֆ ♠
-ֆ Յ
-♪ ♪ ♪
-"♪"
-- ♪
-[ ♪ ]
-♪ ♫ ♪
-"♫"
-- ♫
-[ ♫ ]
-♪ ♩ ♪
-"♩"
-- ♩
-[ ♩ ]
-♪ ♬ ♪
-"♬"
-- ♬
-[ ♬ ]
-♪ ♭ ♪
-"♭"
-- ♭
-[ ♭ ]
-♪ ♮ ♪
-"♮"
-- ♮
-[ ♮ ]
-♪ ♯ ♪
-"♯"
-- ♯
-[ ♯ ]
-♪ … ♪
-"…"
-- …
-[ … ]
-♪ – ♪
-"–"
-- –
-[ – ]
-♪ — ♪
-"—"
-- —
-[ — ]
-♪ " ♪
-"""
-- "
-[ " ]
-♪ ' ♪
-"'"
-- '
-[ ' ]
-♪ « ♪
-"«"
-- «
-[ « ]
-♪ » ♪
-"»"
-- »
-[ » ]
-♪ ‹ ♪
-"‹"
-- ‹
-[ ‹ ]
-♪ › ♪
-"›"
-- ›
-[ › ]
-♪ „ ♪
-"„"
-- „
-[ „ ]
-♪ ‚ ♪
-"‚"
-- ‚
-[ ‚ ]
-♪ ‟ ♪
-"‟"
-- ‟
-[ ‟ ]
-♪ ‛ ♪
-"‛"
-- ‛
-[ ‛ ]
-♪ ° ♪
-"°"
-- °
-[ ° ]
-♪ © ♪
-"©"
-- ©
-[ © ]
-♪ ® ♪
-"®"
-- ®
-[ ® ]
-♪ ™ ♪
-"™"
-- ™
-[ ™ ]
-♪ € ♪
-"€"
-- €
-[ € ]
-♪ £ ♪
-"£"
-- £
-[ £ ]
-♪ ¥ ♪
-"¥"
-- ¥
-[ ¥ ]
-♪ ₩ ♪
-"₩"
-- ₩
-[ ₩ ]
-♪ ₹ ♪
-"₹"
-- ₹
-[ ₹ ]
-♪ ¢ ♪
-"¢"
-- ¢
-[ ¢ ]
-♪ ₽ ♪
-"₽"
-- ₽
-[ ₽ ]
-♪ ₺ ♪
-"₺"
-- ₺
-[ ₺ ]
-♪ ₿ ♪
-"₿"
-- ₿
-[ ₿ ]
-♪ → ♪
-"→"
-- →
-[ → ]
-♪ ← ♪
-"←"
-- ←
-[ ← ]
-♪ ↑ ♪
-"↑"
-- ↑
-[ ↑ ]
-♪ ↓ ♪
-"↓"
-- ↓
-[ ↓ ]
-♪ ↔ ♪
-"↔"
-- ↔
-[ ↔ ]
-♪ • ♪
-"•"
-- •
-[ • ]
-♪ · ♪
-"·"
-- ·
-[ · ]
-♪ ★ ♪
-"★"
-- ★
-[ ★ ]
-♪ ♥ ♪
-"♥"
-- ♥
-[ ♥ ]
-♪ ♦ ♪
-"♦"
-- ♦
-[ ♦ ]
-♪ ♣ ♪
-"♣"
-- ♣
-[ ♣ ]
-♪ ♠ ♪
-"♠"
-- ♠
-[ ♠ ]
-♪ ½ ♪
-"½"
-- ½
-[ ½ ]
-♪ ¼ ♪
-"¼"
-- ¼
-[ ¼ ]
-♪ ¾ ♪
-"¾"
-- ¾
-[ ¾ ]
-♪ ⅓ ♪
-"⅓"
-- ⅓
-[ ⅓ ]
-♪ ⅔ ♪
-"⅔"
-- ⅔
-[ ⅔ ]
-♪ × ♪
-"×"
-- ×
-[ × ]
-♪ ÷ ♪
-"÷"
-- ÷
-[ ÷ ]
-♪ ± ♪
-"±"
-- ±
-[ ± ]
-♪ ≈ ♪
-"≈"
-- ≈
-[ ≈ ]
-♪ ≠ ♪
-"≠"
-- ≠
-[ ≠ ]
-♪ ≤ ♪
-"≤"
-- ≤
-[ ≤ ]
-♪ ≥ ♪
-"≥"
-- ≥
-[ ≥ ]
-♪ Ա ♪
-"Ա"
-- Ա
-[ Ա ]
-♪ Բ ♪
-"Բ"
-- Բ
-[ Բ ]
-♪ Գ ♪
-"Գ"
-- Գ
-[ Գ ]
-♪ Դ ♪
-"Դ"
-- Դ
-[ Դ ]
-♪ Ե ♪
-"Ե"
-- Ե
-[ Ե ]
-♪ Զ ♪
-"Զ"
-- Զ
-[ Զ ]
-♪ Է ♪
-"Է"
-- Է
-[ Է ]
-♪ Ը ♪
-"Ը"
-- Ը
-[ Ը ]
-♪ Թ ♪
-"Թ"
-- Թ
-[ Թ ]
-♪ Ժ ♪
-"Ժ"
-- Ժ
-[ Ժ ]
-♪ Ի ♪
-"Ի"
-- Ի
-[ Ի ]
-♪ Լ ♪
-"Լ"
-- Լ
-[ Լ ]
-♪ Խ ♪
-"Խ"
-- Խ
-[ Խ ]
-♪ Ծ ♪
-"Ծ"
-- Ծ
-[ Ծ ]
-♪ Կ ♪
-"Կ"
-- Կ
-[ Կ ]
-♪ Հ ♪
-"Հ"
-- Հ
-[ Հ ]
-♪ Ձ ♪
-"Ձ"
-- Ձ
-[ Ձ ]
-♪ Ղ ♪
-"Ղ"
-- Ղ
-[ Ղ ]
-♪ Ճ ♪
-"Ճ"
-- Ճ
-[ Ճ ]
-♪ Մ ♪
-"Մ"
-- Մ
-[ Մ ]
-♪ Յ ♪
-"Յ"
-- Յ
-[ Յ ]
-♪ Ն ♪
-"Ն"
-- Ն
-[ Ն ]
-♪ Շ ♪
-"Շ"
-- Շ
-[ Շ ]
-♪ Ո ♪
-"Ո"
-- Ո
-[ Ո ]
-♪ Չ ♪
-"Չ"
-- Չ
-[ Չ ]
-♪ Պ ♪
-"Պ"
-- Պ
-[ Պ ]
-♪ Ջ ♪
-"Ջ"
-- Ջ
-[ Ջ ]
-♪ Ռ ♪
-"Ռ"
-- Ռ
-[ Ռ ]
-♪ Ս ♪
-"Ս"
-- Ս
-[ Ս ]
-♪ Վ ♪
-"Վ"
-- Վ
-[ Վ ]
-♪ Տ ♪
-"Տ"
-- Տ
-[ Տ ]
-♪ Ր ♪
-"Ր"
-- Ր
-[ Ր ]
-♪ Ց ♪
-"Ց"
-- Ց
-[ Ց ]
-♪ Ւ ♪
-"Ւ"
-- Ւ
-[ Ւ ]
-♪ Փ ♪
-"Փ"
-- Փ
-[ Փ ]
-♪ Ք ♪
-"Ք"
-- Ք
-[ Ք ]
-♪ Օ ♪
-"Օ"
-- Օ
-[ Օ ]
-♪ Ֆ ♪
-"Ֆ"
-- Ֆ
-[ Ֆ ]
-♪ ա ♪
-"ա"
-- ա
-[ ա ]
-♪ բ ♪
-"բ"
-- բ
-[ բ ]
-♪ գ ♪
-"գ"
-- գ
-[ գ ]
-♪ դ ♪
-"դ"
-- դ
-[ դ ]
-♪ ե ♪
-"ե"
-- ե
-[ ե ]
-♪ զ ♪
-"զ"
-- զ
-[ զ ]
-♪ է ♪
-"է"
-- է
-[ է ]
-♪ ը ♪
-"ը"
-- ը
-[ ը ]
-♪ թ ♪
-"թ"
-- թ
-[ թ ]
-♪ ժ ♪
-"ժ"
-- ժ
-[ ժ ]
-♪ ի ♪
-"ի"
-- ի
-[ ի ]
-♪ լ ♪
-"լ"
-- լ
-[ լ ]
-♪ խ ♪
-"խ"
-- խ
-[ խ ]
-♪ ծ ♪
-"ծ"
-- ծ
-[ ծ ]
-♪ կ ♪
-"կ"
-- կ
-[ կ ]
-♪ հ ♪
-"հ"
-- հ
-[ հ ]
-♪ ձ ♪
-"ձ"
-- ձ
-[ ձ ]
-♪ ղ ♪
-"ղ"
-- ղ
-[ ղ ]
-♪ ճ ♪
-"ճ"
-- ճ
-[ ճ ]
-♪ մ ♪
-"մ"
-- մ
-[ մ ]
-♪ յ ♪
-"յ"
-- յ
-[ յ ]
-♪ ն ♪
-"ն"
-- ն
-[ ն ]
-♪ շ ♪
-"շ"
-- շ
-[ շ ]
-♪ ո ♪
-"ո"
-- ո
-[ ո ]
-♪ չ ♪
-"չ"
-- չ
-[ չ ]
-♪ պ ♪
-"պ"
-- պ
-[ պ ]
-♪ ջ ♪
-"ջ"
-- ջ
-[ ջ ]
-♪ ռ ♪
-"ռ"
-- ռ
-[ ռ ]
-♪ ս ♪
-"ս"
-- ս
-[ ս ]
-♪ վ ♪
-"վ"
-- վ
-[ վ ]
-♪ տ ♪
-"տ"
-- տ
-[ տ ]
-♪ delays ♪
-"delays"
-- delays
-[ delays ]
-♪ ու ♪
-"ու"
-- ու
-[ ու ]
-♪ փ ♪
-"փ"
-- փ
-[ փ ]
-♪ ք ♪
-"ք"
-- ք
-[ ք ]
-♪ օ ♪
-"օ"
-- օ
-[ օ ]
-♪ ֆ ♪
-"ֆ"
-- ֆ
-[ ֆ ]
+♪ Never gonna give you up ♪
+♪ Never gonna let you down ♪
+♪ Never gonna run around and desert you ♪
+♪ La la la la la la la la ♪
+♪ Singing in the rain, just singing in the rain ♪
+♪ Don't stop believin', hold on to that feeling ♪
+♪ Somewhere over the rainbow, way up high ♪
+♪ Happy birthday to you, happy birthday ♪
+♪ We are the champions, my friends ♪
+♪ Twinkle twinkle little star, how I wonder ♪
+♪ Jingle bells, jingle bells, jingle all the way ♪
+♪ Yesterday, all my troubles seemed so far away ♪
+♪ Let it be, let it be, let it be, let it be ♪
+♪ Row row row your boat, gently down the stream ♪
+♪ Amazing grace, how sweet the sound ♪
+♪ You are my sunshine, my only sunshine ♪
+♪ When the saints go marching in ♪
+♪ Take me out to the ball game, take me out ♪
+♪ It's a small world after all ♪
+♪ This land is your land, this land is my land ♪
+♫ Singing in the rain, just singing in the rain ♫
+♫ What a glorious feeling, I'm happy again ♫
+♫ Do re mi fa sol la ti do, do ti la sol ♫
+♪ I will always love you, and I ♪
+♪ Bohemian Rhapsody, is this the real life ♪
+♪ Hey Jude, don't make it bad, take a sad song ♪
+♪ Imagine all the people, living for today ♪
+♪ What a wonderful world, I see trees of green ♪
+♪ Like a rolling stone, how does it feel ♪
+♪ Bridge over troubled water, I will lay me down ♪
+♪ Hotel California, such a lovely place ♪
+♪ Stairway to heaven, and she's buying ♪
+♪ Bohemian Rhapsody, easy come, easy go ♪
+♪ We will, we will rock you, rock you ♪
+♪ Another one bites the dust, and another one ♪
+♪ Under pressure, pushing down on me ♪
+♪ Sweet child o' mine, she's got a smile ♪
+♪ Smells like teen spirit, with the lights out ♪
+♪ Come as you are, as you were, as I want you ♪
+♪ Billie Jean is not my lover, she's just a girl ♪
+[ Door creaks loudly in the background ]
+[ Suspenseful music playing softly ]
+[ Thunder rumbling in the distance ]
+[ Footsteps approaching from behind ]
+[ Glass shattering on the floor ]
+[ Phone ringing in the other room ]
+[ Birds chirping in the morning ]
+[ Engine revving loudly outside ]
+[ Crowd cheering in the stadium ]
+[ Wind howling through the trees ]
+( sighs deeply and looks away )
+( laughs nervously at the joke )
+( gasps in shock and disbelief )
+( whispers ) Can you hear me now?
+( sobbing ) I can't do this anymore.
+( clears throat ) As I was saying...
+( speaking in foreign language )
+( inaudible ) ...something happened.
+- Are you absolutely sure about this?
+- I've never been more sure in my life.
+- What do you mean by that exactly?
+- It's complicated. I'll explain later.
+The sign read "♪" in bold red letters.
+She said "♪" and then walked away quickly.
+There was a ♫ character in the subtitle text.
+The sign read "♫" in bold red letters.
+He pointed at the ♩ mark on the screen.
+The sign read "♩" in bold red letters.
+The sign read "♬" in bold red letters.
+The display showed ♬ next to the title.
+The sign read "♭" in bold red letters.
+There was a ♭ character in the subtitle text.
+Look at the ♮ right there in the corner.
+She said "♮" and then walked away quickly.
+She said "♯" and then walked away quickly.
+Can you see the ♯ at the end of the line?
+He pointed at the … mark on the screen.
+The sign read "…" in bold red letters.
+She said "–" and then walked away quickly.
+There was a – character in the subtitle text.
+He pointed at the — mark on the screen.
+The display showed — next to the title.
+Look at the " right there in the corner.
+The sign read """ in bold red letters.
+Can you see the ' at the end of the line?
+There was a ' character in the subtitle text.
+There was a « character in the subtitle text.
+Look at the « right there in the corner.
+She said "»" and then walked away quickly.
+Look at the » right there in the corner.
+I noticed a ‹ symbol on the document here.
+The display showed ‹ next to the title.
+Look at the › right there in the corner.
+I noticed a › symbol on the document here.
+There was a „ character in the subtitle text.
+The sign read "„" in bold red letters.
+He pointed at the ‚ mark on the screen.
+Look at the ‚ right there in the corner.
+The display showed ‟ next to the title.
+She said "‟" and then walked away quickly.
+The sign read "‛" in bold red letters.
+He pointed at the ‛ mark on the screen.
+The sign read "°" in bold red letters.
+I noticed a ° symbol on the document here.
+The display showed © next to the title.
+There was a © character in the subtitle text.
+There was a ® character in the subtitle text.
+Look at the ® right there in the corner.
+She said "™" and then walked away quickly.
+The display showed ™ next to the title.
+Can you see the € at the end of the line?
+There was a € character in the subtitle text.
+The sign read "£" in bold red letters.
+He pointed at the £ mark on the screen.
+The sign read "¥" in bold red letters.
+There was a ¥ character in the subtitle text.
+There was a ₩ character in the subtitle text.
+Look at the ₩ right there in the corner.
+The display showed ₹ next to the title.
+There was a ₹ character in the subtitle text.
+He pointed at the ¢ mark on the screen.
+The display showed ¢ next to the title.
+The sign read "₽" in bold red letters.
+She said "₽" and then walked away quickly.
+He pointed at the ₺ mark on the screen.
+Look at the ₺ right there in the corner.
+There was a ₿ character in the subtitle text.
+She said "₿" and then walked away quickly.
+He pointed at the → mark on the screen.
+Look at the → right there in the corner.
+The sign read "←" in bold red letters.
+He pointed at the ← mark on the screen.
+There was a ↑ character in the subtitle text.
+He pointed at the ↑ mark on the screen.
+The display showed ↓ next to the title.
+The sign read "↓" in bold red letters.
+The display showed ↔ next to the title.
+I noticed a ↔ symbol on the document here.
+He pointed at the • mark on the screen.
+The display showed • next to the title.
+There was a · character in the subtitle text.
+The display showed · next to the title.
+The sign read "★" in bold red letters.
+There was a ★ character in the subtitle text.
+I noticed a ♥ symbol on the document here.
+There was a ♥ character in the subtitle text.
+He pointed at the ♦ mark on the screen.
+The sign read "♦" in bold red letters.
+Can you see the ♣ at the end of the line?
+He pointed at the ♣ mark on the screen.
+There was a ♠ character in the subtitle text.
+The display showed ♠ next to the title.
+He pointed at the × mark on the screen.
+The display showed × next to the title.
+The display showed ÷ next to the title.
+Look at the ÷ right there in the corner.
+She said "±" and then walked away quickly.
+The sign read "±" in bold red letters.
+She said "≈" and then walked away quickly.
+Look at the ≈ right there in the corner.
+The display showed ≠ next to the title.
+He pointed at the ≠ mark on the screen.
+There was a ≤ character in the subtitle text.
+She said "≤" and then walked away quickly.
+He pointed at the ≥ mark on the screen.
+There was a ≥ character in the subtitle text.
