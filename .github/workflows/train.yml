@@ -184,20 +184,14 @@ jobs:
           }
           echo "Downloaded $(wc -c < /tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata) bytes"
 
-      - name: Run tesstrain
+      - name: Clean blank renders
         run: |
-          # Run tesstrain — use -k to continue past individual lstmf failures
-          # (some characters may not be renderable by the installed fonts)
-          #
-          # Before training, remove any ground-truth pairs where text2image
-          # produced a blank/zero-byte .tif (unrenderable characters)
           echo "Cleaning unrenderable ground-truth entries..."
           CLEANED=0
           for tif in "$GT_DIR"/*.tif; do
             [ -f "$tif" ] || continue
-            # Remove entries with zero-size or tiny tif files (blank renders)
             SIZE=$(wc -c < "$tif")
-            if [ "$SIZE" -lt 100 ]; then
+            if [ "$SIZE" -lt 200 ]; then
               STEM="${tif%.tif}"
               rm -f "$STEM".tif "$STEM".gt.txt "$STEM".box "$STEM".lstmf
               CLEANED=$((CLEANED + 1))
@@ -208,15 +202,47 @@ jobs:
           echo "Remaining ground-truth entries: $REMAINING"
           [ "$REMAINING" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
 
+      - name: Download langdata for tesstrain
+        run: |
+          # tesstrain needs langdata (unicharsets per script, config files)
+          LANGDATA_DIR="/tmp/tesstrain/data/langdata"
+          mkdir -p "$LANGDATA_DIR/$MODEL"
+
+          # Download radical-stroke.txt (required by combine_lang_model)
+          wget -q -O "$LANGDATA_DIR/radical-stroke.txt" \
+            "https://github.com/tesseract-ocr/langdata_lstm/raw/main/radical-stroke.txt" || true
+
+          # Download script unicharsets that tesstrain needs
+          for script in Latin Cyrillic Greek Arabic Hebrew Devanagari Bengali Tamil Telugu \
+                        Kannada Malayalam Gujarati Gurmukhi Thai Khmer Lao Myanmar Sinhala \
+                        Ethiopic Georgian Armenian Han Hiragana Katakana Hangul Bopomofo \
+                        Canadian_Aboriginal Cherokee Ogham Oriya Runic Syriac; do
+            wget -q -O "$LANGDATA_DIR/${script}.unicharset" \
+              "https://github.com/tesseract-ocr/langdata_lstm/raw/main/${script}.unicharset" 2>/dev/null || true
+          done
+
+          # Download language-specific config if available
+          wget -q -O "$LANGDATA_DIR/$MODEL/$MODEL.config" \
+            "https://github.com/tesseract-ocr/langdata_lstm/raw/main/$MODEL/$MODEL.config" 2>/dev/null || true
+
+          # Create empty wordlist/punc/numbers if not present (tesstrain requires them)
+          touch "$LANGDATA_DIR/$MODEL/$MODEL.wordlist"
+          touch "$LANGDATA_DIR/$MODEL/$MODEL.punc"
+          touch "$LANGDATA_DIR/$MODEL/$MODEL.numbers"
+
+          echo "Langdata prepared at $LANGDATA_DIR"
+          ls -la "$LANGDATA_DIR/" | head -10
+
+      - name: Run tesstrain
+        run: |
           make -k -C /tmp/tesstrain training \
             MODEL_NAME="$MODEL" \
             START_MODEL="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
+            LANGDATA_DIR=/tmp/tesstrain/data/langdata \
             MAX_ITERATIONS="$MAX_ITERATIONS" \
             PSM=7 \
           || {
-            # -k means make continues past errors but still returns non-zero
-            # Check if the final .traineddata was actually produced
             if [ -f "/tmp/tesstrain/data/$MODEL.traineddata" ]; then
               echo "WARNING: tesstrain had errors but produced $MODEL.traineddata — continuing"
             else
