@@ -95,13 +95,13 @@ jobs:
           rm -rf /tmp/tesstrain
           git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
 
-      - name: Generate ground-truth with text2image
+      - name: Generate ground-truth with text2image (parallel)
         run: |
           MODEL="$LANG_CODE"
           GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
           mkdir -p "$GT_DIR"
 
-          # Read font list
+          # Read font list (first font used as primary)
           FONTLIST=""
           if [ -f "training/generated/$MODEL/$MODEL.fonts" ]; then
             while IFS= read -r font; do
@@ -109,8 +109,8 @@ jobs:
             done < "training/generated/$MODEL/$MODEL.fonts"
           fi
           [ -z "$FONTLIST" ] && FONTLIST="Noto Sans,DejaVu Sans"
+          PRIMARY_FONT="${FONTLIST%%,*}"
 
-          # Generate .tif + .gt.txt pairs from training text using text2image
           TRAINING_TEXT="training/generated/$MODEL/$MODEL.training_text"
           if [ ! -f "$TRAINING_TEXT" ]; then
             echo "ERROR: No training text for $MODEL at $TRAINING_TEXT"
@@ -118,55 +118,55 @@ jobs:
           fi
 
           TOTAL_LINES=$(wc -l < "$TRAINING_TEXT")
-          echo "Rendering $TOTAL_LINES lines with text2image..."
+          NCPU=$(nproc)
+          echo "Rendering $TOTAL_LINES lines with text2image ($NCPU parallel workers)..."
 
-          COUNT=0
-          FAIL=0
-          PROCESSED=0
-          IFS=$'\n'
-          while read -r line; do
-            [ -z "$line" ] && continue
-            PROCESSED=$((PROCESSED + 1))
-            STEM=$(printf "%s_%06d" "$MODEL" "$COUNT")
-            OUTBASE="$GT_DIR/$STEM"
+          # Create a helper script for xargs to call per line
+          cat > /tmp/render_line.sh << 'RENDEREOF'
+          #!/bin/bash
+          LINE_NUM="$1"
+          LINE="$2"
+          GT_DIR="$3"
+          MODEL="$4"
+          FONT="$5"
+          FONTLIST="$6"
 
-            # Progress every 500 lines
-            if [ $((PROCESSED % 500)) -eq 0 ]; then
-              echo "  text2image: $PROCESSED/$TOTAL_LINES rendered ($COUNT ok, $FAIL failed)"
+          [ -z "$LINE" ] && exit 0
+          STEM=$(printf "%s_%06d" "$MODEL" "$LINE_NUM")
+          OUTBASE="$GT_DIR/$STEM"
+
+          # Try primary font first, then fallbacks
+          IFS=','
+          for font in $FONTLIST; do
+            if text2image \
+              --text <(echo "$LINE") \
+              --outputbase "$OUTBASE" \
+              --font "$font" \
+              --fonts_dir /usr/share/fonts \
+              --ptsize 32 \
+              --xsize 3600 \
+              --ysize 480 \
+              --margin 10 \
+              --leading 32 2>/dev/null; then
+              echo -n "$LINE" > "${OUTBASE}.gt.txt"
+              exit 0
             fi
+          done
+          exit 1
+          RENDEREOF
+          chmod +x /tmp/render_line.sh
 
-            # Try each font until one succeeds
-            RENDERED=false
-            OLDIFS="$IFS"
-            IFS=','
-            for font in $FONTLIST; do
-              IFS="$OLDIFS"
-              if text2image \
-                --text <(echo "$line") \
-                --outputbase "$OUTBASE" \
-                --font "$font" \
-                --fonts_dir /usr/share/fonts \
-                --ptsize 32 \
-                --xsize 3600 \
-                --ysize 480 \
-                --margin 10 \
-                --leading 32 2>/dev/null; then
-                echo -n "$line" > "${OUTBASE}.gt.txt"
-                RENDERED=true
-                break
-              fi
-              IFS=','
-            done
-            IFS=$'\n'
+          # Number each line and run in parallel
+          awk '{printf "%06d\t%s\n", NR-1, $0}' "$TRAINING_TEXT" | \
+            xargs -P "$NCPU" -I {} bash -c '
+              NUM="${1%%	*}"
+              LINE="${1#*	}"
+              /tmp/render_line.sh "$NUM" "$LINE" "'"$GT_DIR"'" "'"$MODEL"'" "'"$PRIMARY_FONT"'" "'"$FONTLIST"'"
+            ' _ {}
 
-            if [ "$RENDERED" = false ]; then
-              FAIL=$((FAIL + 1))
-            else
-              COUNT=$((COUNT + 1))
-            fi
-          done < "$TRAINING_TEXT"
-
-          echo "Generated $COUNT ground-truth pairs ($FAIL failed) for $MODEL"
+          # Count results
+          COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          echo "Generated $COUNT ground-truth pairs for $MODEL"
           [ "$COUNT" -gt 0 ] || { echo "ERROR: no images generated for $MODEL"; exit 1; }
 
           # Also copy hand-verified ground-truth images
@@ -200,40 +200,30 @@ jobs:
           # Generate box files and remove any pair where box generation fails.
           # This ensures tesstrain's make won't hit broken entries.
           GT_COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
-          echo "Validating $GT_COUNT ground-truth pairs (generating boxes)..."
-          VALID=0
-          REMOVED=0
-          CHECKED=0
+          NCPU=$(nproc)
+          echo "Validating $GT_COUNT ground-truth pairs ($NCPU parallel workers)..."
+
           cd /tmp/tesstrain
-          for gt in "$GT_DIR"/*.gt.txt; do
-            [ -f "$gt" ] || continue
-            CHECKED=$((CHECKED + 1))
+
+          # Parallel box generation + validation
+          ls "$GT_DIR"/*.gt.txt 2>/dev/null | xargs -P "$NCPU" -I {} bash -c '
+            gt="{}"
             STEM="${gt%.gt.txt}"
-
-            # Progress every 500 files
-            if [ $((CHECKED % 500)) -eq 0 ]; then
-              echo "  validate: $CHECKED/$GT_COUNT checked ($VALID ok, $REMOVED removed)"
-            fi
-
             # Check tif exists and has reasonable size
             if [ ! -f "${STEM}.tif" ] || [ "$(wc -c < "${STEM}.tif")" -lt 200 ]; then
               rm -f "${STEM}".tif "${STEM}".gt.txt
-              REMOVED=$((REMOVED + 1))
-              continue
+              exit 0
             fi
-
-            # Try generating box file — if it fails or is empty, remove the pair
+            # Generate box file
             python3 generate_line_box.py -i "${STEM}.tif" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
             if [ ! -s "${STEM}.box" ]; then
               rm -f "${STEM}".tif "${STEM}".gt.txt "${STEM}".box
-              REMOVED=$((REMOVED + 1))
-              continue
             fi
+          '
 
-            VALID=$((VALID + 1))
-          done
           cd -
-
+          VALID=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          REMOVED=$((GT_COUNT - VALID))
           echo "Valid: $VALID, Removed: $REMOVED"
           [ "$VALID" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
 
