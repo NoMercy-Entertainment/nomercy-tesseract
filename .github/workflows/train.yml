@@ -66,7 +66,7 @@ jobs:
 
     env:
       LANG_CODE:      ${{ matrix.lang }}
-      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '5000' }}
+      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '10000' }}
       WORK_DIR:       /tmp/tess-train/${{ matrix.lang }}
 
     steps:
@@ -262,7 +262,6 @@ jobs:
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             LANGDATA_DIR=/tmp/tesstrain/data/langdata \
             MAX_ITERATIONS="$MAX_ITERATIONS" \
-            LEARNING_RATE=0.001 \
             PSM=13
 
       - name: Copy trained model to tessdata
