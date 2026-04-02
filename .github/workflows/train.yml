@@ -202,11 +202,11 @@ jobs:
           echo "Remaining ground-truth entries: $REMAINING"
           [ "$REMAINING" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
 
-      - name: Download langdata for tesstrain
+      - name: Prepare langdata and output dir for tesstrain
         run: |
-          # tesstrain needs langdata (unicharsets per script, config files)
+          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
           LANGDATA_DIR="/tmp/tesstrain/data/langdata"
-          mkdir -p "$LANGDATA_DIR/$MODEL"
+          mkdir -p "$OUTPUT_DIR" "$LANGDATA_DIR/$MODEL"
 
           # Download radical-stroke.txt (required by combine_lang_model)
           wget -q -O "$LANGDATA_DIR/radical-stroke.txt" \
@@ -221,17 +221,16 @@ jobs:
               "https://github.com/tesseract-ocr/langdata_lstm/raw/main/${script}.unicharset" 2>/dev/null || true
           done
 
-          # Download language-specific config if available
+          # Create wordlist/punc/numbers in OUTPUT_DIR (where Makefile expects them)
+          touch "$OUTPUT_DIR/$MODEL.wordlist"
+          touch "$OUTPUT_DIR/$MODEL.punc"
+          touch "$OUTPUT_DIR/$MODEL.numbers"
+
+          # Download language config to langdata dir
           wget -q -O "$LANGDATA_DIR/$MODEL/$MODEL.config" \
             "https://github.com/tesseract-ocr/langdata_lstm/raw/main/$MODEL/$MODEL.config" 2>/dev/null || true
 
-          # Create empty wordlist/punc/numbers if not present (tesstrain requires them)
-          touch "$LANGDATA_DIR/$MODEL/$MODEL.wordlist"
-          touch "$LANGDATA_DIR/$MODEL/$MODEL.punc"
-          touch "$LANGDATA_DIR/$MODEL/$MODEL.numbers"
-
-          echo "Langdata prepared at $LANGDATA_DIR"
-          ls -la "$LANGDATA_DIR/" | head -10
+          echo "Langdata and output dir prepared"
 
       - name: Run tesstrain
         run: |
