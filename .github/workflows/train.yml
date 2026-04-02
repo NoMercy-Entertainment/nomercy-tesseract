@@ -251,21 +251,76 @@ jobs:
 
           echo "Langdata and output dir prepared"
 
-      - name: Run tesstrain
+      - name: Prepare training (unicharset, lstmf, proto model)
         run: |
-          # tesstrain's Makefile handles the full pipeline including
-          # --old_traineddata for character mapping when START_MODEL is set.
-          # The proto model has our extended unicharset (with ♪).
-          make -C /tmp/tesstrain training \
+          make -C /tmp/tesstrain unicharset lists proto-model \
             MODEL_NAME="$MODEL" \
             START_MODEL="$MODEL" \
             TESSDATA=/tmp/tesstrain/usr/share/tessdata \
             LANGDATA_DIR=/tmp/tesstrain/data/langdata \
-            MAX_ITERATIONS="$MAX_ITERATIONS" \
             PSM=13
 
-      - name: Copy trained model to tessdata
-        run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
+      - name: Train LSTM with replaced output layer
+        run: |
+          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
+          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
+          mkdir -p "$OUTPUT_DIR/checkpoints"
+
+          # The base LSTM has no output node for ♪. We must replace
+          # the output layer with --append_index to add new characters.
+          # Try multiple index values — the correct one depends on the
+          # model's serialized network structure.
+          TRAINED=false
+          for IDX in 4 3 5 6 2; do
+            echo "=== Trying --append_index $IDX ==="
+            if lstmtraining \
+              --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+              --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+              --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
+              --append_index "$IDX" \
+              --net_mode 192 \
+              --learning_rate 0.001 \
+              --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
+              --train_listfile "$OUTPUT_DIR/list.train" \
+              --eval_listfile "$OUTPUT_DIR/list.eval" \
+              --max_iterations "$MAX_ITERATIONS" \
+              --target_error_rate 0.01 2>&1; then
+              TRAINED=true
+              echo "Success with --append_index $IDX"
+              break
+            else
+              RC=$?
+              echo "Failed with --append_index $IDX (exit $RC), trying next..."
+              rm -f "$OUTPUT_DIR"/checkpoints/* 2>/dev/null
+            fi
+          done
+
+          if [ "$TRAINED" = false ]; then
+            echo "All --append_index values failed. Falling back to standard fine-tuning."
+            lstmtraining \
+              --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+              --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+              --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
+              --learning_rate 0.0001 \
+              --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
+              --train_listfile "$OUTPUT_DIR/list.train" \
+              --eval_listfile "$OUTPUT_DIR/list.eval" \
+              --max_iterations "$MAX_ITERATIONS" \
+              --target_error_rate 0.01
+          fi
+
+      - name: Package traineddata
+        run: |
+          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
+          CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
+          [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
+          echo "Using checkpoint: $CHECKPOINT"
+
+          lstmtraining \
+            --stop_training \
+            --continue_from "$CHECKPOINT" \
+            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+            --model_output "tessdata/$LANG_CODE.traineddata"
 
       - name: Validate model
         continue-on-error: true
