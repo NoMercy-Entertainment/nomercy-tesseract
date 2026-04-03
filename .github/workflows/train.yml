@@ -332,7 +332,7 @@ jobs:
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          echo "Training with --append_index 5 (replacing output layer)..."
+          echo "Training with --append_index 7 (replacing output layer)..."
           echo "  Base model: tessdata_best/$MODEL (all LSTM knowledge preserved)"
           echo "  New output: $NCHARS chars (includes ♪ ♫ ♩ ♬ and all extended chars)"
           echo "  BCER progress every 100 iterations..."
@@ -342,7 +342,7 @@ jobs:
             --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
             --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
             --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-            --append_index 5 \
+            --append_index 7 \
             --net_spec "O1c$NCHARS" \
             --net_mode 192 \
             --learning_rate 0.001 \
