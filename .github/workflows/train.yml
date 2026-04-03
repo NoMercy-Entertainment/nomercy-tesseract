@@ -103,6 +103,7 @@ jobs:
           export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:$LD_LIBRARY_PATH
           echo "PATH=$HOME/tesseract-install/bin:$PATH" >> $GITHUB_ENV
           echo "LD_LIBRARY_PATH=$HOME/tesseract-install/lib:${LD_LIBRARY_PATH:-}" >> $GITHUB_ENV
+          echo "TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata" >> $GITHUB_ENV
           tesseract --version
           which lstmtraining
 
