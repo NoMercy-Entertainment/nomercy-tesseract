@@ -327,7 +327,7 @@ jobs:
 
           # Read unicharset size from proto model
           combine_tessdata -u "$OUTPUT_DIR/$MODEL.traineddata" "$OUTPUT_DIR/proto_"
-          NCHARS=$(head -1 "$OUTPUT_DIR/proto_lstm-unicharset")
+          NCHARS=$(head -1 "$OUTPUT_DIR/proto_.lstm-unicharset")
           echo "Proto model unicharset: $NCHARS characters"
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
