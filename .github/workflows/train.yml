@@ -202,6 +202,9 @@ jobs:
           # Our repo has fast/int models which CANNOT be fine-tuned.
           # tessdata_best has float models required for LSTM training.
           mkdir -p /tmp/tesstrain/usr/share/tessdata
+          # Copy tessdata configs (lstm.train etc.) to TESSDATA_PREFIX
+          cp -r $HOME/tesseract-install/share/tessdata/configs /tmp/tesstrain/usr/share/tessdata/ 2>/dev/null || true
+          cp -r $HOME/tesseract-install/share/tessdata/tessconfigs /tmp/tesstrain/usr/share/tessdata/ 2>/dev/null || true
           BEST_URL="https://github.com/tesseract-ocr/tessdata_best/raw/main/${MODEL}.traineddata"
           echo "Downloading tessdata_best for $MODEL..."
           wget -q -O "/tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata" "$BEST_URL" || {
@@ -285,6 +288,9 @@ jobs:
           echo ""
 
           export TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata
+          export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:${LD_LIBRARY_PATH:-}
+          export PATH=$HOME/tesseract-install/bin:$PATH
+          echo "Using tesseract: $(which tesseract)"
           MAKE_ARGS="MODEL_NAME=$MODEL START_MODEL=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata PSM=13"
 
           echo "Building proto model with extended unicharset..."
