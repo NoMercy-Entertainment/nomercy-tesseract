@@ -284,6 +284,7 @@ jobs:
           echo "  Using --append_index to replace output layer (adds ♪ to existing model)"
           echo ""
 
+          export TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata
           MAKE_ARGS="MODEL_NAME=$MODEL START_MODEL=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata PSM=13"
 
           echo "Building proto model with extended unicharset..."
