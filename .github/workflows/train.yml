@@ -72,23 +72,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Tesseract 5 and training tools
+      - name: Install build deps and fonts
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            tesseract-ocr \
-            libtesseract-dev \
-            fonts-noto \
-            fonts-noto-cjk \
-            fonts-noto-cjk-extra \
-            fonts-noto-extra \
-            fonts-noto-ui-core \
-            fonts-noto-core \
-            fonts-dejavu \
-            fonts-liberation
+            g++ cmake make pkg-config \
+            libleptonica-dev libicu-dev libpango1.0-dev libcairo2-dev \
+            fonts-noto fonts-noto-cjk fonts-noto-cjk-extra \
+            fonts-noto-extra fonts-noto-ui-core fonts-noto-core \
+            fonts-dejavu fonts-liberation wget
 
-      - name: Verify Tesseract 5
-        run: tesseract --version
+      - name: Build patched Tesseract (--append_index fix)
+        run: |
+          if [ -x "$HOME/tesseract-install/bin/lstmtraining" ]; then
+            echo "Patched Tesseract already built, skipping"
+          else
+            rm -rf $HOME/tesseract-src
+            git clone --depth 1 --branch fix/append-index-lstmrecognizer \
+              https://github.com/NoMercy-Entertainment/tesseract.git $HOME/tesseract-src
+            cd $HOME/tesseract-src
+            mkdir -p build && cd build
+            cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TRAINING_TOOLS=ON \
+              -DCMAKE_INSTALL_PREFIX=$HOME/tesseract-install
+            make -j$(nproc)
+            sudo make install
+            sudo ldconfig
+            echo "Build complete"
+          fi
+          export PATH=$HOME/tesseract-install/bin:$PATH
+          export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:$LD_LIBRARY_PATH
+          echo "PATH=$HOME/tesseract-install/bin:$PATH" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=$HOME/tesseract-install/lib:${LD_LIBRARY_PATH:-}" >> $GITHUB_ENV
+          tesseract --version
+          which lstmtraining
 
       - name: Clone tesstrain
         run: |
@@ -260,35 +276,30 @@ jobs:
 
           echo "Langdata and output dir prepared"
 
-      - name: Run tesstrain (from scratch with extended unicharset)
+      - name: "Phase 1: Build proto model + lstmf files"
         run: |
           GT_FILES=$(ls /tmp/tesstrain/data/${MODEL}-ground-truth/*.gt.txt 2>/dev/null | wc -l)
-          echo "Starting tesstrain: $GT_FILES ground-truth files, $MAX_ITERATIONS max iterations"
-          echo "  Model: $MODEL (from scratch, no START_MODEL)"
+          echo "Starting: $GT_FILES ground-truth files, $MAX_ITERATIONS iterations"
+          echo "  Using --append_index to replace output layer (adds ♪ to existing model)"
           echo ""
 
-          MAKE_ARGS="MODEL_NAME=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata MAX_ITERATIONS=$MAX_ITERATIONS PSM=13"
+          MAKE_ARGS="MODEL_NAME=$MODEL START_MODEL=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata PSM=13"
 
-          # Step 1: Generate lstmf files and proto model.
-          # Use -k to continue past individual lstmf failures.
-          echo "Phase 1: generating lstmf files + proto model..."
+          echo "Building proto model with extended unicharset..."
           make -k -C /tmp/tesstrain proto-model $MAKE_ARGS || true
 
-          # Generate lstmf files in parallel (make's own parallelism)
+          echo "Generating lstmf files ($(nproc) parallel)..."
           make -k -j"$(nproc)" -C /tmp/tesstrain \
             $(find /tmp/tesstrain/data/${MODEL}-ground-truth -name "*.gt.txt" \
               | sed 's/\.gt\.txt$/.lstmf/') \
             $MAKE_ARGS || true
 
-          # Manually create train/eval lists from whatever lstmf files exist
-          # (the Makefile's lists target fails if ANY lstmf is missing)
+          # Build train/eval lists from successful lstmf files
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          mkdir -p "$OUTPUT_DIR"
           find /tmp/tesstrain/data/${MODEL}-ground-truth -name "*.lstmf" > "$OUTPUT_DIR/all-lstmf"
           TOTAL_LSTMF=$(wc -l < "$OUTPUT_DIR/all-lstmf")
           echo "Generated $TOTAL_LSTMF lstmf files"
 
-          # Split 90/10 train/eval
           cd /tmp/tesstrain
           python3 shuffle.py 0 "$OUTPUT_DIR/all-lstmf"
           TRAIN_SIZE=$(( TOTAL_LSTMF * 90 / 100 ))
@@ -298,19 +309,56 @@ jobs:
 
           TRAIN_COUNT=$(wc -l < "$OUTPUT_DIR/list.train")
           EVAL_COUNT=$(wc -l < "$OUTPUT_DIR/list.eval")
-          echo "Training list: $TRAIN_COUNT files, Eval list: $EVAL_COUNT files"
+          echo "Training: $TRAIN_COUNT, Eval: $EVAL_COUNT"
           [ "$TRAIN_COUNT" -gt 0 ] || { echo "ERROR: no training files"; exit 1; }
 
-          # Step 2: Run the actual LSTM training.
+      - name: "Phase 2: LSTM training with --append_index"
+        run: |
+          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
+          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
+
+          # Read unicharset size from proto model
+          combine_tessdata -u "$OUTPUT_DIR/$MODEL.traineddata" "$OUTPUT_DIR/proto_"
+          NCHARS=$(head -1 "$OUTPUT_DIR/proto_lstm-unicharset")
+          echo "Proto model unicharset: $NCHARS characters"
+
+          mkdir -p "$OUTPUT_DIR/checkpoints"
+
+          echo "Training with --append_index 5 (replacing output layer)..."
+          echo "  Base model: tessdata_best/$MODEL (all LSTM knowledge preserved)"
+          echo "  New output: $NCHARS chars (includes ♪ ♫ ♩ ♬ and all extended chars)"
+          echo "  BCER progress every 100 iterations..."
           echo ""
-          echo "Phase 2: LSTM training ($MAX_ITERATIONS iterations)..."
-          echo "  BCER progress logged every 100 iterations..."
-          make -C /tmp/tesstrain training $MAKE_ARGS
 
-          echo "Training complete: $(wc -c < /tmp/tesstrain/data/$MODEL.traineddata) bytes"
+          lstmtraining \
+            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+            --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+            --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
+            --append_index 5 \
+            --net_spec "O1c$NCHARS" \
+            --net_mode 192 \
+            --learning_rate 0.001 \
+            --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
+            --train_listfile "$OUTPUT_DIR/list.train" \
+            --eval_listfile "$OUTPUT_DIR/list.eval" \
+            --max_iterations "$MAX_ITERATIONS" \
+            --target_error_rate 0.01
 
-      - name: Copy trained model to tessdata
-        run: cp "/tmp/tesstrain/data/$MODEL.traineddata" "tessdata/$LANG_CODE.traineddata"
+      - name: "Phase 3: Package traineddata"
+        run: |
+          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
+          CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
+          [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
+          echo "Using checkpoint: $CHECKPOINT"
+
+          lstmtraining \
+            --stop_training \
+            --continue_from "$CHECKPOINT" \
+            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+            --model_output "tessdata/$LANG_CODE.traineddata"
+
+          SIZE=$(wc -c < "tessdata/$LANG_CODE.traineddata")
+          echo "Output: tessdata/$LANG_CODE.traineddata ($SIZE bytes)"
 
       - name: Validate model
         continue-on-error: true
