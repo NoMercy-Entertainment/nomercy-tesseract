@@ -17,7 +17,7 @@ on:
       max_iterations:
         description: "tesstrain MAX_ITERATIONS"
         required: false
-        default: "400"
+        default: "30000"
 
 concurrency:
   group: tesseract-train-${{ github.ref }}
@@ -66,7 +66,7 @@ jobs:
 
     env:
       LANG_CODE:      ${{ matrix.lang }}
-      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '10000' }}
+      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '30000' }}
       WORK_DIR:       /tmp/tess-train/${{ matrix.lang }}
 
     steps:
@@ -112,75 +112,34 @@ jobs:
           rm -rf /tmp/tesstrain
           git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
 
-      - name: Generate ground-truth with text2image (parallel)
+      - name: Install Pillow
+        run: pip3 install --quiet Pillow
+
+      - name: Generate ground-truth with render_diverse (parallel)
         run: |
           MODEL="$LANG_CODE"
           GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
           mkdir -p "$GT_DIR"
 
-          # Read font list
-          FONTLIST=""
-          if [ -f "training/generated/$MODEL/$MODEL.fonts" ]; then
-            while IFS= read -r font; do
-              [ -n "$font" ] && FONTLIST="${FONTLIST:+$FONTLIST,}$font"
-            done < "training/generated/$MODEL/$MODEL.fonts"
-          fi
-          [ -z "$FONTLIST" ] && FONTLIST="Noto Sans,DejaVu Sans"
-
           TRAINING_TEXT="training/generated/$MODEL/$MODEL.training_text"
+          FONTS_FILE="training/generated/$MODEL/$MODEL.fonts"
           if [ ! -f "$TRAINING_TEXT" ]; then
             echo "ERROR: No training text for $MODEL at $TRAINING_TEXT"
             exit 1
           fi
+          if [ ! -f "$FONTS_FILE" ]; then
+            echo "DejaVu Sans" > "$FONTS_FILE"
+          fi
 
           TOTAL_LINES=$(wc -l < "$TRAINING_TEXT")
-          NCPU=$(nproc)
-          echo "Rendering $TOTAL_LINES lines with text2image ($NCPU cores)..."
+          echo "Rendering $TOTAL_LINES lines with render_diverse.py..."
 
-          # Split training text into per-line temp files for parallel processing.
-          # Each line becomes a tiny text file that text2image reads directly —
-          # avoids all shell quoting issues with xargs.
-          SPLIT_DIR="/tmp/text2image_split"
-          mkdir -p "$SPLIT_DIR"
-          awk -v dir="$SPLIT_DIR" -v model="$MODEL" '{
-            num = sprintf("%06d", NR-1)
-            file = dir "/" model "_" num ".txt"
-            print > file
-          }' "$TRAINING_TEXT"
+          python3 training/scripts/render_diverse.py \
+            --training-text "$TRAINING_TEXT" \
+            --fonts-file "$FONTS_FILE" \
+            --out-dir "$GT_DIR" \
+            --lang "$MODEL"
 
-          # Render all split files in parallel
-          render_one() {
-            local txtfile="$1"
-            local stem
-            stem=$(basename "${txtfile%.txt}")
-            local outbase="$GT_DIR/$stem"
-            local IFS=','
-            for font in $FONTLIST; do
-              if text2image \
-                --text "$txtfile" \
-                --outputbase "$outbase" \
-                --font "$font" \
-                --fonts_dir /usr/share/fonts \
-                --ptsize 32 \
-                --xsize 3600 \
-                --ysize 480 \
-                --margin 10 \
-                --leading 32 2>/dev/null; then
-                cp "$txtfile" "${outbase}.gt.txt"
-                return 0
-              fi
-            done
-            return 1
-          }
-          export -f render_one
-          export GT_DIR FONTLIST
-
-          find "$SPLIT_DIR" -name "${MODEL}_*.txt" -print0 | \
-            xargs -0 -P "$NCPU" -n 1 bash -c 'render_one "$1"' _
-
-          rm -rf "$SPLIT_DIR"
-
-          # Count results and report
           COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
           echo "Generated $COUNT ground-truth pairs for $MODEL"
           [ "$COUNT" -gt 0 ] || { echo "ERROR: no images generated for $MODEL"; exit 1; }
