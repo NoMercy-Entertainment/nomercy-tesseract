@@ -1,0 +1,2000 @@
+125&lt;br/&gt;00:09:02,440 --&amp;gt; 00:09:06,800&lt;br/&gt;バージョン６はあらゆる要素から見れば、&lt;br/&gt;技術水準の引き上げになります。
+126&lt;br/&gt;00:09:06,840 --&amp;gt; 00:09:12,920&lt;br/&gt;ゲームプレイ、グラフィック、プロジェクト&lt;br/&gt;に取り込んでいる人の人数、
+127&lt;br/&gt;00:09:12,960 --&amp;gt; 00:09:16,680&lt;br/&gt;細部への注意、全体コンセプトなど：
+128&lt;br/&gt;00:09:16,720 --&amp;gt; 00:09:18,140&lt;br/&gt;全ては新たな水準に達します。
+129&lt;br/&gt;00:09:18,180 --&amp;gt; 00:09:22,880&lt;br/&gt;競争会社に一つだけ言いたいです。&lt;br/&gt;「ごめんなさいが、全ては意志をもってやりました。」
+130&lt;br/&gt;00:09:28,590 --&amp;gt; 00:09:33,500&lt;br/&gt;私はスタニミラと申します。プロジェクト・&lt;br/&gt;マネジメントチームのリーダーです。
+131&lt;br/&gt;00:09:34,165 --&amp;gt; 00:09:39,135&lt;br/&gt;3人の小さなレディーチームです。&lt;br/&gt;会社のプロジェクトを担当します。
+132&lt;br/&gt;00:09:39,175 --&amp;gt; 00:09:41,995&lt;br/&gt;各プロジェクトを高質を考えながら締め切り以内に
+133&lt;br/&gt;00:09:42,050 --&amp;gt; 00:09:45,135&lt;br/&gt;完了させるように頑張っています。
+134&lt;br/&gt;00:09:45,175 --&amp;gt; 00:09:48,380&lt;br/&gt;70人以上が今回のプロジェクトに取り込んでいますので、
+135&lt;br/&gt;00:09:48,420 --&amp;gt; 00:09:55,800&lt;br/&gt;コーディネーションは簡単ではありません。&lt;br/&gt;しかし成功すると思います。
+136&lt;br/&gt;00:09:55,850 --&amp;gt; 00:09:58,855&lt;br/&gt;マネジャーとしてバージョン6について何か&lt;br/&gt;コメントをしてください。
+137&lt;br/&gt;00:09:58,900 --&amp;gt; 00:10:06,900&lt;br/&gt;素晴らしいアート、面白いゲームプレイ...&lt;br/&gt;まあ、長い時間が経ちました。後もう少しです。
+138&lt;br/&gt;00:10:11,400 --&amp;gt; 00:10:15,360&lt;br/&gt;私はヤネヴァ・ヤナです。QA部の部長です。
+139&lt;br/&gt;00:10:15,400 --&amp;gt; 00:10:19,580&lt;br/&gt;ゲームをハックする以外に、QA部の仕事は何ですか。
+140&lt;br/&gt;00:10:19,680 --&amp;gt; 00:10:27,840&lt;br/&gt;私たちはゲームをハックしませんよ。デザイン通りのパフォーマンスが&lt;br/&gt;あるかどうか全てのモジュールをチェックしています。
+141&lt;br/&gt;00:10:27,880 --&amp;gt; 00:10:34,780&lt;br/&gt;ウエブバージョンも、AndroidとiPhoneのアプリも：&lt;br/&gt;あらゆる部分がうまく機能することを確認します。
+142&lt;br/&gt;00:10:34,830 --&amp;gt; 00:10:38,400&lt;br/&gt;バージョン6を中心にして、チームのメインタスクは何ですか。
+143&lt;br/&gt;00:10:39,610 --&amp;gt; 00:10:40,540&lt;br/&gt;どういう意味?
+144&lt;br/&gt;00:10:40,590 --&amp;gt; 00:10:44,230&lt;br/&gt;全部のテスト。バージョン6には複数の変更、
+145&lt;br/&gt;00:10:44,280 --&amp;gt; 00:10:48,115&lt;br/&gt;さらに多くの新規機能があるので、
+146&lt;br/&gt;00:10:48,155 --&amp;gt; 00:10:55,835&lt;br/&gt;ゲームを端から端までチェックしなければなりません。&lt;br/&gt;あらゆるインテルアクショやモジュール．．．全ての問題
+147&lt;br/&gt;00:10:55,885 --&amp;gt; 00:10:59,030&lt;br/&gt;プレイヤーがバージョン6のどこを一番好むと思われますか。
+148&lt;br/&gt;00:10:59,500 --&amp;gt; 00:11:04,520&lt;br/&gt;「偉人」のモジュール：熱々で面白くて、
+149&lt;br/&gt;00:11:04,560 --&amp;gt; 00:11:07,340&lt;br/&gt;プレイヤーが数時間ゲームで過ごせるに違いません。
+150&lt;br/&gt;00:11:11,450 --&amp;gt; 00:11:15,560&lt;br/&gt;私はゴネヴァ・ニナです。HRマネジャー&lt;br/&gt;世界平和のために戦っています。
+151&lt;br/&gt;00:11:15,600 --&amp;gt; 00:11:19,950&lt;br/&gt;私たちの主な仕事？私たちのチームの基本役は
+152&lt;br/&gt;00:11:20,000 --&amp;gt; 00:11:22,705&lt;br/&gt;ベストITスペシャリストを見つけて、
+153&lt;br/&gt;00:11:22,745 --&amp;gt; 00:11:27,730&lt;br/&gt;彼らにブルガリアの最もプレイされているゲームのために
+154&lt;br/&gt;00:11:27,770 --&amp;gt; 00:11:29,140&lt;br/&gt;働くのが超面白いと納得させることです。
+155&lt;br/&gt;00:11:29,180 --&amp;gt; 00:11:32,300&lt;br/&gt;人々が我が社で働きたい理由は何だと思いますか。
+156&lt;br/&gt;00:11:33,500 --&amp;gt; 00:11:35,450&lt;br/&gt;我らはベストですから。
+157&lt;br/&gt;00:11:35,550 --&amp;gt; 00:11:38,505&lt;br/&gt;素晴らしいプロダクトを提供しています。
+158&lt;br/&gt;00:11:38,555 --&amp;gt; 00:11:42,100&lt;br/&gt;そして会社として注目すべきノウハウを持っています。
+159&lt;br/&gt;00:11:42,150 --&amp;gt; 00:11:46,400&lt;br/&gt;それは全て非常に魅力的でしょう。
+160&lt;br/&gt;00:11:46,440 --&amp;gt; 00:11:51,770&lt;br/&gt;楽しく働きながら、ゲームを作り上げたいという
+161&lt;br/&gt;00:11:51,820 --&amp;gt; 00:11:53,900&lt;br/&gt;欲望も要素の一つです。
+162&lt;br/&gt;00:11:53,950 --&amp;gt; 00:11:58,580&lt;br/&gt;ブルガリアではIT専門家は本当に不足しています。
+163&lt;br/&gt;00:11:58,630 --&amp;gt; 00:12:02,900&lt;br/&gt;しかし、我が社なりにこの問題を解決しました。
+164&lt;br/&gt;00:12:02,950 --&amp;gt; 00:12:06,000&lt;br/&gt;Imperia Online Training Campという&lt;br/&gt;IT開発スクールを確立しました。
+165&lt;br/&gt;00:12:06,050 --&amp;gt; 00:12:09,530&lt;br/&gt;他の会社から経験のある会社員を奪う代わりに、
+166&lt;br/&gt;00:12:09,570 --&amp;gt; 00:12:14,000&lt;br/&gt;努力やエネルギーは若者のトレーニングに&lt;br/&gt;集中することに決めました。
+167&lt;br/&gt;00:12:14,300 --&amp;gt; 00:12:17,000&lt;br/&gt;バージョン6に必要だった新規雇用者を&lt;br/&gt;引き付けることができましたか。
+168&lt;br/&gt;00:12:17,050 --&amp;gt; 00:12:20,650&lt;br/&gt;この一年間は我が社にとって本当に&lt;br/&gt;ダイナミックな一年間でした。
+169&lt;br/&gt;00:12:20,700 --&amp;gt; 00:12:24,510&lt;br/&gt;どんどん発展しながら、明らかに
+170&lt;br/&gt;00:12:24,550 --&amp;gt; 00:12:31,250&lt;br/&gt;バージョン6に重要な役割を果たす
+171&lt;br/&gt;00:12:31,300 --&amp;gt; 00:12:33,795&lt;br/&gt;適当な人を雇用しました。
+172&lt;br/&gt;00:12:34,400 --&amp;gt; 00:12:38,700&lt;br/&gt;バージョン6は確かにImperia Onlineの今まで最大で
+173&lt;br/&gt;00:12:38,750 --&amp;gt; 00:12:40,850&lt;br/&gt;最も野心的なプロジェクトです。
+174&lt;br/&gt;00:12:40,900 --&amp;gt; 00:12:44,250&lt;br/&gt;私が言うことを信じないなら、このビデオを&lt;br/&gt;もう一回見てください。
+175&lt;br/&gt;00:12:44,950 --&amp;gt; 00:12:51,150&lt;br/&gt;長い時間が経ちました。後もう少しです。&lt;br/&gt;2013年9月
+文字列の1行目の0番目から始まる言葉はThis
+1行目の5番目にある言葉はisです
+そのあとに続くのはbと＞
+そしてwebpage！です
+＜が11番目でbが12番目なので
+同様にbが1文字で12番目であり
+この問題を解くカギはisとbの間で
+ダリアン・ロドリゲス・ヘイマンCode Green Agency の創設者 TEDxPresidio の共同司会者2011年４月２日
+「ソーシャルメディアと Web 2.0 」
+でも今は Wikipedia がありますよね？
+YouTubeには一日当たり 10万の動画が投稿されています
+英語でDynamic Programmingと言いますが
+HTMLのWebページとJavaScriptを 実行中に解釈するのです
+Webブラウザを実行中に入力を読み その意味を考えて
+PythonやJavaScriptのようなインタプリタ言語は
+この講義で使うPythonは名目上
+Pythonインタプリタで実行し答えを出します
+しかしPythonを家のコンピュータで実行すると
+．pycファイルが作成されます
+それはPythonのコンパイル済みバイトコードです
+Pythonインタプリタは 人間も読める英字のソースコードを読み
+Javaも同じ手法をとります
+JavaのソースはJavaバイトコードにコンパイルされ
+後にJavaの仮想マシンによって実行されます
+x86アセンブリあるいはx86マシンコードのような マシン語にコンパイルされますが
+vの隣接ノードのペアwとxを合計すると どのような値になるでしょうか
+この結果はc[wx]で表されこの値とwとxの確率とを
+wとxは均等に無作為に選択されています
+(vの次数)×(vの次数-1)÷2が
+サイズdvのセットのペアが何種類になるかです
+c[wx]からは独立していますから前に出します
+wとxについてすべて合計しました
+ConFooには3日間参加しているんですよね
+straceを使ってシステムコールを取得して
+Facebookの作ったHipHopという新しいPHPコンパイラの
+HipHopについてはどう思いますか？
+すごいね もしあなたがFacebookみたいな大企業なら
+HipHopを見てみるべきだね
+個人的なサーバーでWordPressなんかを動かしているだけなら
+HipHopで動くようにコンパイルするのは面倒な作業で
+WordPressを動かすデモを見せましたが
+WordPressにパッチを当てて
+しかも普通のApacheのような環境では動きませんし
+そこまでしてもWordPressは10%から15%程度しか
+WordPressはかなりシンプルなコードで
+例えばPostgresなんかを使うならサポートしてないので大変です
+PHPについて特別な知識がない人向けにHipHopを説明してくれませんか
+HipHopはPHPのコードをC++のコードに変換します
+eval なんかも動かないし windowsでも動きません
+HipHop以外では何がパフォーマンス向上に有益ですか？
+例えばAPC無しの私のPCだとWordPressは1秒間あたり
+そこにパッチをあててHipHopを使っても34リクエストにしかなりませんでした
+森口博子氏がボンネットに直接入っていく内容に、 「子供が真似するので危ない」というクレームが出たため、 こちらの変更後ver.のように、合成で吸い込まれるという映像に差し替えられた。
+このCM素材は変更後ver.のためありませんが、 当初は、両足を縛られた豚がドナドナの歌にあわせどこかへ連れていかれる内容だったため、 「子供がショックを受けた」とのクレームが多数よせられ、このバージョンになった。
+このCM素材は変更後ver.のためありませんが、 変更前にあった電柱上の作業者(を装っている犯罪者)が猛獣に変身するシーンに 「電設業者などへのイメージダウンだ」とクレームがあったので該当部分を削除。
+このCMは差し替え後ver.のCMです。 槍ヶ岳での無許可撮影が問題になったのが放映前だったため、 問題のCMは放映されず、新作をすぐに作り放映したのが、当CMです。 そのあたりの経緯を勘違いされないよう、お願いします。
+この部分ではremove_html_markupが すべきことについて
+この文字列を渡した時 remove_html_markup関数は何を返すでしょう?
+"Mama, veo el mundo." -
+違います これはTwitterから見た世界を 図で示したものです
+中国 インド Facebook -
+アメリカ合衆国 Twitter インドネシア です （笑）
+「Facebookに登録しました 友達になってください」
+美しく小さなiPodになったように 知的生命も
+まずa＊0を扱えるようにします
+その場合は右側のbを返すことも
+他にa＋0も扱えるようにしてaを返すようにします
+ここのifの条件式を変えて
+return aを1ヵ所にすることもできますが
+アーロン・パターソンです _why について話しましょう
+(Luckyの) Lはミドルネームだよね
+僕にとって _why はいつだって 「外に出て 何か違うことをしよう！」 って刺激してくれる人だったよ
+_why は Ruby コミュニティに大きな影響を与えました
+彼は Steve Jobs のような 大きなビジョンを掲げた人だと思う
+だって そんな感じのRubyガイドでしょ
+そして その「ホワイの感動的Rubyガイド」っていうのは
+歴史的なRubyガイドとして誕生し
+この本の中では Chunky Bacon に夢中な ２匹のキツネと そして エルフが登場する
+エルフはペットの Ham を飼ったり Star Monkeys を作ったりしている
+また _why は この本にサウンドトラックを用意した
+♪ そいつがペットの Ham さ！
+RubyコミュニティのR&amp;D部門だった
+_why が作ったモノは未だに実践で使われたり 遊びで使われたりしている
+例えば Shoes には多くの面白い仕組みがある
+もし Shoes がまだインストールされていないのに 起動しようとすると
+♪ Chunky Bacon!
+私は _why のアートには ひねくれた 無駄なアプローチがあると思っている
+_why の妹が自殺しようとしたことが書かれている
+ある意味で _why 自身がアートだと言える 何故なら
+_why という人格は 人によって創られたのだからね
+「正直 _why は活動的過ぎると思うね」
+彼にとって Ruby コミュニティが
+_why はおいしい部分だけを 持っていこうとしたわけではないし
+黒猫は _why の残したペンを拾い上げ
+_why が姿をくらました事を聞いたとき
+そして GitHub で whymirror というアカウントを作成し
+黒猫は _why のペンを独り占めし キツネ達を無視し始める
+次に 黒猫を追い出すため Ruby 使いのウサギを作った
+Ruby 使いのウサギは _why だったのだ
+_why は亡くなったのだから.
+Java のような面倒なモノ 無しにね
+彼の Hackety Hack プロジェクトは
+_why がそうだったように 素晴らしい貢献ができると思います
+彼は 変わり過ぎていない でも インディーズで芸術的な Steve Jobs のようだった
+ホワイ・ザ・ラッキー・スティフは Ruby コミュニティのスターでした
+日本語訳 @sora_h @yasulab
+字幕作成・編集 @saboyutaka @yasulab
+ディレクター @kakutani スペシャルサンクス @johnnymukai
+だから我々 はこの飛行機「ajb マレー」を呼び出すことができます。
+PlayStationができる"ってね」
+「１ヶ月ぶっ続けでFoxニュースを見たらどうなるんだ？」
+それではWebページ上の すべてのリンクを含むリストを
+シードページからすべてのリンクを見つけるため Webページをクロールします
+Webページから開始します
+シードページのurlがいくつかあります
+そのページのテキストである文字列を取得するために get＿page関数を使用します
+目標は関数の定義です これをget＿all＿linksと呼びます
+これには入力として Webページのテキストを表す文字列を使用し
+Tactical Technology Collective
+中でもレベッカはFacebookを活用し
+レバノンでFacebookは非常に人気で
+Facebookを通じ 差別や社会的圧力と戦う-
+Facebookはちっともパーソナルではないので
+Facebookの良い点と悪い点がわかります
+右翼団体Sri Ram Senaが
+インドの急進派グループRam Senaによる
+そこでRam Senaの代表にピンクのパンツを送ったところ
+Facebookでは
+これでFacebook利用のメリット・デメリットがわかりました
+数ヵ月経過しても Facebookのグループは復活されませんでした
+モロッコのアクティビスと Targuist Sniperです
+Targuistは 運転手から賄賂を受け取る警官の様子を記録
+次々とその映像をYouTubeにアップし
+まさにTarguistの戦術と同じ方法が
+コピーされたりYouTubeなどに勝手に投稿されたり
+The Women and Memory フォーラムという活動で
+Googleマップを使えば 意外な新発見を目にするかもしれません
+Nawaat.orgという独立サイトが
+Nawaatのアクティビストたちが
+YouTubeにジオタグをつけ
+当時 初めて国際法廷がprosecutionを行おうとしていた時期でした
+Blank Noiseというコラボブログ企画を
+Asia Pacific Networkのセックスワーカーは
+YoutubeやBlip.tvで視聴されました
+そこでYoutTubeやLive Journalのクローンをアクティビスト達がつくり
+CiviCRMというプロジェクトに関わっていました
+Frontline SMSはもうひとつのソフトウェアで
+FrontlineSMSは津波被災地支援にも活用されました
+Mercy Corpsのプロジェクトで
+そこでFrontlineSMSを使い人々をカテゴライズし
+こうしてFrontlineSMSを使ってグループ分けし
+Farmsubsidy.orgは 政府の助成金についての情報に
+farmsubsidy.orgでキャンペーンを行いました
+そのためにGoogleマップを活用し
+Googleマップで示しました
+Googleアースで取り上げられました
+Google Earthでできる限界まで挑戦しました
+Googleアースのレイヤーに集めました
+FrontlineSMSというソフトウェアを使い
+そしてUshahidiをつかって受信者のメッセージを地図で表示できるようにしました
+UshahidiはFrontlineSMSを使ったクラウドソーシングプラットフォームで
+そうしたメッセージを収集するのにFrontlineSMSを使い
+そしてUshahidiサイトに投稿しました
+infonetの予算トラッキングプラットフォームはその例です
+infonetではショートメールを使って
+infonetの予算トラッキングプラットフォームは問い合わせから発見を
+infonetは腐敗した政治に対処しようと活用されました
+ジンバブエのkubatana Trustは独自の電話システムをつかった
+Kubatana Trustのシステムは何千もの人々が利用しました
+そこでKubatanaはフリーダムフォンを現在開発中
+jetspottersという飛行機の写真を撮って共有するサイトです
+Googleアースの画像を使って
+YouTubeに投稿しました
+政府はYouTubeをブロックしました
+するとすぐにDailymotionという動画共有サイトにアップされました
+Tactical Techは権利団体とともに
+http://www.informationactivism.org
+複数の%sを使用できますが 同じ数の変数も必要です
+Pythonは変数の数が合わないとうまく作動しません
+xyz空間のどこへでも飛ぶことができます
+新しい粒子の集合をs'として置きます
+最初にすべてのn個ある新しい粒子を走査します
+確率分布に基づいたjをサンプリングします
+置換したものと共にその粒子の 重みであるwという確率で選択します
+この粒子も入力として受け取ります これをsjとします
+そしてこれを新しい粒子の集合s'に追加し もう一度実行します
+そしてインプットとして数字リストの平方和を出すためssと呼ぶ機能を求めます。
+変数を初期値にセットしてtotal=0と答えるかもしれません。
+sum関数について知らなかったかもしれません。
+例えばこの講義でよく使っている Linkテーブルを思い出してください
+もしUserという別のテーブルがあれば
+LinkテーブルのユーザIDは UserテーブルのID列を参照しています
+SELECT * FROM link WHERE user_id = 22です
+まず最初にSpezというユーザ名に ひもづくIDを確認しましょう
+最初のクエリでUserテーブルからIDを取得します
+対象のユーザ名はSpezですね
+FROM linkの部分をFROM Link, userに変更して 2つのテーブルをスキャンします
+そのためにSELECT FROMを SELECT link. に変更します
+where user_id=user.id としましょう
+said link.user_id としてもよいでしょう
+AND user.name = 'Spez' となります
+user_id内でユーザテーブルの対象IDと 一致するものを探します
+Webソフトウェアを作成する際に 結合をあまり使用しないからです
+次にランドマークを観測するので x₀とランドマークの間をチェックします
+次にここからの観測により x₂とランドマークの間をチェックします
+これはx₂とx₀の間には 直接的な制約はないことを意味します
+さらにx₁とLの間にも直接的な制約はないため ここからランドマークが見えません
+一つのフィーチャーxと
+変数x1、x2、、、を
+yを使う。予測しようとしている価格を表すのに。
+n=4だ。何故なら、ここには
+そしてこのnは、以前の例とは
+以前はnで、手本データの数を表していた。
+mはこのテーブルの行の数で、それはつまりトレーニング手本の数だ。
+iをトレーニング手本iの
+jの値、j番目のフィーチャーの値、
+具体的に見よう。x2の下添字3は
+だからx2の下添字3はイコール2。
+xはたった一つのフィーチャーだった。
+シータ1 x1 足す、
+シータ2 x2 足す シータ3 x3
+足す事のシータ4 x4。
+以下のようなhのxになるようなパラメータ、
+80 + 0.1 x1 + 0.01 x2 + 3 x3 - 2 x4.
+xの添字0を、1と定義したい。
+フィーチャーのベクトルとして、x上添字のiが
+そしてxの上添字iの下添字0は=0となる。
+つまりこれまではnフィーチャーだったが、
+何故ならx1、x2、、、と
+xnまでだったから。
+だから今やフィーチャーベクトルのxは
+n+1次元ベクトルとなった！
+n+1次元のフィーチャーベクトルだが、
+それがシータnまで続く。
+シータ0, シータ1、、、とシータnまで続く
+それはもう一つのn+1次元ベクトルだ。
+シータ0 x0 足すことの
+シータ1 x1足すことの、、、と
+シータn xnまで足した物と書ける。
+シータの転置にx、とも書けるって事。
+シータの転置にxとはどんなか、
+シータ1、、、とシータnまで。
+n+1掛ける1 行列だ。
+ベクトルxに掛けると
+フィーチャーベクトルである所のxとの
+これらはUDACITYのサーバのような Webアプリケーションに対し
+いくつか教えるので WebブラウザのJavaScriptインタプリタで
+例えばxが常にゼロで
+プログラムの行にy＝y＋xと書かれていたら
+常にopen関数を呼び出したあとには
+close関数を呼ばなくてはなりません
+次にThing DBに変えました Redditコードでは今でもTDBとなっていると思います
+私が書いたThing DBのバージョン2です
+このように各thingに別々の列を作るのではなく
+1つのthingに2つのプロパティです
+すべてのthingには スコアと作成者と日付が含まれています
+そのthingがリンクでもコメントでもsubredditでも
+すべてのthingにはこの固定の列があります
+これはthingテーブルといって
+このテーブルにはthing IDとキーと値が含まれています
+thingテーブルにエントリがあると スコアが5でIDが1
+1行目はthing IDが1でここにURL 次の行はthing IDが1でここにタイトルです
+すべてのthingに共通しないthingのプロパティには
+例えば行の下にsubredditを足すと
+ユーザは自分のカテゴリを作ることができます これがthingです
+Pythonオブジェクトを関連づけるレイヤを書いたのです
+１cmあたりに必要な細胞が数段に多いからです
+&amp;quot;ユーゴ&amp;quot;とは 南のこと
+&amp;quot;スラヴァ&amp;quot;とはスラブ諸国のことを言っています
+TED スタイルのTEDx トークにするためのハウツー
+このビデオでは アイデアを整理して TEDx トークを創り どんな構成で話すかを決め
+TED スタイルの TEDx トークが
+TEDx で話したい業績が いくつもあることでしょう
+成分をTEDx トークに入れて 流れを作ってみましょう
+(TEDxColumbus によって 提供されました)
+Tab キーを押して次から次へと項目を
+Control キーを押しながらプラス（ + ）キーを押します
+小さくするには Control を押しながらマイナス（ - ）です
+Blackberry Android iPhoneで文字をタイプするときに
+みなさん Google はウェブサイトを
+この技は Keynote や PowerPoint など
+C:TEDコミュニティーのメンバーのグループTEDX Cairoは
+PythonとGoogle App Engineの
+Webアプリケーションを動作させるための
+実際のWebアプリケーションを作る手助けになるでしょう
+これはwww.python.orgの画面です
+download Pythonを開きます
+ここでMacやLinuxを使っている人に朗報です
+その場合すでにPythonが入っていると思われるので
+64ビットまたは32ビットのWindowsを使っているのなら
+Macの場合も同じです
+Linuxならtarballソースをインストールします
+Linuxの一般的なパッケージマネージャの
+Pythonがインストールされれば
+Google App Engineと入力すると
+ここにあるDownloadsを選び
+その中でPythonバージョンを探して
+Windows、Mac、Linuxなど
+MapReduce Bundleは関係ありません
+例えばhello-udacity という名のファイルを作ってみます
+main.pyのファイルです
+ここにhello-udacityというメインのアプリがあります
+main.pyを開いてください 非常に短いファイルです
+次にこれをHello Udacity!と 出力するように変えます
+localhost:8081を開くことです
+Hello world!が出てきます
+これをHello Udacity!と
+実際のWebアプリケーションを作る時にも使います
+GAEのWebサイトに行けるので
+Webアプリケーションをチェックします
+この部分をHello Udacity!に変えて
+ここには私のhello-udacityが
+そして皆さんのhello-udacityもあります
+Joint Consultative Council という NPOで代表をしています
+jcc.org.tt で検索してもらえれば わかるのですが 私達は
+私が３年半以上も関わってきた CL Financialという
+AfraRaymond.com というサイトで
+CL Financialの会計情報を 見せるよう請求しました
+CL Financialへの借金の貸し手の リストを請求しました
+CL Financialの役員に尋ねた
+彼女は私のことを [ Alaveteli.org ] というサイトで紹介してくれました
+[ Alaveteli.org ] によって私達は
+IPaidABribe.com についてです
+IPaidABribe.com はとても 素晴らしいので
+type="checkbox"と入力し
+値の名前をrとsとしました
+値はq、r、sの3つに増えました
+その後にbrタグを足し
+Arthur Benjamin (AB):
+「x二乗」というボタンがあり、
+できるでしょうか？ 「No」と言って下さい
+SELECT * FROM Art ORDER By created DESCです
+テーブルがArtということを思い出してください
+Artにsをつけていますが
+つけなくても構いません クラス名はArtで
+そしてcreatedにより並べ替え つまりソートします
+これはArtの中のこの特定の要素が
+"SELECT * FROM Art" "ORDER BY created DESC"というSQLを書きました
+カーソルはartsという変数の結果へのポインタです
+次にartsをテンプレートに渡します
+HTMLに組み込まれている Pythonコードになります
+for art in artsという
+波括弧と%のシンタックスはJinjaで
+HTMLとPythonを区別するために使われます
+divを作ります これをartと呼びます
+このclassはスタイルを追加するまで何もしません
+div class="art-title"の
+もう1つのdivもまだ何もしません
+ここにart.titleと入れます
+for art in artsの
+artをここに持ってきて
+そのtitleにアクセスします
+そしてオブジェクトのartは
+実はこのArtクラスのインスタンスです
+ここにはtitleがあるので
+ドットシンタックスで titleにアクセスできます
+では括弧を閉じてdivを閉じます
+それからart bodyを追加します
+ここで使うpreタグは
+このpreタグの中のすべての
+preタグは今のまま変化しません
+そこでart.artを含めます
+ところでこのartは
+art classのインスタンスのことです
+そしてart classはartというプロパティを持ち
+またart自体のテキストでもあります
+arts内のすべてのartに このHTMLをレンダリングします
+artsはここで実行したクエリ
+すべてのartを選択します
+それをartsという変数に格納し
+ロバート ダウニーJrがスティーブ役で
+HIVの治療に必要な薬ARVs(抗レトロウイルス薬）の費用が
+たとえば、ARVsなどの高価な医薬品の安価な製品の生産を
+フランスで紹介された『Encyclopedia』という作品では
+3掛ける1、つまり3x1行列に
+3x1行列はただの3次元ベクトル。
+結果はあるベクトルyに
+行列Aはm掛けるn次元の
+それをn掛ける1行列に
+言い換えるとn次元ベクトルに掛けようとしている。
+このnはこのnと一致してるのが分かる。
+で、そのyは実際にはどう計算するか？
+yを求めるプロセスは
+つまりyのiを求めるには、
+ベクトルxの要素を掛け合わせて、
+このyの最初の要素となる。
+次に、yの二番目の要素を
+xの要素と、と言う事。そしてその掛けた結果を
+ベクトルxに掛ける。
+1x1足す2x3足す
+1x2足す5x1だから、
+0x1足す、3、、、
+0x1足す3x3足す、
+0x2足す4x1で、
+data0とdata1。
+足すことの4.25 x 2104。
+-40x1は1x(-40)。
+hを2104に適用した物だ。
+-40x1 + 0.25x1416。
+そしてこれは、h(1416)だ。
+これら4つの家の価格「y」を全て予測したいとする。
+のち程、Octaveとプログラム言語について
+予測はこの4x1次元の
+for iが1から4まで、
+その場合は i=1から1000まで、となる。
+これはOctaveだけ、という訳じゃなくて、
+C++だろうとJavaだろうとPythonだろうと
+実際 今 この『re:vibe x TOHOKU』っていう
+政府の要人を Facebook に招待し、
+私は少し前にこのような話を Facebook で
+これが2番目の入れ替え問題である 複数の%sの解決方法です
+複数の%sを含める場所は
+実行キーを押してみると 1文中に"running"と"jumping"が表示されました
+文字列t2には%sが2つのはずですが 実際は1つしかありません
+先見性("V" word)があるとよく言いますが
+これは Mac Book Air です
+「iTunes は最高のウィンドウズ・アプリ」
+皮肉を込めて 「iTunes は最高のウィンドウズ・アプリ」
+iPhoneが初めて発売された時
+「当社の独創的な手法は Web 2.0 標準に準拠しており
+iPhone の安全性と信頼性は 損なわれません」
+「iPhone用に独自のアプリは存在せず
+iPhone 開発環境に関する アップルの新たなプレス発表です
+Mac OS X レオパードとOS X iPhone 開発環境を公表」
+「今日からiPhoneの独自アプリを開発できます」
+iPod、iPhone、iPad 等のテクロノジーも
+こちらで証明をしてみましょう。これらの２つの角の大きさをa，bとおくと，
+この角の大きさは１８０－a－bで表されます。
+この角は，１８０－a－bの補角となっており，この角と１８０－a－bをたすと１８０°になります。
+この角をｙとすると，ｙ＋１８０－a－b＝１８０となります。両辺から１８０をひいて，
+さらに両辺にa＋bをたします。＋a＋b，＋a＋b。スペースが右側に足りません。
+右辺は，a＋bです。これは，一般的な性質です。
+ｙはa＋bに等しいです。すでに求められた１１４°は，
+2012年9月22日（土） Playing for Change Day
+2011年にPlaying for Change基金は
+これがPlaying for Change Dayです
+Playing for Change基金には８つの音楽プログラムがあり
+詳しくは www.pfcday.orgをご覧ください
+Playing for Change!
+2012年９月22日(土) Playing for Change Day
+今年 東京でも 日本初のPlaying for Change Dayのイベントが開かれます
+http://www.facebook.com/pfcdaytokyo
+これでみなさん最短経路の計算を m log n時間で実行できますね
+すると頂点数×n log nの計算時間で全頂点間の距離を
+連結グラフで密度が低い場合mはnと同じなので
+ｎ³×log nとなります
+今まで学んだ内容を網羅すべく Wikiを作成してもらいます
+Wikiを知らない方のために実際にお見せしましょう
+Wikiはすべてのページが編集可能なwebサイトです
+例えばeditをクリックしてみます
+1行空けてテキストをタイプしSaveをクリックします
+Wikiの優れた点で 今回皆さんに学んでもらいたいことは
+/newpageでまだ存在しないURLにアクセスしても 代わりのURLに飛びます
+ここでは間に/_editが入り 編集できるページに移ります
+/newpageのURLができ上がり テキストも編集可能です
+Cookieを削除し 参照元のページへ戻すものです
+editリンクが消え編集はできなくなります
+ログインするとeditリンクが表示されます
+ここまでがWikiの大まかな仕組みです 新しいアカウントは
+signupから作成できます
+ですのでユーザ名をSpez2で登録しログインします
+これが、細胞がcell（小室）とよばれる理由だ。
+実際には、真核生物と（「真核（Euk）」って書いとくよ）
+それがmRNAに複写されるってのは、知ってるかな。
+そして mRNA は核を離れて、リボソーム内で タンパク質に翻訳される。
+もしこの、DNA が mRNA に転写されて
+mRNA が核を離れて、リボソームに移って、
+mRNA が、タンパク質に翻訳される場所なんだ。
+でもいくつかは、この mRNA やリボソームを
+mRNA にはタンパク質と強いつながりのある ものがあって、
+この mRNA は、今見たように、DNAからリボソームへ 情報を伝達するためには使われない。
+Endoplasmic reticulum（小胞体）
+Endoplasmic reticulum（小胞体）、そしてその中には
+なのでこれは、粗面小胞体。略して、rough ER。
+rough ER、ERは小胞体のこと。
+自由に動くリボソームでは、mRNAが
+今のところ、mRNAは核の外に出てきたわけけど
+ここで起こるのは、mRNAがやってきて
+そしてmRNAが、その内側に入っていく。
+mRNAが、ここから入っていく。
+なので、mRNAは外側に出るんだけど
+DNAが、mRNAに複写された。
+mRNAは、小胞体にはりついた
+重脂質層（bilipid layer）も、描いてないくらいだから。
+Google、ロボット工学などの幅広い分野です
+Kinectカメラと
+実際 Googleがこのように成功しているのは
+ハードウエアやwebの会社などです 次の戦術を考慮しましょう
+fullyLoadedの値を評価しないと
+ここでdatに便利なハンドルを作成して
+私は私が知っているスリット saw について話している場合、40 の部分とができます。
+Haas コントロールの高度なエディター機能
+私はちょうど T-1-0-2-3 と私のすべての T23s を交換しました
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+このコースではWebGLと 3D描画ライブラリのthree.jsを使用します
+WebGLはApplication Program Interface 略してAPIと呼ばれGPUを制御します
+モバイルに使用されるOpenGL ESが ベースになっています
+そのベースとなったのが 1992年に開発されたPC用のOpenGLです
+他の主要なAPIにはDirectXやDirect3Dがあり
+XboxやWindows PCの ゲーム用に使われています
+DirectXはWebGLとそれほど変わりません
+ChromeはWebGLのコマンドを DirectXのコールに変換します
+WebGLはステートベースのAPIです GPUに作業条件を設定してジオメトリを送ると
+そのため利点が多いthree.jsを使います
+私たちが利用しているHTMLテンプレートは Jinjaというテンプレートエンジンです
+Djangoテンプレートエンジンも含まれています
+もし使ってみたいならテンプレートエンジン内に docファイルがありますが
+Jinjaのdocファイルを映像の下にリンクされた 補助資料の中に入れておきます
+Jinjaは基本的には文字列の入れ替えを 見やすくしたものです
+これは/loginの画面です
+Cookieが設定されてから移ります
+このページには前と同じCookieがあります
+p（1－p）ですので答えは0．09となります
+次に学ぶのは明日のgoogleの作り方かもしれません
+この間 iPhone Appストアをのぞいていました
+iPhone のためのアート作品というのは 私と友人が今—
+そうしてRemark プロジェクトが生まれました
+最初にお見せするのは Eyecode という
+そのSnout ですが...
+Snout がしようとしていることを 示しています
+Haru no soyokaze ga Doko kara ka fuki
+Kayoi nareta michi Irodori wo kigaeru
+Yorokobi mo kanashimi mo
+Sugisatta kisetsu
+Atarashii michi Aruki hajimeru
+Sakura no hana wa wakare no shiori
+Hirahira to te wo futta
+Tomo no kao ga ukabu
+Sakura no hana wa namida no shiori
+Taisetsu na kono toki wo
+Itsumademo wasurenu you ni...
+Sora wo miagereba
+Sono ooki sa ni
+Hateshinaku tsudzuku
+Michi no nagasa wo shitta
+Hare no hi mo ame no hi mo
+Ashita wa kuru kara
+Hohoemi nagara ippo fumidasu
+Sakura no hana wa mirai no shiori
+Itsuka mita sono yume wo
+Omoidaseru you ni...
+Sakura no hana wa kibou no shiori
+Akiramete shimau yori
+Kono peeji Hiraite miyou
+Sakura no hana wa kokoro no shiori
+Kagayaita seishun no
+Komorebi ga mabushii
+Sakura no hana wa ano hi no shiori
+Hito wa mina mankai ni
+Saita yume wasure wa shinai
+深指屈筋腱テスト(Boyesテスト)を行う際は、１本の指の 遠位指節間関節を診察台の端にのせ、この関節の屈曲状態を調べます。
+p－2p²＋p³で残りはそのままにします
+チャオル：'Tem'は英語の アイテムの'テム'です。
+単語要素を扱い graphics．wordを呼びました
+graphics．begintagと graphics．endtagを呼びました
+最後に難解なJavaScript要素です HTMLとも違います
+ステップ1：文字列を得るまで JavaScirptを実行する
+ステップ2：その文字列でgraphics．wordを呼ぶ
+JavaScriptを解釈して実行する方法が分かれば
+Webブラウザも完成です
+JavaScriptはHTMLより意味が豊富なので
+例えばJavaScriptには算術演算がありますが HTMLにはありません
+JavaScriptには変数もありますが HTMLにはありません
+interpret関数の javascript＿interpretを書きます
+これがJavaScriptの算術演算を探索する順番です
+evalという短縮形がよく使われます
+これから算術式のためのeval関数を書きましょう
+eval＿expと名づけます
+"再帰定義はPythonでは あまり効率的でないとのことでした"
+"そこで質問ですが CやJavaのようなプログラミング言語では"
+例えばLispやSchemeのような言語は
+これはPythonの場合よりもはるかに効率的です
+Pythonで効率の悪い再帰関数を なぜ取り上げるのかという質問がたくさんありました
+ですがPythonでは通常はそうなりません
+ほんの２年前 小さな実験として TEDx を始めました
+おそらく10か多くても20名が名乗り出て TEDx を開催する程度だろうと思っていましたが
+2008年に クリスと私は TEDx プログラムについて考え始めた頃
+これらの考えから TED をオープンソース化して TEDx を大学のキャンパスで立ち上げました
+全ての TEDx イベントが イベントから生れた-
+素晴らしい繋がりや出来事が これらの TEDx では
+TEDx イベントから 独特な意見が湧き起っています
+TEDx 無しでは 絶対に聞けなかった意見です
+また 文化を超えて相互の交流があります TEDx の多くはライブ配信をしています
+台北で行われた TEDx イベントでは ライブ配信が
+最初に私が読み上げるのは TEDxShekhavati からのものです
+TEDx からもたらされた 最も素晴らしいことは 会場が
+TEDxShekhavati のお蔭で ついにコミュニティが買って
+他にもいくつか紹介します まずTEDxSkopje からです
+「貧困にあえぐ小国として マケドニアにはもっとTEDx が必要です
+次は アイビーリーグの大学で TEDx イベントのオーガナイザーからの転送で
+日本のことや、隣の国の騒動のことではなく TEDxRiyadhやTEDxJeddahでした
+Facebook や Twitter でも トップニュースです」
+そう TEDx はこの素晴らしい 環境を作り出しています
+ここでもまたxバーとyバーを計算します xバーは2、yバーは16です
+次に差を求めます xの値は前と同じです
+bもrも分子は18になりbの分母は2です 従ってb＝9となります
+yを倍にするとbも常に倍になるのです
+次は相関係数rがどうなるか見てみましょう
+yを倍にする前とまったく同じ値です
+＋s、＋rが与えられた時の Cの値を求めたいとします
+しかしCloudyノードはそうではなく この変数の値は
+x− 1／x + 2 は 0 より大きい。
+つまり、aが０より大きく
+b も 0 より大きい値です。
+だから aが0 未満で b 0 未満の場合です。
+この場合は、 x-1 ＜０で、かつ
+x ＋ 2＜ 0 です。
+だから、x −１＞ 0 は、
+x ＞１が得られます。
+答えは、x＞１かつx＞ー２であることが
+x ＞ 1 で、かつx＞ー２と
+xは明らかに−２よりも大きくなります。
+これは、x が 1 よりも大きい場合に発生します。
+X が 1 より大きい場合は、x は間違いなく
+この制約は、x＋２＜０で、
+x ＜１とx＜ー２が必要です。
+両方が正の場合は、x＞１で、
+両方が正のx＞１の場合と
+両方が負のx＜ー２の場合です。
+x− 1 ／x+ 2 x は 0 より大きい。
+ここで、X−１／x＋２が
+たぶん両側をx＋２で掛けてみればと
+しかし、ここでは、x＋２が正か負か分かっていません。
+x＋2 が0 未満の状況です。
+これらは、 x ＋ 2 の2 つの可能性です。
+x＋ 2 が 0 に等しとどうなるでしょう？
+x＋2 が 0 で、
+x＞ー2 場合です。
+x＋２は 0 より大きい値です。
+x＋２で乗算します。
+x−１／x＋２＞０は、
+x ＋ 2 で、両方を乗算し
+x＞ー２の場合は、正で、
+両方の側に x＋ 2 を乗算すると、
+0 掛ける x ＋ 2は 0 です。
+つまり、x−１＞０になります。
+x は、1 より大きいです。
+x＋２が正の場合を見てきました。
+つまり、x＞ー２の場合、
+xが１より大きいとなります。
+これらの両方を満たすx は、
+これは、x＋２が 0 より大きい場合です。
+その他の状況は x ＋ 2 ＜0 です。
+x＋ 2 が 0 未満とは、
+x＜ー２の意味です。
+x ＋2 が 0未満の場合、
+両辺を負数である、x＋２で
+x ＋ 2 が負であることを仮定しています。
+両側に 1 を追加し、x は 1 未満です。
+x + 2 が０未満では、
+xを 1 未満にする必要があります。
+x＜ー２で満たされます。
+x＋２が 0 未満では、
+x＞１または、x＜ー２が答えです。
+x が 1 よりも大きい、
+これは 23 x 44 と書かれていたかもしれません．あるいは
+無向グラフにおけるuとvの 2つのノードの連結性の問題は
+実行時間はΘ(n+m)
+重み付きグラフでの最短経路の問題はΘ(m log n)
+ヒープの最小値の削除の問題はΘ(log n)
+実行時間はΘ(n³)でした
+すなわち実際の計算時間よりも漸近的に 必ず大きくなるようなnとmの多項式が必ず存在します
+最大容量は２メガWh つまり
+200万Whもあります
+Avelileは胎児のうちに
+この写真に写っている7歳のAvelileは
+考えてみると この文法には2つの文字列しか 言語に含まれません pqrとpqです
+pqq、p、prを生成できないので よくありません
+これは常に小文字のpで始まり
+Qは0個以上のqが続くようになり そしてrで終わります
+pqqを含まないので 一番左も選べません
+しかし両方とも書き換えた後はpから始まります
+5つの文字列はすべてpから始まるのでいいですね
+文字列を1つずつ見ていきましょう pだけは生成できるでしょうか？
+できます AがpBになりBが何もなしになり pを生成できます pqqはどうでしょうか？
+AをpBに書き換え BをBqに書き換え またqを作り その後何もなしにして生成できました
+prはどうでしょう？
+AをpBCに書き換え Bをなしに Cをrに書き換えられます
+pqrは最初の規則でpBCを作り
+qを1つ作りrも作れます 素晴らしい
+pqqrも最初の規則でpBCとなり
+このループを2回繰り返し qを2つ作って最後にrを作れます
+マイケル・モーパーゴ作 『Friend or Foe』 の少年達も
+ホン・イン作 『The Concubine of Shanghai』 の キャッシアや
+La la la la...~
+Ginga no sakana aitai yo...
+(Todokanu omoi todoketaku te)
+KAWAGEETE no kamikihouki ni
+(arittake no omoi nosete hanatsu)
+yururi ko wo egaita sore wa,
+hotari to ochita
+hajime kara ne konna mono ja
+todoku hazu nai koto shittetanda
+"Sore dake tooku, sore dake tooku
+Kimi ga itte shimatta dake sa"
+Sore dake nanda.
+ginga no sakana aitai yo...
+(todokanu omoi todoketakute)
+SAAKATOOVO no osanai kikyuu ni
+(aritakke no omoi nosete hanatsu)
+hisahisa to ukabu sore wa,
+marude ITSUKA no...
+imi ga itte shimatta dake sa"
+Sore dake na noni.
+(NARUMERIUSU no uchuu no fune.
+Arittake no omoi wo nosete,
+ima, ai ni iku kara.)
+Alalala la la la...~
+Kimi wa itte shimatta no desu"
+Hajime kara ne konna mono ja
+aeru hazu nai koto shitteta noni.
+Sore demo boku wa...
+この問題では 再帰的なかけ算アルゴリズムnaiveを使います
+rec_naive(17, 6)を実行するために 何度加算が必要でしょう?
+たとえばhoursを-1としてminutesを-2とし secondsを-3と入力することもできます
+3つの数字について話していますが まだPythonはtypeの静的チェックを提供していません
+これがプログラムをコンパイルまたは 実行した時のtypeをチェックします
+私はまったく異なるtypeを持ったオブジェクトを 自由に渡せるので
+この文字列をインスタンスに渡せますし hoursをこの文字列で初期化できます
+つまり ここでまったく無効なTimeオブジェクトを 得るということです
+この状況はhours属性のここに 文字列を渡していることになります
+それともTimeオブジェクトを出力した時でしょうか? またはエラーなしですか?
+この上の状態ではf1、f2、 f3の値は それぞれ2、1、1になります
+x、y、z または、a、b、
+これらのどれを使用してもいいですが、代数学で特によく使用されるのは このxです。
+この変数xは、演算の記号xにとてもよく似ています。
+一般に私たちは、このように、２x３を記述します。
+代数学に入り、xを変数と使用する際
+例えば、２掛けるxを書く際、このように２xXと書くと
+書き方によって、乗算のxと変数のXが
+この表現は、これらのxが変数か演算の記号か、とても紛らわしくなります。
+そこで、代数を扱う際、xを掛け算の記号に使用しません。
+２・xと書くことができます。
+ここで、２・xは何かと言われると、これは、２掛けるxです。
+xが３であれば、これは、２x３を意味します。
+あるいは、２掛けるxを括弧を使って書き
+このように、２（x）と書かれた場合
+これは、２掛けるxを意味します。
+この場合、xが７であれば、２掛ける７を意味します。
+あるいは、最も従来の書き方は、２xです。
+これも、２掛けるxを意味します。
+それは、もしここで、２x３の代わりに ２３と書けば
+だから、２xも２掛けるxを意味します。
+これは、２３ではなく、２掛けるxであるとはっきり分かります。
+つまり、これらの表現全部、２掛けるxを意味します。
+例えば、１０−３yと書き、この式でy＝２では、どうでしょう？
+この式の意味は、このyが２で、１０−３x２です。
+３x２は６で、１０−６は４です。
+では次に７xー４があるとします。これで、x＝３の際どうなるでしょう
+costはクラスタごとの一定のコストを示し
+問題となっているsは他動的に依存します
+sから開始し修正ポイントに達するまで
+スライスにないものはすべて 引数sのステージまたはsが実行されるかという点に
+命令文"tag = True"を見てみましょう
+変数tagのスライスに 何が含まれているか確認してみましょう
+これがif条件への制御依存関係です
+このif条件が変数cに依存しているので これはバックワードスライスでもあります
+この条件はパラメータとして渡される 引数sから読み込んでいます
+それでは変数quoteに取り掛かりましょう
+変数quoteはどこから来たのでしょうか
+引数sのバックワードスライスを完成できますか?
+幅 2.5 cmのリボン状で 幅が伸縮し 表面から光を放つのです
+幅 1.5 m、長さ 15 m の
+926で、渤海_の首都Georanに落ちた。
+'東アジアのGeoran'を意味Dongranguk呼ば新しい国、
+を領土にGeoran設立。
+Dongrangukのキラー·ブレード_軍による襲撃！
+Gunhwapyeong！
+キラー-Bladeの陸軍_の指揮官が個人的な訪問を支払うようになってきた。
+あなたはむしろDongrangukと が協力すると思いませんか？
+あなたは私があなたのように、Georanのための犬の になりたいですか？
+それも私たちの未来の王、王子Suhyeon、
+はGunhwapyeongによって暗殺されています。
+Gunhwapyeong、
+プリンスSuhyeon死んだ、私たちの王になることが で？
+あなたは王子Jeonghyeonを覚えていますか？
+ご注文ののように、私は中院へ_ Maeyoungokとマブールを送った。
+Youngok...
+キラー-Bladeの軍が来るということだ。
+- Sosam？ _ - はい。
+Sosam扱うノートラブル。
+ねえ、Sosam、よく...
+あなたはSosamを探していました。
+私はヨンSoha、Biseonwonの_役員ファーストクラスです。
+Georanに追われる、 私が殺されるときに知らない？
+ヨンSoha...それはあなたです。
+彼らはDongrangukのキラー-Bladeの軍隊である。
+くれプリンスJeonghyeonを進呈
+Lt'llは話をした方が良い。
+もしキラー-Bladeの陸軍と_を行うには何がありますか？
+次に、どのようにあなたは、 兄Suhyeonに関連している？
+彼らがする必要がある場合彼らはWolnakストリート_の全員を殺すでしょう...
+キラー-Bladeの軍隊の方法であること。
+彼らはBidomunは、 He​​ukdobangのギャングの支店です。私はシンボルを認識しています。
+うわー、これは誰だ！ブラザーSosam！
+あなたは、あなたの馬を知っている。しかし、彼らは非常に高価です... あなたがブラザーSosamに付属ので、
+Maeyoungokは彼女の採石場を失ったことはありません。
+あなたはヨンSohaと呼ばれる女戦士 を知っていますか？
+これは方法ですBiseonwonの戦士
+ねえ、役員ヨンSoha！
+私が9歳の時 Georanの兵士が私の父を殺した_、
+Sosam、正直に言うと、何人かの人 は昨日ここで来ました。
+彼らは...彼らはキラー-Bladeの軍と_と言いました。
+あなたはDongrangukで を協力したいと思います？
+我々は途中でCheonaegokの 通り過ぎるでしょう。
+私はヨンSohaを殺す前に私は_を戻すつもりはありません。
+私はヨンSohaを参照してください場合は、
+Georan _との戦いのためだけ15だったとき
+彼らが商品を盗んだ時いくつdorksは物事 を破った。
+一般KeumHwee。
+残されたすべては私自身、Sosam無用です。
+我々はGeoran衣装を着ない限り、我々は大きなトラブルの_に入る可能性があります。
+彼らは、 渤海の民兵組織のcorp兵士を探しています。
+彼らは民兵Corpからだった。
+Let 'sは、私は渤海の王だと言う。
+一般lmsunji下 I、Jocheonsu、、 はプリンスJeonghyeon、殿下をお迎えいたします。
+私はlmseonjuは王子を守るために_を移動したことを聞いた。
+キラー-Bladeの陸軍が新たな使命のために_を待つことができます。
+私はGunhwapyeongのためにあなたを呼ぶ。
+キラー-Bladeの陸軍 はこの仕事の世話をしているはずです。
+私は約束が Gunhwapyeongとを維持することはできません。
+Georanの助けを借りて、現在の渤海_の領土。
+Yayul cheollaは、私たちが残していると述べた。
+私は、あなたが望んだ何Maeyoungokを_を決して忘れないだろう...
+プリンスJeonghyeonは死んでいるだろう...
+または、いっそのこと、プリンスJeonghyeon。
+だから私はあなたの復讐をJeonghyeonを殺した。
+Glodenボウ軍に彼の死の のこのメッセージを送信します。
+お名前、右Jocheonsuですか？
+一般Keumhwee。
+攻撃チームのチーフ、Jochensu。 _私は、殿下を見るためにここに来ました。
+私は今、あなたを覚えている。攻撃チームの_チーフ、Jochensu。
+Gunhwapyeongがここにある！
+Gunhwapyeongは、 を示してどのように彼は狩りをしていることですか？
+Jocheonsu、ワンストライク·キラーと呼ばれていた1 _？
+それはGunhwapyeong、長い時間が経っている。
+Gunhwapyeong、予想以上に良い。
+Victorに戦利品を行く...
+_司令Gunhwapyeong、右が停止します。
+Jocheonsuは死んでいる。私が彼を殺した...
+私はDaesuhyeonを殺したので。
+父と母、 両方がGeoran人によって殺された。
+しかし、あなたがのためのlookinされた剣は...
+真剣は、 Soha年代の貴重な精神である。
+DaesuhyeonとJocheonsu両方... _私はこのスキルとそれらを殺した。
+ここCheonaegokを渡す必要があります。
+日以来、私はJunwonでお会い、
+それは一般lmsunji と渤海の兵士です。
+今、この城は再び_が呼び出されますHolhanパレス
+928で、Dongranguk がLeaotongエリアに撤退した。
+ポスト渤海とJeongahngukの は領土に設立されました。
+彼らは１，０００Kmも氷の下を北に進み
+zは、その一つ前のzの2乗に1を足したのと等しい。
+それをCに入れて、zに0から代入していこう。
+TED の様なイベントを独自に開催する TEDx プログラムとして実施されます
+TEDx は まだベータで 本格的には始まってません
+この１つには 「One.org」があります
+TED Prize の受賞者の キャメロン・シンクレアが会場にいます
+「Open Architecture Network」も
+「Pangea Day」も
+「The encyclopedia of Life」はTED も参加して サイトが作っています
+「Once Upon a School」 「Next Einstein in Africa」
+「Charter for Compassion」
+メディア業界の幹部としての経験が豊富で 長年のTEDster です
+そして 今度は TEDx プログラムです 世界中で直接会場に参加できる形を広めます
+しかし『Crazy Love（危険な恋）』の出版以来
+[Google Chrome for Android Beta]
+&gt;&gt; これは Google Chrome です
+&gt;&gt; これがスマートフォンでの Google Chrome
+&gt;&gt; そしてこれがタブレットでの Google Chrome
+&gt;&gt; Google Chrome for Android は
+&gt;&gt; とても速くて
+&gt;&gt; 便利な Chrome 機能が満載
+&gt;&gt; 検索およびウェブアドレス入力をアドレスバーから実行
+&gt;&gt; よく訪れるサイトもすぐに見れますし
+&gt;&gt; シークレットモードも使えます
+&gt;&gt; いくつか工夫も加えました
+&gt;&gt; たとえばタブの切替も簡単です
+&gt;&gt; 扇状に広げたり
+&gt;&gt; スワイプしたり
+&gt;&gt; Chrome にログインすれば
+&gt;&gt; スマートフォンからブックマークして
+&gt;&gt; パソコンでも見ることができます
+&gt;&gt; また、開いているタブに
+&gt;&gt; どの端末からでもアクセスできます
+&gt;&gt; つまり、どこにいても同じ Chrome を使えるのです
+&gt;&gt; 詳しくは google.co.jp/chrome にアクセスしてください
+Redditでの経験から分かったことがあります
+それでGoogleなどの検索サイト専用の コメントのスレーブを用意しています
+Google用の読み取り専用データがあるんですよね
+すべてのインデックス作成をするGoogleのために
+最近GoogleからRedditへ大量のアクセスがあります
+Redditのトップページの用語を Googleで検索してみると
+GoogleはRedditを苦しめているわけです
+それでGoogle用にインフラを用意したのです
+ベン &amp; ジェリーアイスクリームへ
+70kgのまるで恐竜みたいな
+変数regexpに1つ以上の数字が連続したあとに 省略可能な"．"と0個以上の数字が
+この講義で最終プロジェクトをテストするための HTMLとJavaScriptについて考えます
+Webブラウザが正しく動いていることを 確かめるのが目的です
+環境は親のポインタとPythonの辞書で xは22 yは33という値の対応でした
+次に今グローバル環境で 親へのポインタがNoneの場合です
+Noneを返します 何も値はありません
+そうでなければNoneを返します
+aは1でmistletoeを5で呼び出し baldrが5になります
+5＋1は6なのでbaldrは6になります
+aはa+2なので1＋2で3になり 今の時点で変数は6と3です
+6＋3になるのでbaldrは9
+先ほどのようなバグがあると aを参照したときに 今の環境にないのでエラーが発生します
+今の環境にはbaldrしかありません
+親の環境に探しに行かずにNoneを返すので
+Noneに数値を足そうとしてエラーが返ります
+misletoeはbaldrを返すだけになります
+貴方のビデオを作り、意見を分け合おう。 www.numero132.tumblr.com
+フェイスブックメールアドレス facebook.com/yosoynumero132@numero132
+♫Yeah!Yeah!♫
+♫Yeah,Yeah!♫
+♫Yeah, Yeah♫
+このWeightという名前のデータ集合で
+xは実数のランダムな数と
+します。つまりxは実数です。
+ランダム変数x チルダ
+Normalの省略系で
+xがこの遥か離れた所の値を取る場合は
+ところでたまに、p(x)と
+これはxの確率は2つのパラメータ
+eのマイナス x引くミュー の二乗 割ることの 2シグマ二乗。
+p(x)をプロットしたら
+p(x)をxの関数として
+m個の手本データセットが
+あるとしよう。つまりx1からxmまで。
+xがある範囲に広がっている。それをここに
+つまりこの各手本x(i)が以下のように分布、、、
+1からmまでに渡り、x(i)から
+1/mではなくて、1/(m-1)に
+1/mの式かわ使われる事が多い。
+1/(m-1)だろうが、
+mが普通に考えられる程度に大きい、つまりトレーニングセットのサイズが普通に大きければ。
+この公式の1/mの方を
+問題3での目標は medianという関数を定義することです
+medianは入力として3つの数値を受け取り
+ビーチの両端からは500m 端っこの人には
+間にいる人は 近い方に買いに行くから 250m以上歩く人はいないし
+中央から250mにカートを置く 最初のやり方は
+(鶴の舞 Tsuru no mai)
+(浅野 瑞穂 Mizuho Asano)
+H&amp;MのCEO あるいは 次のスティーヴン・マイゼルに なれるかもしれません
+日常では絶対に使わない 20cmのヒールなら余るほどあります
+コメント欄やFacebook Twitterでお答えします 毎週 科学動画を登録しています
+どんな間隔であっても確率はaとbによって定義され
+過去なら "It rained yesterday"
+現在ならば "It is raining now"
+未来は "It will rain tomorrow"
+明日の雨について "Morgen regnet es" つまり -
+"It rain tomorrow" と言って 差し支えありません
+Yuube nemurezuni naite itandaroo
+彼からの電話 待ち続けて kare karano denwa machi tsuduke te
+テーブルの向こうで 君は笑うけど te^buru no mukou de kimi ha warau kedo
+瞳ふちどる悲しみの影 hitomi fuchidoru kanashimi no kage
+息がつまる程 人波に押されて iki gatsumaru hodo hitonami ni osa rete
+夕暮れ 電車でアパートへ帰る yuugure densha de apa^to he kaeru
+ただ週末の僅かな彼との時を tada shuumatsu no wazuka na kare tono toki wo
+つなぎ合わせて 君は生きてる tsunagi awa sete kun ha iki teru
+もう 彼のことは忘れてしまえよ mou kano kotoha wasure teshimaeyo
+まだ君は若く その頬の涙 mada kun ha wakaku sono hoo no namida
+乾かせる誰かが この街のどこかで kawaka seru dareka ga kono machi nodokokade
+君のことを待ち続けてる kun nokotowo machi tsuduke teru
+Woo振り向いて Ha-Woo探して 探して Woo furimui te Ha-Woo sagashi te sagashi te
+君を想う時 喜びと悲しみ kun wo omou toki yorokobi to kanashimi
+ふたつの想いに 揺れ動いている futatsuno omoi ni yureugoi teiru
+君を裁こうとするその心が kun wo sabako utosurusono kokoro ga
+時におれを傷つけてしまう tokini orewo kizutsu keteshimau
+今夜 町に出よう 友達に借りた konya machi ni deyo u tomodachi ni kari ta
+オンボロ車で海まで走ろう onboro kuruma de umi made hashiro u
+この週末の夜は おれにくれないか? kono shuumatsu no yoru ha orenikurenaika ?
+たとえ最初で最後の夜でも tatoe saisho de saigo no yoru demo
+Woo真すぐに Ha-Woo見つめて 見つめて Woo makoto suguni Ha-Woo mitsu mete mitsu mete
+子供の頃 君が夢見てたもの kodomo no goro kun ga yumemi tetamono
+叶えることなど出来ないかもしれない kanae rukotonado dekina ikamoshirenai
+ただ いつも傍にいて 手をかしてあげよう tada itsumo bou niite te wokashiteageyou
+受け取って欲しい この指輪を uketotte hoshii kono yubiwa wo
+受け取って欲しい この心を uketotte hoshii kono kokoro wo
+Floodgateのアン･ミウラ･コー氏の文を引用します
+XertyことBrice Chapletです
+そしてある日 Photoshopと出会い
+また、Oracom誌の チュートリアルや表紙など
+主要部分は Photoshopを使います
+それからベクター形状のため Illustratorをたくさん使います
+それから、かもめを加え Photoshopを使って、
+"Pimp my Vinyl"という
+TENコレクション参加に際し、Fotoliaチーム、
+AMKA Shopのトマス、そして ビデオ制作のGANG Corp に感謝します
+我々のウェブサイトであるskeptics.comを広めるためだったでしょうか?
+このカジノは＄28,500をeBayにチーズサンドウィッチ代として支払いました
+その象徴としてiPodが挙げられます
+ハイブリッドで省エネという名声をうらやんでいる プリウスはiPod に匹敵するほどの
+Soredeha, anatatachi ha Dirty Way desune (english accent).
+Iie, watashitachi ha Dirty Way desu (Czech accent).
+Cheko go de hatsuon simasu.
+Aa gomennasai.
+Watashi ni ha eigo no namari ga arimasu.
+Soredeha, anata tachi ha bando wo kessei site dorekurai desuka?
+5 nen desuka?
+5 nen desu, dakara watashi tachi ha otagai wo yoku shitte imasu.
+Hontou ni arigatou gozaimasu.
+Youkoso Vysoké Mýto he.
+Watashi tachi ha kono ongaku katudou ga dekite totemo ureshii desu.
+Anata tachi ha kessei 5 shuunen no oiwai wo shimashitaka?
+Sore ha mada sukunai shuuki no oiwai dakedo.
+Hai watashi tachi ha Litomyšl no musi club de oiwai wo shimashita.
+Totemo yokatta desu.
+Fan no hito tachi to issho ni shasin mo torimashita.
+Sore ha totemo subarashikatta desu.
+Tatoeba Jagger no tanjou bi ni takusan no myujishan ni bideo wo okuttano wo sitte imasune.
+Anaataataachi ni mo bideo ha okuraremashita ka?
+Sorenara anatatachi ha mou sude ni subarashii bando desu ne.
+Dono bando no hitotachi ga okutte kuretano desuka?
+"Zoči Voči".
+"Zoči Voči"?
+Hai, "Zoči Voči" ga bideo wo okutte kuretakoto ha hontou ni kouei desu.
+"Blockhead" ga nakama no bando desu ne.
+Tugi ha dono bando kana?
+"Kalwich".
+"Kalwich"!
+"Kalwich" ha watashi tachi to isshoni terebi no rappar kontesuto ni deta bando desu.
+"Koblížci".
+"Koblížci" ha chigau.
+"Koblížci" ha chigatta ka.
+Motherfuckers da, watashitachi wo makashita noha.
+Sousou toku ni "W.
+"Nový zboží".
+"Nový zboží", sousou karera mo okutte kuretane.
+Yoshi deha Míša dake ni makasete mimasu.
+Douzo Míša.
+Saikou desu.
+Yoshi arigatou Míša.
+Subarashi katta yo.
+Anatatachi ha zenkoku de housou sareteirru terebi ni shutuen shita to iimashitane.
+Sore ha anatatachi no mottomo subarashii seikou desuka?
+Mochiron, mochiron, mochiron (cheko no aisu hokke- no senshu ga yoku iu kotoba).
+Aa ima ha aisu hokke- no wa-rudo kappu no jiki dane.
+Ii senshu tachi ga takusan iruyo, atarashii senshu ya wakai senshu ga (aaru hokke- senshu no kotoba).
+Tabun soudesu.
+Watashitachi ga kontesuto ni deru mae made ha hitobito ha watashi tachi no sundeiru chiiki ni tuite shiranakatta to omou.
+Litomyšl ga watashi tachi no kaatudou wo yori hirogete kuremashita.
+Kontesuto, watashitachi ha watashitaachi no sundeiru chiiki de konsa-to wo hirakimashita.
+Soshite takusan no hito ga soko he kimashita.
+Kontesuto no ato, kono chiiki de watashi tachi ha yori shirareta sonzai ni natta to omoimasu.
+Watashi ha itte watashi tachi no mawari no subete no warui mono wo nakushimasu.
+Watashi ha ongaku to awnaata no sukina ongaku no janru ga suki desu (chousen shiyou yo, ne!
+Hazukashi gatteiruno?).
+Suki na koto wo yaritakute, sukinkoto wo suki de itai.
+Yaamenaide!
+Ongaku ha minna no taame ni aruno, egao ni narutame ni (chousen shiyou yo, ne!
+Soretomo hazukashi gatteiruno?).
+Saigo no shitumon de, anatatachi ha konsa-to no mae ni aruko-ru wo nomimasuka?
+Sore tomo kiai wo irerutame ni nanika wo tukaimasuka?
+Hotondo no manba- ha konsa-to no mae ni aruko-ru ha nomimasen.
+Aruko-ru jitaiha nomerukedo.
+Soudane, itumo nonderuyo.
+Tommy ha itumo nondeimasu.
+Sono sei de kare ha konsa-to no ato tukareru no desu.
+Watashi ha nomuto konsa-to no mae ni toire ni ikitaku natte shimaunode nomemasen.
+Sorenara anata ha 5 nen tatta imademo konsa-to no mae ha na-basu ni narimasuka?
+Na-basu ni ha narimasu ne.
+Watashi tachi ha hajimate no basho de konsa-to wo surutoki niha na-basu ni narimasu.
+Soudesune!
+Watashi tachi ha sono basho no hitotachi wo shiranai si, sono hito tachi mo watashi tachi wo siranai kara.
+Demo Litomyšl ya Vysoké Mýto de yarutoki ha mou kinchou shimasen.
+1, 2, 3 yeah!
+Itumo koko niha "kore ga subete da.
+Watashi ga aanata kara moraaitai mono da. ima anata ha dame ningen da. demo sore ga watashi no hoshii mono da." to iu hito ga iru.
+Deha kusuri ni tuite, tatoeba Pink Floyd ya Hendrix, soreka Joplin, karera ha LSD ya marifana tukatte imashitita.
+Anata tachi ha sono youna mono wo tukatte imasuka?
+Sofiya to iu kyoku ha kusuri wo aishiteiru youna kyoku desu kedo mo.
+Tanjoubi omedetou Sofiya!
+Watashi ha anata no me kara anata ga yorokonde iruno ga wakaru.
+Watashi ha watashi wo michibiku michi wo hitori de aruite iru.
+Watashi ha Sofiya to iu chiisana shiawase wo mituketa.
+Dakedo anata ga subarashii uta wo utatta ato, watashi ha kyoku no namae wo wasureteshimaimasu.
+Ii gita- no pa-to ga atta ki ga suru.
+"Troska" (Dame ningen).
+Hai, watashi tachi ha sukoshi no marifana no mu-do de "Troska" ni narimasu.
+"Troska" ha dameningen ni yotte tukurareru.
+Sore ha tashikada.
+Sukoshi dake desu.
+Watashi tachi ha kono kyoku no tame ni PM8:00 kara asa made hataraite imashita.
+"Troska" ha subarashii desu.
+Watashi ha marifana wo suimasen.
+Dakedo anatatachi ha sukosi sui masu, nazenara sutta ato ha kimochi ga iikara desu.
+Arigatou gozaimashita, kouun wo inorimasu.
+Nagai yoru ga hajimatta, natu gaa hajimatta.
+Watashi ha kono onnanoko no seide nemurenai.
+Hontou ni arigatou, yoi yoru wo, sayounara.
+DIRTY WAY deshita.
+新しいテクノロジーは手頃で 特にフィリップスのElastPQは素晴らしいです
+ElastPQは低侵襲でありながら 診断に必要なより多くの情報をもたらしてくれます
+0番目は"identifier"でした
+1番目は"x"になります
+env＿lookupを
+今のenvironmentとvariable＿nameで呼びます
+これでenvironmentにxの値が含まれていれば
+x＋2のような式を扱えます
+あなたはこのような環境にいる Googleの自動運転車だとします
+さてJavaScriptの形式文法が分かりました
+Webブラウザを作っていることを 思い出してください
+有効なJavaScriptを表示させたくても Webデザイナがエラーを起こすことがあります
+Webブラウザつまりプログラムに判断させるのです
+そしてPythonや 今後役立つプログラミング技術を学ぶ
+Pythonの新しいPythonの式を紹介します ラムダ式です
+ここにPythonコードの addtwo（x）関数を書きました
+これはx＋2を返します
+このようにPython関数を収まる限り すべて1行に書くことができます
+addtwo（2）と書けば4を得ることになります
+変数mysteryにラムダ式を代入します
+単語のlambdaは変わらないので終端記号です
+mystery（3）を呼び出すと5が返されます
+lambdaが引数xを受け取り x＋2を返すという解釈だからです
+ここに3を受け取るとそれでxを置き換えます
+mysteryとaddtwoは実際には同じです
+peleに4を渡すと6が戻ります
+ラムダ式は"ここを関数にする"という意味です defと似ているところがたくさんあります
+AIM (American Indian Movement) と呼ばれるー
+私は今Benetechのディレクタである ジム・フラクターマンさんと一緒にいます
+Benetechが何を行っているか教えてください
+Benetechはシリコンバレーにある 非営利テクノロジ企業です
+Social Coding 4 Goodと呼ばれるものです 社会的利益になるようなことを行うマニア向けの
+そしてあなたとWikimediaやGuardian Projectなどの
+GitHubのような場所に出かける もしくはボランティアをする機会を得たり
+冷凍室には入れるなよ アイスboxにいれておけ
+この関数を mとしましょう。
+関数のために、チケット数をtとします。
+m は、収集した金額の
+だから、それは 3 ＊ t ドルまたは 3 t ドルです。
+この関数に入力可能な tは、何ですか？
+まず、任意の t を置け得ると思うかもしれません。
+この関数の定義域は、t が
+これで、可能なtがカバーできると思います。
+tは常にし、負でないの整数では、
+3 t はどうなりますか？
+一枚のチケットを販売している場合、m は 3 ドルです。
+I'm Mari Miyazawa.
+I will make Frogs' chorus Bento today.
+Ingredients: broad beans, cucumber, china peas, Hanpen fish cake, nori seaweed
+a regular bento foundation is already made. this bento is that pretend like rice part is a pond and place frogs made by beans.
+水（water）とワイン（wine）と覚えましょう
+B は bread パンのお皿で左に置きます
+M は meal 食事なので真ん中に
+そして W は water 水は右に置きます
+Bonsaikonというツールを作成してもらいます
+Bonsaikonとは Bonsai Daikonまたは小さなDaikonという意味です
+Bonsaikonが生成するのは
+平方根を求めるsquare_root関数を見ましょう
+square_root関数の呼び出しで xは常に2と16の間です
+浮動小数点数相対精度は常に10e-7です
+square_root関数の終わりに変数yの値域があります また戻し値でもあります
+これに私が"ret"と名前を付けました
+特別なtraceit関数を設定すると
+引数eventを見てみましょう
+引数eventは呼び出しが戻りどちらかで
+frame.f_code.co_nameを使って調べることができます
+frame.f_localsの属性は配列です
+これを使うとy､x､epsのような 全ローカル変数にアクセスできるようになります
+最後に引数eventが返されたら ここに渡された引数から戻り値が分かります
+frame.f_localsで全変数をチェックして
+最初に実行した時2の平方根でxはちょうど2です
+そしてxは2と4の間になり 2と16の間になります
+平方根が徐々に拡張されている場合はyも同様です
+今日このTEDxFukuokaが終わって
+iTunes のチャートを見たんだ だからとてもご機嫌さ
+引き金になったのは "Love Don't Let Me Go"
+これは"One Love"の 最初のシングルだ
+"When Love Takes Over"の インストをかけていたらーー
+色んな世界を混ぜたらx000D すごいものができた
+"When Love Takes Over"
+知り合いがたくさん来るからx000D とても緊張する
+そして"Sexy Bitch"を作った
+"Sexy Bitch"によって 新たな道が開けた
+"Where Them Girls At" お楽しみください
+"I Gotta Feeling"が 俺の人生を変えた
+友人に"Love is Gone"のプロデューサーを 知ってるかって尋ねたんだ
+送ってくれたのが "I Gotta Feeling"さ
+"F* Me I'm Famous"を 始めたのは2000年のこと
+"F* Me I'm Famous!"
+"F* Me I'm Famous!"の パーティにいるとね
+"Little Bad Girl"は いい例だ
+会ったその夜に "Sexy Bitch"を作った
+"When Love Takes Over"の インストをかけたとき クラブにいたんだ
+世界でたった一つの "F* Me I'm Famous!"だ
+P（A）は1つの値であり そこからP（not A）を導くことができます
+P（D｜C）はP（D｜C）と P（D｜not C）という2つのパラメータです
+このプログラムを走らせるとxは0で始まります
+このループはTrueが真の間はxを加算し続けます
+xは1、2、3...
+そして絶対にこのprint文にはたどり着きません
+このwhileループに留まり続けるのです
+できの悪いPythonインタプリタなら 例外を発生させるかもしれませんが本来は違います
+もし誰かがJavaScriptで Webページの中に書いていたとしたら
+私たちのWebブラウザも永遠にループしてしまい
+Webページの表示ができなくなってしまいます
+スコットランドのAdam Smithという哲学者の言葉です。
+これは、The Wealth of Nationsという
+Adam Smithによって、影響されていると言えます。
+例えば、Adam Smithの考えから発足します。
+１９００代に、Aflred Knopfによって、
+Lawrence J.
+"経済学者は、昨日予測したことが今日起こらなかったことをs
+0．12÷0．36は12÷36と同じなので
+0．04÷0．36は4÷36と同じで
+それぞれのセルの確率はiで iの範囲は1から5までです
+Xiの事後分布と呼ぶこともあります
+従ってa3での値を再帰的にb3に用いることで
+1つ目は ∃x，y x＝y
+2つ目は （∃x x＝x）⇒（∀y ∃z y＝z）
+3つ目は ∀x p（x）∨￢p（x）
+4つ目は ∃x p（x）です
+Marciaが議長に選ばれ、
+Sabitaが副議長、Robertが書記に選ばれる確率はなんでしょう？
+では、Marciaの確率を考えましょう。
+議長がMarciaで
+副議長がSabitaで
+書記はRobertです。
+なので、Marciaが議長に選ばれて、
+Sabitaが副議長に、Robertが書記に選ばれる確率は、
+Danish Twin Studyと呼ばれる研究によれば
+１兆（Trillion）のTです 国債で出てくる単位です
+最初のブルーゾーンは、イタリアの海岸から200kmほど
+つまりnotamusicaというデュラム小麦で作った
+東京から南へ1200km
+原点と3方向のベクトル x座標、y座標、z座標を用います
+x軸に沿って2、y軸に沿って3 z軸に沿って4の位置にあります
+変数nanodistanceを使って1ナノ秒に光が進む距離を
+メートルで出すPythonコードを書いてください
+変数speed＿of＿lightで光の速さを出します
+2つ目の変数はnano＿per＿secondです 1秒間に10ナノ秒あります
+変数nanodistanceに代入するコードを書いてください
+このコードを実行しnanodistanceの値を表示させると 0．2998になるはずです
+Ashは過去の歴史の化身であり
+Shurikenで敵を見付けざまに投てき刃を放ち撃破します
+Smoke Screenは煙幕でAshの姿を瞬時に消し 周りの敵の目をくらましてスタンさせます
+Teleportで敵の目の前に瞬間移動し接近戦へと持ち込めます
+Blade Stormは範囲内の敵と敵との間を瞬間移動しつつ 致命的なダメージを与えていきます
+Ashの隠密戦術を更に強化することが可能です
+アビリティ威力MODでShurikenと Blade Stormが増強します
+さらに範囲MODでAshが持つ全アビリティが効率化します
+Ashは忍びの者ですが、彼の行動は皆に影響します
+再セグメント化市場の例としてSouthwestが挙げられます
+従来のハブ&amp;スポーク･モデルで 航空業界に参入し
+"a"＊１０の累乗で
+"a"は１以上、１０未満の数で
+これは、５x３ではないということです。
+５X３は、５x５x５とは違います。
+５x３は５＋５＋５です。
+５x３は１５ですね。
+３回乗算し、 ５x５＝２５で、２５x５＝１２５
+５x５x５＝１２５です。
+二次元の時にxとxドットで表していた 古い信念や状態を使うということです
+xドットは速度でxは位置です
+この部分をx′、xドット プライムと呼びます
+ここに何を入れればx"とxドット プライムの 適切な値を求められるでしょうか
+x"は古い位置を基に計算されると考えられます
+つまり時間経過のdtに速度を掛けるのです
+x"に関することなので まずは上段を考えていきます
+xを残したいのでここに1を入れます
+xドットにdtを掛けたいのでdtをここに入れます
+今と同じ要領でxドット プライムと 行列の2行目を考えてみます
+xには何もしないので0をここに入れます
+xドットは残しておきたいので1をここに置きます
+今回はxとxドットだけでなくy座標もあります
+中国のエントリを得るためには countriesの1番目の要素
+Ambulance Access for Allと名付けた
+１つはEducation Access for Allで、
+もう１つはNoksha-Yug Acceesで、
+1-800-Fight-Bribes や
+www.stopbribes.org や
+www.preventcorruption.org のような。
+worldと呼ばれる変数を紹介しましょう
+観測更新のsenseと呼ばれる関数を 定義できますか？
+pHitやpMissに相当します
+sense（p，Z）で先ほどと同様の 出力のベクトルが得られると期待しますが
+この関数は任意のpやZ、赤や緑に対応し
+ノードがn個のハイパーキューブにおけるエッジの数は?
+脳はゼリーの塊で 重さは1.4kgくらい
+こちらはMozillaの スティーブ・フィンクさんです
+実は最近 Firefoxブラウザが 定期的に一瞬止まるという
+私はPerlや正規表現といった 普段使いのツールを引き出し
+それらすべてに存在するはずの Runメソッドを探すスクリプトなどです
+Penultimate のベンです
+Penultimateは最近Evernoteの一員になりました
+拡張機能は無料のEvernoteアカウントを作成するか
+EvernoteアカウントなしでもPenultimateは使えますが
+Penultimateノートブック1個に大量のデータを保存する人は
+Evernoteの同期容量制限の影響があるかもしれません
+同期も検索もできずiPadにのみ保存されます
+DropBoxやiTunes、PENファイル形式などは
+HTTPSの「S」が表す 安全（Secure）性は
+Gmailはデフォルトで HTTPS接続を使用します
+&lt;i&gt;第1話 ～後編～
+&lt;i&gt;マノキン
+今日は人気歌手 Take One イ・テイクさんが 遊びにやって来ました
+kパーセンタイルとはk％の位置にある値のことです
+kは片側にも両側にも適用することができます
+2n未満のコンビネーションロックは Θ(n)になります
+チェーンに連結するためにn-1をリンクし
+残りにn-2をリンクするので 2n-3の合計はΘ(n)になります
+すべてのnがnより大きい場合
+∀nがnより大きい場合 C2gn
+Everyday, Everyday, Everyday
+本物そっくりに自動調整された 35mmなんとか
+錯覚の科学 ハーバード大学特別実験 Simons&amp;amp;Chabris(1999)
+このビデオは、ハーバード大 学で行われた「錯覚」に関す る実験です 1999, Daniel J.
+Simons all rights reserved.
+DVDは、以下のサイトから 購入できます www.viscog.com
+詳しくは、『錯覚の科学』(文藝 春秋刊)、および著者特設ペー ジをご覧ください www.theinvisiblegorilla.com
+働きかけていることは 削減(Reduce)
+再利用(Reuse) リサイクル(Recycle)の
+拒否(Refuse)です
+女の子の全数は、 5 x 7です。
+g人 の女の子を追加した後の比率は、
+だから g は 5 に等しくなります。
+g は 5 に等しいです。
+10＊ x＾２＋ 12 x ＋20 が分子で、
+x＾３−８が分母です。
+（x−２）が因子です。
+だから、書き換えると、 １０＊x＾２＋１２x＋２０が分子で、
+（x−２）掛ける何かが分母です。
+本質的に、（x−２）はx＾３−８に
+では、x−２はx＾３に
+xの2乗が入り、この項に
+xの2乗を置きます。x−２にxの2乗を掛けると、
+x＾３−２x＾２で、
+−２x＾２があります。
+２x＾２−８が残ります。
+何回、 x ー2 は２x＾２−８に入りますか。
+xは２X＾２に、２xはいります。
+つまり、ここは、２x（x−２）で、２x＾２−４xです。
+４x−８が残ります。
+４x−８に、x−２は、４回はいります。残りはありません。
+x＾３−８の因子だったことを確認します。
+（x＾２＋２x＋４）（x−２）は
+１０x＾２＋１２x＋２０が分子で、
+分母は、（x−２）（x＾２＋２x＋４）です。
+これまでは、x＾３−８の因数分解をしました。
+これは、定数をこの分母、x−２で割ったものと
+xの項が、何かの係数掛けるxの項＋c
+つまり、Bx＋cをこれで割ったものです。
+x＾２＋２x＋４が分母です。
+bx＋cです。cが０次の項です。
+１０＊x＾２＋１２x＋２０／（x−２）（x＾２＋２x＋４）は
+共通分母は、（x−２）を
+（x＾２＋２x＋４）で掛け、つまり、この２つを掛けます。
+分子は、A（x＾２＋２x＋４）＋（Bx＋C）（x−２）です。
+A（x＾２＋２x＋４）＋（Bx＋C）（x−２）です。
+分子が等しくなるので、１０x＾２＋１２x＋３０は
+A（x＾２＋２x＋４）＋（Bx＋C）（x−２）に
+これを簡素化するxを選びましょう。
+まず、xを選んで、２つの変数をキャンセルできます。
+どの数をxに代入すれば
+xを２とすると、これが０になります。
+Aと、２であるxが残ります。
+xは２に設定したからです。
+xが２だから、０です。
+他の どのようなx の値は、
+または、cが消えるでしょう。
+xを０にしてみましょう。
+Bx＋Cで、Bが消えるので、
+つまり、２０＝２８−２cです。
+両辺から２８を引き、−８＝ー２cで、
+c は 4 になります。
+１０x＾２＋１２x＋２０＝
+７（x＾２＋２x＋４）＋（Bx＋４）（x−２）です。
+xとBなので、Bが解けます。
+Bが消えないような、x の値を置き換えても
+ここでは、x が 0 は、選べません。
+xが１では、１０＋１２＋２０＝
+７／（２−x）＋（３x＋４）／（x＾２＋２x＋４）です。
+それではyの平均を計算すると6になります
+Ph.D.を取得する必要はありません
+通常のHTMLまたはJavaScriptコード内では ＜＞が書かれている箇所の認識が必要です
+JavaScriptの計算記号である 大なり小なり記号かもしれないからです
+ここで当然次のような疑問が出るでしょう 最終的にWebブラウザを書くために
+これらの排他的な状態を HTMLとJavaScriptにそれぞれ当てはめ
+1つはHTMLのために もう1つはJavaScriptのために といった具合です
+あるWebサーバからダウンロードした Webページ全体から始めます
+Webページの一部には JavaScriptが埋め込まれています
+今度はJavaScriptの字句解析で その部分の文字列をJavaScriptとして解釈します
+JavaScriptの字句解析を 作れないはずはありませんし
+iからjへの最短距離を探すのにk以下の値の
+1つは全くkを通過しなくてもよいケースです
+kより小さい値のノードしか通過しなくていい場合です
+もう1つはkを経由してjへと移動するケースです
+kに行く途中にkを通るのはいいパスとは言えません
+iからkへのパスではkより小さい値のノードを通り kからjへのパスでも
+kより小さい値のノードを通るのが合理的です
+kを2回通過したくはありません
+kより大きな値のノードは使えませんから
+iからkを通過してjへの最短経路とiからjへの最短経路の
+k以下の値のノードを利用した最短経路になります
+行列Dkがすでに用意されていたので
+kより小さい値だけを用いたiからkの 最短経路の長さはすでに
+必要なのはkを通過しなかった場合と
+kを通過した場合の比較です
+まずD⁰を初期化します これはiからjへの最短の長さです
+iからjへ行くコストしかかかりません
+D⁰の初期化が終ればkを0からn-1まで
+iとjのペアについてDk+1をDk[i,j]と
+Dk[i,k]とDk[i,j]を実行させます
+Dⁿ[i,j]はiからjへ至る最短の長さでnより小さい ノードだけを通過しています
+すべてのノードはnより小さいので
+番号は0からn-1までですから
+これがiからjへの最短距離です
+初期化はすべてのノードペアに対して 実行されるのでn²
+このループはすべてのノードn²に対して実行され その値は0からn-1なので
+n×n²またはn³となります
+ダイクストラ法をより密度の高いグラフに適用した時の n³/log nよりよい値です
+密度の高いグラフに関してはn³/log nよりも ワーシャル-フロイド法のn³がよさそうです
+log nはそれほど大きくないですし
+checkRepでさらにすべきことは
+Learning English
+しかしPythonのプログラムでキャッチして エラーを知ることができます
+Pythonのキーワードであるtryを使って 重要なコードを守ることができます
+もしこの名でエラーが起こると Pythonの実行を止める代わりに
+except節に行き そこから実行を開始します
+このexcept文はこのブロックで エラーが発生した時のみ実行されます
+このコードは"hello"を出力したあと
+"didn't work"を出力し
+今回の例外であるproblemを出力します
+見たことがないかもしれませんがExceptionは
+このPythonコードでは"joseph"と "heller"を出力しようとしていますが
+その下で例外をキャッチし変数problemと名づけ
+そして"didn't work：we caught"と そのproblemを出力します
+従って これは"joseph"を出力したあと
+"heller"は出力されずに
+"didn't work：we caught 22"を出力します
+"catch－22"という言葉は英語の慣用句で
+S&amp;P、ムーディーズ等から引き下げられない限り、
+「ハードパス（Hard path）」は
+「ソフトパス（Soft path）」は
+250kWの太陽光発電プロジェクトは
+nを2倍にして更に粒度を上げる必要があります
+更に粒度を上げn=12とします
+minimum関数を設定しこの問題を改善します
+nが入力を上回らないようにしましょう
+この場合のnは8ですね
+これをよく見るとa、b、cの値が変化しないのに
+zを求める時に再度計算をしています
+しかしこの部分式をxと置き換えることができれば
+xを使って余計な計算を減らせます
+a、b、cの値が最後に見た時と 変わっていないからです
+この真ん中の文をb＝2に変えた場合
+同じようにxで置き換える最適化をしてしまうと
+xはa＋b＋cと等しくない可能性があります
+この時a＋b＋cの値をすでに計算済みで xに保存しているものだとします
+こうすることでa＋b＋cを見つけた時 xと置き換えることができます
+ここにb＝2とあります
+a＋b＋cはbの値を使っているので 最適化ができなくなります
+expに使われている変数のリストをすべて返します
+つまりa＋b＋cを与えると a、b、cのリストを返します
+DriveGripも SpeedStripも
+良い例は AirPixです
+AirPixにどんな情報を送っているかの様子です
+視覚障害者がAirPixで運転しています
+Rolex 24レースでのことです
+等式はΔx／f＝B／Zです
+この小さな三角形を組み合わせた Δxとfで表される三角形が
+Z＝（f／Δx）×B となります
+fとΔxを代入します 10×0．1で1になります
+Bを求めるには（Δx／f）×Zとなります
+Δxを代入して0．05／50で0．001 それに100を掛けて0．1になります
+fを求める式はf＝（Z／B）×Δxです
+Z／Bは10 それにΔxつまり0．1を掛けます 答えは1です
+最後にΔxを求めます 式は（B／Z）×fとなります
+B／Zは1／50 これにfの200を掛けると4となります
+新たなMendeley Minuteへようこそ。
+このエピソードでは、マイクロソフトWordを使った
+OpenOfficeプラグインもほぼ同様に機能します。
+「Tools（ツール）」をクリックし、ドロップダウンメニューから「Install MS Word plug-inn（MS Wordプラグインをインストール）」を選択します。
+OKをクリックし、Wordを起動させます。
+Wordの画面では、メニューバーの「Add-ins（アドイン）」をクリックします。
+これでMendeleyツールバーが見られるはずです。
+そして、Mendeleyツールバーの「Insert Citation（引用追加）」をクリックします。
+Mendeleyライブラリから追加したい文献を検索することのできるウィンドウが開きます。
+さらに文献を追加検索する事もできます。OKをクリックすればWordに記載されます。
+別の方法として、直接Mendeleyライブラリから
+「Go to Mendeley」ボタンをクリックするとMendeleyデスクトップが開きますので、
+「Send Citation to Word Processor」をクリックすると、
+Mendeleyがここでも役に立ちます。
+「Insert Bibliography」をクリックします。
+文章中にある全ての引用文献に対して、Mendeleyが自動的に参考文献一覧を作成します。
+Mendeley ツールバーのドロップダウンメニューをクリックし、
+前より 6m 高い位置に 再建されました
+40cm 以上の洪水に 見舞われた際 水没する箇所です
+ここに文字列hydrogenつまり水素と原子番号1 そしてcarbonつまり炭素と6があります
+hydrogenに関連する値をlookupすると 1を取得します
+そしてcarbonに関連する値をlookupすると 6を取得します
+ディクショナリ内にない値をlookupした場合 何が起きると思いますか？
+ではlithiumに関連した値をlookupしましょう
+要素がディクショナリ内にないと示されます ハッシュテーブルで定義したlookupとは異なります
+要素が存在しない時 Noneを返すようにlookupを定義しましたね
+要素がディクショナリ内にあるかどうか 確認するinを使用できます
+inの作用はリストで行ったinと同じです
+例えば要素のlithiumだったら
+ディクショナリ内にキーがある場合 Trueが返ってきます
+そうでなければFalseです 見てみましょう Falseですね
+lithiumを追加し3の値を与えます
+代入の左辺でlookupとして このようにelementsを使用すると
+つまりhashtable＿updateに相当し lithiumがキーで3が値です
+別の要素を追加してみましょう nitrogenを追加します
+nitrogenをlookupすると nitrogenに代入した値を取得します
+窒素であるnitrogenの原子番号は 7でなければなりません
+これもhashtable＿updateと同じです 新たなキー値は作成しません
+キーnitrogenはすでにあるからです ただし値は更新します
+これでnitrogenに関連する値が7になります
+YouTubeは私を検閲しようとしてるし 私のチャンネル名へ刺客が二人も
+セス・アストラからです SES Astra
+プレスTV ヒスボラtvやイラン発の アラビア語テレビ アルアランなど...
+プレスTVサイトpresstv.comに 署名があります
+ありがとうございました ♥PressTV.comから署名お願いします♥
+Evernote Helloで名刺の情報をすばやく楽に保存
+デバイスを斜めに構えるとHelloが自動的に撮影
+LinkedInやFacebookにログインして情報を取り込めば
+協力してくれるのは、友人の Sasha と Linxi
+自分の命ですることは 贈り物を返すことだ -Edo
+オンラインで本が読めます sacred-economics.com
+この道の彼方 約束されたはずの Kono michi no kanata yakusoku sa reta hazu no
+場所があると 信じて行きたい Basho ga aru to shinjite ikitai
+もう一度 孤独の火をつけて Mōichido kodoku ni hi o tsukete
+街角に立ち わずかひとさじの Machikado ni tachi wazuka hito saji no
+慰めにも 心震わせて Nagusame ni mo kokoro furuwasete
+君の痛みと 彼女の寂しさ Kimi no itami to kanojo no sabishisa
+寄り添うように 時を重ねる Yorisou yō ni toki o kasaneru
+二人を救うはずだった夜は Futari o sukuu hazudatta yoru wa
+躰と心 引き裂いただけ Karada to kokoro hikisaita dake
+愛があると 信じて行きなよ Ai ga aru to shinjite iki na yo
+もう一度 孤独に火をつけて Mōichido kodoku ni hi o tsukete
+鍵を下した 部屋の冷たさに Kagi o kudashita heya no tsumeta-sa ni
+レコードをかけ TVつけても Rekōdo o kake TV tsukete mo
+聴こえる音は 自分の胸を打ちつづける Kikoeru oto wa jibun no mune o uchi tsudzukeru
+むなしい 鼓動 Munashī kodō
+今夜 誰も聴くことのないメロディー Kon'ya dare mo kiku koto no nai merodī
+誰もが ひとり歌っている Daremoga hitori utatte iru
+http://www.andromedacouncil.com Tolecさん http://www.silverlegion.org (シルバー軍) Tanaathさん
+サーバとは基本的にはwebアプリケーションを 使うためのWebサーバを指しますが
+Webサーバがサーバ自体を動かすための プログラムを指す場合や
+装置自体であったりWebアプリケーションのために 稼働する装置を指すのと同じです
+例えばRedditというWebサイトがリクエストされると トップページを表示するためのリンクを
+情報はデータベースから Webアプリケーションに送られます
+より小さい(&lt;)かより大きい(&gt;)の記号を この小さなかっこ([])に書いて正しい文を書きなさい．
+"Temple Grandin"という映画です
+"Thinking in Pictures"という本を書くために
+ご興味があればYouTubeに上げてあります
+私はWolframで得た情報や
+そもそも、薬(Drug)とは何でしょうか。
+DrugとMedicineの違いとは何でしょう。 Medicineとは一種のDrugです。
+薬理学とはDrugとMedicineの研究です。
+relevant 標的の概念とは何でしょう。
+最短経路の長さを割り出すには Θ(n+m)と分かっています
+つまりΘ(n(n+m))なのでΘ(n²+nm)となります
+4 x ＋3 は−１以下です。
+それでは、これを満たす x のすべてを見つけます。
+だから、左側に４xが残ります。
+x は −４／ー４ 未満、つまりー 1 です。
+x がー 1 未満です。
+ー1から負の無限大が可能なすべての xです。
+5 x ＞ 8 x ＋ 27です。
+それでは左側に すべてのx を置くようにしましょう。
+最もよい方法は、両側から 8xを引きます。
+だからあなたは両側から 8 x を減算します。
+左側は５x−８x になります。
+この 8 x はキャンセルし、右に 27 が残っています。
+ー3 x が 27 より大きいです。
+xは、２７／ー３より小さいで、
+8 xー 5 ＊（4 x＋１）は
+−１＋２＊（４x−３）以上です。
+ー5 ＊ 4 x ＝ー20 x です。
+2 ＊４xは８xで、
+−７＋８x以上です。
+すべてのxの項を左側に移します。
+両側から 8 x を減算します。
+8 x を減算すると
+この左側に−１２x−８xで
+それはー 20 xです。
+−２０x−５が得られます。
+右側に、8 x −８xで
+左側にー 20 x が残っています。
+xは 2/20 以下、つまり 1/10 以下です。
+Happy Birthday!
+Happy Birthday! to you
+3 2 1 Ready?
+dejitaru no toiki no utahime ga mezameta toki ni
+umareru ongaku no kazu wa shukufuku no messeeji
+kimi ni aitai (sugu ni, sugu ni)
+soba ni itai na (itsumo, itsumo)
+nani ga suki nano?
+(What do you love?
+What do you love?)
+omoi ga todoku koto inotteru
+hajimete kimi no koe no ne kiite
+sekai ga kawaru Happy Birthday!
+chiisai koro ni yume de miteita
+enjeru ni omedetou (omedetou)
+toki niwa boku ga kodoku de itemo
+kimi ga iru kara miku sankyuu
+tsunagaru yo kimi wo sukina nakama to
+hitotsu ni naru kimochi to You
+ikusen no toki koete hito wa kimi to deau
+sasayaka de gomen ne kono uta ga perezento
+mata atarashii rekishi wo ayumu
+hajimete boku no kotoba kanade
+kokoro ga hiraku miku sankyuu (sankyuu)
+namida no emerarudo to You
+ここに100μgの白い粉があります
+Thinking Machinesの設計者は、設計を_
+すべてRME Fireface UCXを使用して iPadにトラック別に録音されています
+RME Fireface UCX
+こんにちは B&amp;Hのロブです
+これはFireface UCXです RME伝統の 傑出したインターフェイスを継承し
+Fireface UCXは 18入力と18出力を搭載し
+FW400かUSB端子で MacやWindowsと接続できます
+TotalMix FXミキサー等 一流のインターフェイスの機能群を備えます
+さらに マルチトラック録音をiPadで行えます
+私の声も小型マイクで iPadに録音しています
+デジタル・クロック技術のSteadyClockは ジッターを抑制し 安定した同期を実現
+SyncAlignとSyncCheckは サンプルの整合と 入力チャンネルの同期
+わずか32サンプルのバッファーで Logic上で問題なく動作しました
+マイク入力のプリアンプは RMEのMicstasyの技術を採用
+24 bit / 192 kHzに対応し 驚くべき品質の録音を実現します
+ライン信号やギター ベース等の Hi-Z入力にも対応
+さらにリアにはFireWireとUSB端子 電源端子 オン/オフ・スイッチ
+レベル調整は TotalMix FXミキサーや リモートを使用しますが
+本体をスタンドアローンや iPadで使用する場合は
+本体とは別の RME Babyfaceに似たデザインのリモート・オプションは
+リモートにBabyfaceのLEDメーターが 無いのは少し残念でしたが
+しかしTotalMix FXやDAWで レベルをいつでも確認できます
+また RME DigiCheckソフトウェアを使えば より高度なメータリングが可能です
+そこで Fireface UCXのすばらしい機能である TotalMix FXを紹介します
+レイテンシー・フリーでダイレクト・モニタリングやルーティングが行えるTotalMixは
+コンプレッサーとEQ以外にも AutoSetオプションがあります
+オンにすると 入力レベルを自動調整し 6 dBのヘッドルームを確保します
+さらに クラス・コンプライアント・モードで iPadでも利用できます
+iOS対応の製品は他にもあります
+しかしFireface UCXは全く新しい製品で 8トラック同時にiPadに録音できます
+これでお好みのAppに録音できます
+GarageBandでも快適に動作しました
+しかしGarageBandは 現時点でモノまたはステレオの 1チャンネルにしか録音できません
+Harmanic Dogs DAW Appを ダウンロードしました
+確かに ハイエンドな マルチトラック録音をiPadで行えました
+最大96 kHzでiPadに録音可能です 素晴らしいですね
+アナログ入力とは別に デジタルやMIDIもiPadに録音できます
+いくつかの制限もあり 例えば iPadからTotalMix FXを制御できません
+しかし TotalMixのルーティングやエフェクト設定を
+TotalMix FXの設定を本体に保存し
+私たちはLogicでしたが 他にも様々なDAWで使用できます
+Pro Tools、Ableton Live、Cubase、Reason、 その他多数
+以上Fireface UCXの概要でした
+SteadyClock TotalMix FX等 傑出した性能を誇ります
+スタジオ品質のマルチレコーディングを iPadで実現します
+B&amp;Hのロブでした ご覧いただき ありがとうございます
+memcachedに入れる作業はうまくいきましたが
+ユーザは自分のthingリストを持っていて
+リスト中の各redditには さまざまな種類のページがあります
+ジョブとはRedditのトップページや ユーザのお気に入りページや
+ジョブ処理の結果はmemcachedに格納されます
+皆さんが見るRedditのページは memcachedから持ってきているのです
+Reddit上ではデータベースの直接操作はできません
+しかしリアルタイムデータは memcachedから出されます
+Redditのすべてのリストは事前計算されて memcachedに格納されます
+以前はRedditのトップページから次々に
+It's easy to learn and actually fun to do.
+While you watch the video, type everything people say and all important text that appears on-screen.
+最初のxの式が0で 次のyの式も0となります
+まず状態の集合Sがあります ここにはスタートの状態のs₀も含まれます
+Actions関数によって その状態で可能な行為が与えられます
+Result（s，a）→s"となります
+U（s，p）→number となります
+シンプルなゲームではそのnumber（数値）は 勝ち負けつまり1やゼロといったものになります
+最後にaの計算方法を説明します
+簡単な公式です 考え方としては bはもう分かっています
+すべての線形の関数について y＝bx＋aであることも知っています
+ここでxの平均とyの平均を代入しても
+ここからaを導きます a＝（yバー）－（bxバー） これがaの公式です
+これがbの公式でaの公式も分かりました すばらしいです
+では公式に代入してaの値を求めましょう
+これらの平均を公式に代入し bの値を使って
+aの値を答えてください
+ある朝、グレゴールSamsaは心配の夢から目覚めていたとして、彼はその年に発見
+外 - Samsaは巡回セールスマンだったが - 彼が外にカットしていた画像をハング
+別の5〜6年 - I'llは確かにそれを行う。
+積極的に言葉を残したirrepressibly痛み鳴き、、下から
+最終的に他のすべては、その間に、彼はこの肢with何を望むかやって成功した
+ない恐怖場合とそれは恐らく他に少なくとも懸念し、、arouseなる
+朝、ミスターSamsa。"
+彼は透かしで彼自身忙しいのにはかなり転用をIt'sa。
+行動。 "氏Samsaは、"マネージャーは今、叫んでいた
+あなたは、あなたの部屋に身をbarricadingのみyesとnoで応答、作っているされています
+氏Samsa、そしてそのようなことはしてはなりません。"
+グレゴールは、すぐに彼は、彼が言っていたものをほとんど認識して、すべてこれをblurtingしている間
+二人の若い女性は既にswishingスカートとホールを介して実行されていました - どのように
+自由は、彼の手剣onで、彼のベアリングと制服の尊重を要求した。
+彼は椅子の彼の帽子と外套withの後ろに残っていた。
+ウィンドウの周りに飛んで、テーブルの上に新聞がswished、および個々のシート
+場合にのみ、彼の父は耐えられないのでhissedていなかった！
+はるかに彼の部屋のインテリアに、深刻な出血、scurried。
+彼は、まだ彼の触手withぎこちなく手探り、ドアに向かって徐々に自分自身をプッシュ
+ボウルに白の小さな断片を泳いでいる、sweetenedミルクでいっぱい、そこに立っていた
+half無意識の変わり目と共にはなく、わずかな恥なしで彼が下scurried
+Gregor'sとして - これに、彼女はいくつかの水を注ぎいた。
+ほとんど眠って、そして彼はソファの下に再び戻ってscurried。
+部屋から隣を扱う、とすぐに彼は声を聞いたように、彼はすぐにscurried
+何よりも、いくつかのささやかなenjoymentsに参加していると、家の周りに助け、
+彼の母は興奮し喜びの叫びwithグレゴールの部屋に接近したが、彼女は黙り込んだ
+そしてそう彼女は彼女自身が彼女の母、インによって彼女の決定からdissuadedさせなかった
+この部屋は、彼女の薄いagitationの彼女自身の不確かなようで、すぐに静かに保た
+怖がって、グレゴールは、ソファの反対側に後方右側scurried、しかし、彼は可能性
+彼はすぐにそれをかけてscurriedし、それを保有するガラスに対して自分自身を押す
+彼は彼の妹いくつかのアドバイスを与えることができるかのように、彼はまた、、隣の部屋にscurried
+様々な小さなボトルの中で約rummaged。
+そしてその彼が、、離れて彼の父親からscurried彼の父が立って残った時停止
+彼の父が単に攪拌するときに、もう一度前方にscampered。
+彼は今のところすべて彼のエネルギーを収集するためにこのように周りの千鳥As
+この事業では、touchinessではどのは彼女に非常に新しいであり、それはいた
+とグレゴールは、誰がドアを閉めて考えもしなかったことに怒り、すべてこの時点でhissedと
+ドアに亀裂 - だけでなく、自分の部屋で、整頓on細心の注意を払って意図した
+グレゴールが蓄積を通じて自分の道をsquirmed場合を除き、最初のスローを見上げ終了
+既に来てしまった - ？と引数をbrookedしなかったでしょう。
+"氏Samsaは、"発話することなく、父親に中間の下宿人を呼び、
+彼らのひげでagitatedly引っ張られ、非常にゆっくりと自分の部屋に向かって戻りました。
+それでも正常に呼吸が不可能だった母は、、numbly咳し始めた
+それは全くsnuffed、そこに嘘をついてる！"
+Samsa夫婦は、結婚のベッドで直立座っ以上取得しなければならなかった
+しかし、その後夫妻Samsaは、ベッドのうち、非常に迅速にどちらかの側に1つを登った。
+氏Samsaは彼の肩にベッドカバーを投げた、夫人Samsaは彼女だけで出てきた
+"デッド？"、夫人Samsaは言ったと清掃の女性で、いぶかしく思って見
+夫人Samsaは、彼女はほうきを抑制することを望んだかのように運動をしたが、それをしなかった。
+"まあ、"氏Samsaは、"今、私たちは神に感謝を与えることができる"と述べた。
+"グレーテは、一瞬のために私達に来て、"夫人Samsaは、メランコリックな笑顔で言うと
+three下宿は、彼らの部屋からステップアウトし、それらの朝食のために周りを見回した
+その後、ベッドルームのドアが開いた、と氏Samsaは彼と、彼のユニフォームで登場
+"すぐに私のアパートから出て、"ミスターSamsaは言ったとすることなく、ドアを開いてプルダウン
+"私は私が言う、まさに意味する、"ミスターSamsaを答えた、彼の二人の女性と直接行きました
+"すべての権利は​​、次に我々は行くよ、"と彼は言ったと突然、まるで氏Samsaを見上げた
+氏Samsaは、単に彼の目を大きく開いてを繰り返し彼にうなずいた。
+そして今、彼らは氏Samsaが足を踏み入れることができることを恐れたかのように、彼の後にスマートに飛び乗った
+全く根拠のない不信感であることが判明したものの中に、氏Samsaは段付
+より深い彼らは進み、より多くのSamsaファミリは、それらに興味を失った、と
+Samsaは。、一緒に女性と、手すりを残し、それらはすべてかのように、返される
+とので、テーブルに座って、謝罪の三文字書きました：彼のために氏Samsaを
+スーパーバイザー、彼女のクライアントに夫人Samsa、そして彼女の所有者にグレーテ。
+怒って。 "ん？"氏Samsaは尋ねた。
+氏Samsaをイライラしていた彼女の帽子、ほぼ直立小さなダチョウの羽
+"すべての権利その後、あなたが本当に何をしたいか？"ミセ​​スSamsa、クリーニング女性は尋ねた
+それがすべての世話をしている。"ミセスSamsaとグレーテは、その下に曲がって
+クリーニングの女性がすべてを記述する開始しようとしていることに気づいた氏Samsa、
+"この夜、彼女が行くようになるだろう"と氏はSamsaは言ったが、彼はどちらの彼から答えを持っていない
+氏Samsaは、その方向に彼の椅子に振り向くと、静かにそれらを観察
+彼らは自分たちで座っている車は完全に暖かいによって巻き込まwas
+彼らはこの方法で自分自身を楽しませながら、それがほとんどで、夫妻Samsaを打った
+MVPとはWebの分野なら 3次元画像やPowerPointの資料のこともあるし
+"スティーブ･ジョブスは客と話さずに iPhoneを作ったはず"
+Gmailのユーザーエクスペリエンス デザイナーのJason Cornwellです
+Gmailのデザインが新しくなりました その大きな改善点をいくつか
+まずGmailのデザインを一新し 簡潔でわかりやすくしました
+また新しいGmailでは ウィンドウのサイズに合わせて
+検索はGmailの重要な機能です 新しくなった検索ボックスでは簡単に
+新しいGmailをご紹介できて嬉しく思います 新しくなったデザインをぜひ
+時間t＝0、各座標の3つの変数は0、0、0とします
+v＝10、ω＝π／8 これは22．5度です
+x、y、θはどうなるでしょうか？
+これまで2つのメソッドを使ってきました addFriendとunFriendでしたね
+友人を表示させるメソッドの publicインターフェースは何でしょう？
+たとえば "implacable" (執念深い) という形容詞や
+"proliferate" (増殖する) という動詞
+"crony" (旧友) という名詞に
+"-ity" や "-tion" や "-ism" といった接尾辞をつけてみましょう
+"Implacability" (執念深さ) "proliferation" (増加) "cronyism" (えこひいき)
+とても優秀なオープンソースの検索エンジン ht：／／Digのプロジェクトで使われました
+例えばここにはcがどんな発音か書かれています
+英語ではcはあいまいな文字です
+ここにはx、ch、s、kといったcの発音も含め
+ここにはi、eまたはyを含む文脈において cはsのように発音すると書かれています
+aとoなどの他の母音は？
+2 Xy で割った値に等しいです。
+これを y／xの関数に
+では、まず、xの2乗で割ってみましょう。
+分子は、１＋３y＾２／x＾２
+分母は、２y／xです。
+つまり、分子は、１＋３（y／x）＾２で、
+y／xの関数に変換できます。
+これを、 v と置換します。
+v＝y／xの置換を行います。
+つまり、y＝vxです。
+xに対するyの微分は
+v＋x＊dv／dxです。
+次に、元の方程式のdy／dxを
+y／xをvで置換します。
+dv／dxの代わりにv"を使用し
+＝（１＋３v＾２）／２v
+v の分離形方程式までを簡素化します。
+それではこの方程式の両側を 2 v で乗算します。
+従って ２v＾２＋２xv"
+＝１＋３v＾２です。
+いいですか？ ２v＾２を両辺から引きます。
+残るのは、 2xv v " ＝１＋v＾２
+３v＾２から２v＾２を引くと、v＾２が残ります。
+２xvv"／（１＋v＾２）＝１です。
+xを右側に移行します。
+つまり、２vv"（１＋v＾２）＝１／x
+ここで、v"を dv ／dx に書き直します。
+２xv＊dv／dx／（１＋v＾２）＝１／xです。
+両辺をdxで掛けると
+両側 dx によって乗算します。
+２v／（１＋v＾２）＊dv＝１／x＊dxです。
+これは、v および x の分離形方程式です。
+この関数、（１＋v＾２）
+例えば、u=1/vとして
+不定積分は、 u の自然対数です。
+（１＋v＾２）の自然対数です。
+これは、１もvの2乗も正数なので、
+これが、 １／x または 1／ u だった場合、
+x の絶対値の自然対数です。
+ここに、＋cを加えますが、
+任意の定数 cなので、
+ln （１＋v＾２）は
+cx の絶対値の自然対数とできます。
+１＋v＾２＝cxと言えます。
+v＝y／xとしたので、
+１＋（y／x）＾２＝cxが得られます。
+両側をx＾２で乗算します。
+これを、y＾２／x＾２と書き換えます。
+両側をx＾２で乗算し、
+x＾２＋y＾２＝cx＾３が得られます。
+x＾２＋y＾２ーcx＾３＝０
+(android) あーもー何度 同じ話を すればいいか わかんないなー
+(android) いや 駄目だよ
+(android) いや駄目 駄目 おまえは僕じゃないんだ
+(android) いやそうじゃないよ
+(android) おまえは アンドロイドになりたいのか?
+それで Hugvieっていう もっと簡単なやつを作りました
+スマホを Hugvie の頭に入れて 抱き締めなが喋ると
+昨年のTEDxSeedsでは
+(android) 今日の聴衆は 全員アンドロイドだったよな
+(android) アンドロイドの前で喋るの 嫌じゃないの?
+(android) 人間の前で喋る方が いいだろう?
+(android) そりゃまぁわかるな
+(android) 雨にも負けず 風にも負けず
+日本語字幕 By: shoさん
+あーごめんねみんな、Duty calls(任務）だわ
+私はAutodeskのギャラリーに来ています
+こちらデイビッド･ラーソンは ゲーム開発者用の製品Beastの主任開発者です
+Illuminate Labsという会社でした
+それでビジネスが拡大してAutodeskに買収されました
+アップルは中国にiPhoneを販売し
+中国のApp Storeに対し検閲を行いました
+ドイツのニュース雑誌 Stern の
+Facebook帝国の皇帝の力が必要になるんです
+昼の顔はGoogleのエジプト幹部
+夜の顔はFacebookの地下活動家だった
+特定のFacebookのページや
+実際 Twitterで
+WikiLeaksへの対応方法について非常に関心をもっています
+Amazonウェブホスティングはアメリカ上院議員である
+ジョー・リーバーマンから届いた苦情によりWikileaksを顧客から抹消しました
+Wikileaksは起訴されておらず
+確実にFacebookが世界の大半を制覇していおり
+Facebookのサービス運営方針を
+Twitter 今はGoogle+や
+BaiduのCEOであるロビン・リーも
+このRospilと呼ばれるウェブサイトは
+RospilにYandex Moneyと呼ばれる
+Rospilに寄付をした人々が
+Yandex Moneyの関係者から
+Rospilへの寄付に関する
+従ってNvは常にゼロとなり クラスタ係数も常にゼロとなります
+あなたは自転車で毎分 5 分の 1 km 進むことができます (訳注: 原文は mile ですが日本語訳は km としました)
+友達は何 km 離れて住んでいますか?
+あなたは自転車で毎分 5 分の 1 km進むことができます．
+ですから友達はあなたの家から3分の2 km のところに住んでいます．
+ここの条件は変数tagが設定できないはずです
+変数tagがFalseだったに違いないと推理できます
+こちらのMars＝earth＋1には
+問題があります 特にearthに関してです
+Pythonは"earthは正体不明なので earth＋1をMarsに代入できない"という内容の
+こちらではMarsに4を代入しています
+その後 MarsにMars＋0つまり4を代入します エラーは起こりません
+そして最後の選択肢では文字列"Mars"に 整数の2を足しています
+座標にaと書きましょう。
+最初の x 座標を書きます。その x 座標は、
+b をやってみましょう。
+b の座標は、その x 座標は
+y 座標はどのように高い かで、6です。
+cをやってみましょう。
+x 座標は、ー 8 と読むことができます。
+y 座標は、原点から下に 2です。
+だからその y 座標は、ー 2 です。
+d、または座標 d または d 点です。
+点 d は、y 座標が４です。
+失礼、x 座標が 4 でした。
+どのくらい遠く下に行くかが y 座標で
+eのための素敵な色を使います。
+e、ここにあります。
+その x 座標は 5 です。
+その y 座標 - 原点から上または下、或はx軸上です。
+ここでは、y 座標は 0 です。
+任意の xに 2 つの値を定義できないことです。
+f（x）を書いた場合は、xが 5 に等しい、
+または x が 1 と等しい場合、それは 6 に等しいです。
+x が 1 の場合、y は 7 です。
+X が 2 の場合、 同様にy は 7 です。
+2 つのx値で、同じ y 値である可能性があります。
+たとえば、xが１と２で、f（x）が
+2 つの異なる x 値が同じ出力値を得ることができます。
+１つのx値で２つの異なる値を与えることはできません。
+f（１）と定義した際、
+f（１）が何か分からない場合です。
+f （１）は、5 ですか？あるいは 6 ですか？
+ここではf（１）は 7 です。
+ここではf（２）は 7 です。
+x が3 または 4 に等しい場合、８です、
+x が5 に等しい場合、関数は 9 と等しいです。
+a では、どれが完全に合法的な関数を
+x が 1 の場合、Y は 1 です。
+しかし、x が 1 の場合。、y がー 1 でもあります。
+x が 1 に等しい場合に 1 に等しくなるようにし、
+x が 1 に等しい場合に、また、−１に等しいとします。
+だからf（１）はどちらか分かりません。
+bは、関数ではありません。
+この小さな v のものがあります。
+f（x）と呼びましょう。
+g（x）またはh（x）と呼んでもいいです。
+しかし、よくf（x）が使用されます。
+だから見てみましょう、それが 1 つの線は x が
+0 とより大きいときで、xが０より小さいと、
+x が 0 より小さい場合です。
+xが 0で、y は 0 です。
+x が 2で、y は 1 です。
+x は 4 で、y は 2 です。
+xに、どんなにことが起こると、y が得られますか？
+x が 6 でy は 3 です。
+だから x が 0 より大きい場合は、 1/2 x に等しいです。
+x が 0 より小さい時は
+xがー 2で、y は 1 です。
+xがー4で、y は 2 です。
+だからxのー1/2 倍です。これは、x が 0 より小さい場合です。
+f（x）を、２つのドメインに、
+x の値の１/2 倍の絶対値を取ることができます。
+x の絶対値は x に等しいです。
+しかし、負数の x の絶対値では
+任意の x の値の場合で
+y の値を 1 つだけ持つものが関数です。
