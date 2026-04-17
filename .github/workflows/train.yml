@@ -311,29 +311,39 @@ jobs:
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          echo "Training with --append_index 6 (replace last LSTM + output)..."
+          echo "Training with --append_index 7 (replace output layer only)..."
           echo "  Base model: tessdata_best/$MODEL"
           echo "  New output: $NCHARS chars (includes ♪ ♫ ♩ ♬)"
-          echo "  LR 0.01 (high — escape CTC blank trap)"
+          echo "  LR 0.001 (standard fine-tune rate)"
           echo ""
 
-          # --append_index 6: replace last LSTM layer + output for more
-          #   trainable capacity than just the output softmax
-          # --learning_rate 0.01: high LR to escape the CTC all-blank
-          #   local minimum that trapped previous runs at BCER 100%
-          # No --net_mode: let all replaced layers train freely
+          # --append_index 7: replace only the final output layer. Keeps all
+          #   feature extraction + LSTM weights from the pretrained model,
+          #   only retrains a new softmax with room for the extra chars (♪).
+          #   Converges far faster than --append_index 6 which retrains 500k+
+          #   params from scratch.
+          # --learning_rate 0.001: standard fine-tune LR. Higher rates cause
+          #   instability when only the output head is trainable.
+          # `|| true` on the training call: Tesseract sometimes throws a
+          #   glibc pthread assertion at exit after writing final checkpoint.
+          #   The checkpoint is valid — do not fail the job on teardown noise.
           lstmtraining \
             --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
             --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
             --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-            --append_index 6 \
-            --net_spec "[Lfx512 O1c$NCHARS]" \
-            --learning_rate 0.01 \
+            --append_index 7 \
+            --net_spec "O1c$NCHARS" \
+            --learning_rate 0.001 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
             --train_listfile "$OUTPUT_DIR/list.train" \
             --eval_listfile "$OUTPUT_DIR/list.eval" \
             --max_iterations "$MAX_ITERATIONS" \
-            --target_error_rate 0.01
+            --target_error_rate 0.01 || {
+              rc=$?
+              echo "lstmtraining exited with code $rc (often harmless teardown crash)"
+              # Only fail if no checkpoint was written
+              find "$OUTPUT_DIR/checkpoints" -name "${MODEL}*.checkpoint" -print -quit | grep -q . || exit $rc
+            }
 
       - name: "Phase 3: Package traineddata"
         run: |
