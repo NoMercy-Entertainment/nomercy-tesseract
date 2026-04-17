@@ -32,17 +32,18 @@ from build_training_text import (
 )
 
 
-def fetch_corpus(lang: str, max_lines: int = 10000) -> list:
-    """Fetch subtitle corpus for a language. Returns list of cleaned lines with ♪ injected."""
+def fetch_corpus(lang: str, max_lines: int, held_out_count: int) -> tuple[list, list]:
+    """Fetch corpus. Returns (training_lines, held_out_lines)."""
     try:
         from fetch_subtitle_corpus import fetch_for_lang
-        return fetch_for_lang(lang, max_lines=max_lines)
+        return fetch_for_lang(lang, max_lines=max_lines,
+                              held_out_count=held_out_count)
     except ImportError:
         print(f"  WARNING: fetch_subtitle_corpus.py not found, skipping corpus", file=sys.stderr)
-        return []
+        return [], []
     except Exception as exc:
         print(f"  WARNING: corpus fetch failed for {lang}: {exc}", file=sys.stderr)
-        return []
+        return [], []
 
 
 def main() -> None:
@@ -59,8 +60,10 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=default_out,
                         metavar="DIR",
                         help="Output directory (default: training/generated/)")
-    parser.add_argument("--max-lines", type=int, default=10000,
-                        help="Max corpus lines per language (default: 10000)")
+    parser.add_argument("--max-lines", type=int, default=50000,
+                        help="Max corpus lines per language (default: 50000)")
+    parser.add_argument("--held-out-count", type=int, default=2000,
+                        help="Lines reserved for benchmark eval set (default: 2000)")
     parser.add_argument("--no-fetch", action="store_true",
                         help="Skip corpus download, use only LANG_SENTENCES")
     args = parser.parse_args()
@@ -93,21 +96,33 @@ def main() -> None:
 
     errors: list = []
 
+    held_out_dir = root / "training" / "held-out"
+    held_out_dir.mkdir(parents=True, exist_ok=True)
+
     for lang in target_langs:
         try:
             chars = get_chars_for_lang(lang, char_groups)
 
-            # Fetch corpus (unless disabled)
-            corpus_lines = []
+            corpus_lines: list = []
+            held_out_lines: list = []
             if not args.no_fetch:
-                corpus_lines = fetch_corpus(lang, max_lines=args.max_lines)
+                corpus_lines, held_out_lines = fetch_corpus(
+                    lang, max_lines=args.max_lines,
+                    held_out_count=args.held_out_count,
+                )
 
             txt_path = write_training_text(lang, chars, args.output_dir,
                                            corpus_lines=corpus_lines)
             write_fonts_file(lang, args.output_dir)
+
+            if held_out_lines:
+                (held_out_dir / f"{lang}.txt").write_text(
+                    "\n".join(held_out_lines) + "\n", encoding="utf-8")
+
             line_count = txt_path.read_text(encoding="utf-8").count("\n")
             fonts = get_fonts_for_lang(lang)
-            print(f"  {lang:<16} {len(corpus_lines):>7} {line_count:>7}   {', '.join(fonts)}")
+            print(f"  {lang:<16} {len(corpus_lines):>7} {line_count:>7}   "
+                  f"held_out={len(held_out_lines):>5}   {', '.join(fonts)}")
         except Exception as exc:
             print(f"  {lang:<16} ERROR: {exc}", file=sys.stderr)
             errors.append((lang, exc))

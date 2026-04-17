@@ -25,7 +25,7 @@ import unicodedata
 import urllib.error
 import urllib.request
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 # Allow running from any working directory — build_training_text lives here
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -448,42 +448,60 @@ def inject_music_notes(lines: List[str], target_ratio: float = 0.30, seed: int =
 
 # ── Per-language fetch pipeline ───────────────────────────────────────────────
 
+def split_held_out(
+    lines: List[str],
+    held_out_count: int,
+) -> Tuple[List[str], List[str]]:
+    """
+    Split a line list into (training, held_out) using the tail of the list
+    as held-out. Deterministic. If held_out_count exceeds half the corpus
+    size, the corpus is split 50/50 to keep a usable training set.
+    Returns (train_lines, held_out_lines).
+    """
+    if held_out_count <= 0 or not lines:
+        return list(lines), []
+    max_held = len(lines) // 2
+    held = min(held_out_count, max_held)
+    if held == 0:
+        return list(lines), []
+    return list(lines[:-held]), list(lines[-held:])
+
+
 def fetch_for_lang(
     tess_lang: str,
     max_lines: int,
     music_ratio: float = 0.30,
-) -> List[str]:
+    held_out_count: int = 0,
+) -> Tuple[List[str], List[str]]:
     """
-    Full pipeline for one Tesseract language code:
-      1. Resolve OPUS code
-      2. Download + decompress
-      3. Clean
-      4. Inject music notes
-    Returns final list of training lines (may be empty if OPUS has no data).
+    Full pipeline for one Tesseract language code. Returns
+    (training_lines, held_out_lines). held_out_lines is empty when
+    held_out_count <= 0.
     """
     opus_code = TESS_TO_OPUS.get(tess_lang)
 
     if opus_code is None:
         print(f"[{tess_lang}] No OPUS mapping — skipping download", file=sys.stderr)
-        return []
+        return [], []
 
-    print(f"[{tess_lang}] Fetching from OPUS sources ({opus_code}), cap {max_lines:,}...")
-    cleaned = stream_clean_lines(opus_code, max_lines)
+    effective_max = max_lines + held_out_count
+    print(f"[{tess_lang}] Fetching from OPUS sources ({opus_code}), "
+          f"cap {effective_max:,} ({held_out_count:,} held out)...")
+    cleaned = stream_clean_lines(opus_code, effective_max)
 
     if cleaned is None or len(cleaned) == 0:
         print(f"[{tess_lang}] No data from any OPUS source", file=sys.stderr)
-        return []
+        return [], []
 
     print(f"[{tess_lang}] {len(cleaned):,} clean lines total")
 
-    if not cleaned:
-        print(f"[{tess_lang}] WARNING: no usable lines after cleaning", file=sys.stderr)
-        return []
+    train_lines, held_out_lines = split_held_out(cleaned, held_out_count)
 
-    final = inject_music_notes(cleaned, target_ratio=music_ratio)
-    print(f"[{tess_lang}] {len(final):,} lines total (incl. music note variants)")
+    train_final = inject_music_notes(train_lines, target_ratio=music_ratio)
+    print(f"[{tess_lang}] {len(train_final):,} training lines "
+          f"(incl. music variants), {len(held_out_lines):,} held-out lines")
 
-    return final
+    return train_final, held_out_lines
 
 
 # ── Output helpers ────────────────────────────────────────────────────────────
@@ -584,7 +602,7 @@ def main() -> None:
     # Single language — write to stdout or --output file
     if not args.all:
         lang = langs[0]
-        lines = fetch_for_lang(lang, args.max_lines, args.music_ratio)
+        lines, _held = fetch_for_lang(lang, args.max_lines, args.music_ratio)
 
         if args.output:
             write_lines_to_file(lines, args.output)
@@ -605,7 +623,7 @@ def main() -> None:
     for lang in langs:
         print()
         try:
-            lines = fetch_for_lang(lang, args.max_lines, args.music_ratio)
+            lines, _held = fetch_for_lang(lang, args.max_lines, args.music_ratio)
             write_to_output_dir(lang, lines, args.output_dir)
         except Exception as exc:
             print(f"[{lang}] ERROR: {exc}", file=sys.stderr)
