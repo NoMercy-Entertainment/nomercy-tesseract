@@ -113,7 +113,7 @@ jobs:
           git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
 
       - name: Install Pillow
-        run: pip3 install --quiet Pillow
+        run: pip3 install --quiet --break-system-packages Pillow
 
       - name: Generate ground-truth with render_diverse (parallel)
         run: |
