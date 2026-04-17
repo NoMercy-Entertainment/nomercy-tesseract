@@ -32,11 +32,13 @@ from build_training_text import (
 )
 
 
-def fetch_corpus(lang: str, max_lines: int, held_out_count: int) -> tuple[list, list]:
+def fetch_corpus(lang: str, max_lines: int, held_out_count: int,
+                 music_ratio: float) -> tuple[list, list]:
     """Fetch corpus. Returns (training_lines, held_out_lines)."""
     try:
         from fetch_subtitle_corpus import fetch_for_lang
         return fetch_for_lang(lang, max_lines=max_lines,
+                              music_ratio=music_ratio,
                               held_out_count=held_out_count)
     except ImportError:
         print(f"  WARNING: fetch_subtitle_corpus.py not found, skipping corpus", file=sys.stderr)
@@ -64,6 +66,8 @@ def main() -> None:
                         help="Max corpus lines per language (default: 50000)")
     parser.add_argument("--held-out-count", type=int, default=2000,
                         help="Lines reserved for benchmark eval set (default: 2000)")
+    parser.add_argument("--music-ratio", type=float, default=0.0,
+                        help="Fraction of lines injected with ♪/♫ (default: 0 — disabled for plain fine-tune)")
     parser.add_argument("--no-fetch", action="store_true",
                         help="Skip corpus download, use only LANG_SENTENCES")
     args = parser.parse_args()
@@ -109,6 +113,7 @@ def main() -> None:
                 corpus_lines, held_out_lines = fetch_corpus(
                     lang, max_lines=args.max_lines,
                     held_out_count=args.held_out_count,
+                    music_ratio=args.music_ratio,
                 )
 
             txt_path = write_training_text(lang, chars, args.output_dir,

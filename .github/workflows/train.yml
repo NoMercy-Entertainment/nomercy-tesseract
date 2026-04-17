@@ -337,6 +337,7 @@ jobs:
       - name: "Phase 3: Package traineddata"
         run: |
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
+          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
           CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
           [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
           echo "Using checkpoint: $CHECKPOINT"
@@ -344,7 +345,7 @@ jobs:
           lstmtraining \
             --stop_training \
             --continue_from "$CHECKPOINT" \
-            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+            --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
             --model_output "tessdata/$LANG_CODE.traineddata"
 
           SIZE=$(wc -c < "tessdata/$LANG_CODE.traineddata")
