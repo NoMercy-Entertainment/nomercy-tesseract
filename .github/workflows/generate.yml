@@ -12,7 +12,7 @@ on:
       max_lines:
         description: "Max corpus lines per language"
         required: false
-        default: "10000"
+        default: "50000"
 
 jobs:
   generate:
