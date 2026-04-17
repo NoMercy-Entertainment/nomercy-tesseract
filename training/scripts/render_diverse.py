@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import argparse
 import io
+import os
 import random
+from multiprocessing import Pool, cpu_count
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -167,6 +169,19 @@ def render_line_variants(
     return stems
 
 
+def _render_worker(args: tuple) -> int:
+    idx, line, start_seed, out_dir_str, lang, fonts = args
+    stem_prefix = f"{lang}_{idx:06d}"
+    stems = render_line_variants(
+        line=line,
+        seed=start_seed + idx,
+        out_dir=Path(out_dir_str),
+        stem_prefix=stem_prefix,
+        fonts=fonts,
+    )
+    return len(stems)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Render a training_text file as diverse subtitle variants."
@@ -179,6 +194,8 @@ def main() -> None:
     parser.add_argument("--start-seed", type=int, default=0)
     parser.add_argument("--max-lines", type=int, default=0,
                         help="0 = no cap")
+    parser.add_argument("--workers", type=int, default=0,
+                        help="0 = auto (cpu_count)")
     args = parser.parse_args()
 
     fonts = [f for f in args.fonts_file.read_text().splitlines() if f]
@@ -189,17 +206,26 @@ def main() -> None:
     if args.max_lines > 0:
         lines = lines[:args.max_lines]
 
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir_str = str(args.out_dir)
+
+    workers = args.workers or cpu_count()
+    print(f"Rendering {len(lines)} lines with {workers} workers "
+          f"({VARIANTS_PER_LINE} variants each = ~{len(lines) * VARIANTS_PER_LINE:,} PNGs)...")
+
+    tasks = [
+        (idx, line, args.start_seed, out_dir_str, args.lang, fonts)
+        for idx, line in enumerate(lines)
+    ]
+
     total = 0
-    for idx, line in enumerate(lines):
-        stem_prefix = f"{args.lang}_{idx:06d}"
-        stems = render_line_variants(
-            line=line,
-            seed=args.start_seed + idx,
-            out_dir=args.out_dir,
-            stem_prefix=stem_prefix,
-            fonts=fonts,
-        )
-        total += len(stems)
+    report_every = max(1, len(tasks) // 20)
+    with Pool(processes=workers) as pool:
+        for i, count in enumerate(pool.imap_unordered(_render_worker, tasks, chunksize=32), 1):
+            total += count
+            if i % report_every == 0 or i == len(tasks):
+                print(f"  {i}/{len(tasks)} lines done ({total} variants)",
+                      flush=True)
 
     print(f"Rendered {total} variants from {len(lines)} lines")
 

@@ -138,7 +138,9 @@ jobs:
             --training-text "$TRAINING_TEXT" \
             --fonts-file "$FONTS_FILE" \
             --out-dir "$GT_DIR" \
-            --lang "$MODEL"
+            --lang "$MODEL" \
+            --max-lines 15000 \
+            --workers "$(nproc)"
 
           COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
           echo "Generated $COUNT ground-truth pairs for $MODEL"
