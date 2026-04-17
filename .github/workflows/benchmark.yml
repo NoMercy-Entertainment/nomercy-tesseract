@@ -1,0 +1,160 @@
+name: Benchmark OCR accuracy
+
+on:
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: "Comma-separated language codes (blank = all)"
+        required: false
+        default: ""
+      model_source:
+        description: "Which model to benchmark"
+        required: true
+        type: choice
+        options:
+          - tessdata_best
+          - current
+        default: tessdata_best
+      max_lines:
+        description: "Max held-out lines per language (0 = full)"
+        required: false
+        default: "500"
+
+concurrency:
+  group: tesseract-benchmark-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    runs-on: [self-hosted, beast-unit]
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build language matrix
+        id: matrix
+        shell: python3 {0}
+        run: |
+          import json, os
+          from pathlib import Path
+          override = "${{ github.event.inputs.languages }}".strip()
+          if override:
+              langs = [l.strip() for l in override.split(",") if l.strip()]
+          else:
+              skip = {"osd", "equ"}
+              langs = sorted(
+                  p.stem for p in Path("tessdata").glob("*.traineddata")
+                  if p.stem not in skip
+              )
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"value={json.dumps({'lang': langs})}\n")
+
+  bench:
+    needs: setup
+    runs-on: [self-hosted, beast-unit]
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+    env:
+      LANG_CODE: ${{ matrix.lang }}
+      MODEL_SOURCE: ${{ github.event.inputs.model_source || 'tessdata_best' }}
+      MAX_LINES: ${{ github.event.inputs.max_lines || '500' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            tesseract-ocr tesseract-ocr-all python3-pip \
+            fonts-noto fonts-noto-cjk fonts-dejavu fonts-liberation
+          pip3 install --quiet Pillow
+
+      - name: Resolve tessdata dir
+        run: |
+          if [ "$MODEL_SOURCE" = "tessdata_best" ]; then
+            BENCH_TESSDATA=/tmp/bench_tessdata
+            mkdir -p "$BENCH_TESSDATA"
+            wget -q -O "$BENCH_TESSDATA/${LANG_CODE}.traineddata" \
+              "https://github.com/tesseract-ocr/tessdata_best/raw/main/${LANG_CODE}.traineddata"
+          else
+            BENCH_TESSDATA=$(pwd)/tessdata
+          fi
+          echo "BENCH_TESSDATA=$BENCH_TESSDATA" >> $GITHUB_ENV
+
+      - name: Ensure held-out set exists
+        run: |
+          HELD_OUT=training/held-out/${LANG_CODE}.txt
+          if [ ! -f "$HELD_OUT" ]; then
+            echo "ERROR: held-out file missing: $HELD_OUT"
+            echo "Run generate workflow with --held-out-count first"
+            exit 1
+          fi
+
+      - name: Run benchmark
+        run: |
+          mkdir -p training/benchmark
+          python3 training/scripts/benchmark.py \
+            --lang "$LANG_CODE" \
+            --tessdata "$BENCH_TESSDATA" \
+            --held-out "training/held-out/${LANG_CODE}.txt" \
+            --render-dir "/tmp/bench_render_${LANG_CODE}" \
+            --model-tag "$MODEL_SOURCE" \
+            --output "training/benchmark/${LANG_CODE}_${MODEL_SOURCE}.json" \
+            --max-lines "$MAX_LINES"
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-${{ matrix.lang }}-${{ env.MODEL_SOURCE }}
+          path: training/benchmark/${{ matrix.lang }}_${{ env.MODEL_SOURCE }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Cleanup
+        if: always()
+        run: rm -rf /tmp/bench_render_${LANG_CODE} /tmp/bench_tessdata
+
+  aggregate:
+    needs: [setup, bench]
+    if: always()
+    runs-on: [self-hosted, beast-unit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all per-lang results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bench-*
+          path: artifacts/
+          merge-multiple: false
+
+      - name: Aggregate into baseline.json / current.json
+        shell: python3 {0}
+        run: |
+          import json, glob
+          from pathlib import Path
+
+          tag = "${{ github.event.inputs.model_source || 'tessdata_best' }}"
+          out_name = "baseline.json" if tag == "tessdata_best" else "current.json"
+          results = {}
+          for f in sorted(glob.glob("artifacts/bench-*/*.json")):
+              data = json.loads(Path(f).read_text())
+              results[data["lang"]] = data
+          Path("training/benchmark").mkdir(parents=True, exist_ok=True)
+          Path(f"training/benchmark/{out_name}").write_text(
+              json.dumps(results, indent=2, sort_keys=True), encoding="utf-8")
+          print(f"Wrote {len(results)} languages to {out_name}")
+
+      - name: Commit aggregated results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add training/benchmark/
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(benchmark): update scoreboard [skip ci]"
+          for attempt in 1 2 3; do
+            git pull --rebase origin master || true
+            if git push origin master; then break; fi
+            sleep $((attempt * 2))
+          done
