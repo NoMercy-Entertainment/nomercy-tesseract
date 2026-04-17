@@ -247,25 +247,28 @@ jobs:
 
           echo "Langdata and output dir prepared"
 
-      - name: "Phase 1: Build proto model + lstmf files"
+      - name: "Phase 1: Extract stock LSTM + generate lstmf files"
         run: |
           GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
+          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
           GT_FILES=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           echo "Starting: $GT_FILES ground-truth files, $MAX_ITERATIONS iterations"
-          echo "  Using --append_index to replace output layer (adds ♪ to existing model)"
+          echo "  Plain fine-tune — no unicharset extension, no --append_index"
           echo ""
 
           export TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata
           export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:${LD_LIBRARY_PATH:-}
           export PATH=$HOME/tesseract-install/bin:$PATH
           echo "Using tesseract: $(which tesseract)"
-          MAKE_ARGS="MODEL_NAME=$MODEL START_MODEL=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata PSM=13"
 
-          echo "Building proto model with extended unicharset..."
-          make -k -C /tmp/tesstrain proto-model $MAKE_ARGS || true
+          mkdir -p "$OUTPUT_DIR"
+          # Extract the LSTM component from stock tessdata_best for --continue_from
+          combine_tessdata -e "/tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata" \
+            "$OUTPUT_DIR/${MODEL}.lstm"
+          [ -s "$OUTPUT_DIR/${MODEL}.lstm" ] || { echo "ERROR: failed to extract stock LSTM"; exit 1; }
+          echo "Extracted stock LSTM: $(wc -c < "$OUTPUT_DIR/${MODEL}.lstm") bytes"
 
-          # Generate lstmf files via xargs — bypasses make's ARG_MAX limit on
-          # command-line target lists. Each invocation runs tesseract directly.
+          # Generate lstmf files via xargs (direct tesseract to bypass make ARG_MAX)
           NCPU=$(nproc)
           echo "Generating lstmf files ($NCPU parallel via xargs)..."
           find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" -print0 | \
@@ -281,8 +284,6 @@ jobs:
               tesseract "$IMG" "$STEM" --psm 13 lstm.train 2>/dev/null || true
             '
 
-          # Build train/eval lists from successful lstmf files
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
           find "$GT_DIR" -maxdepth 1 -name "*.lstmf" > "$OUTPUT_DIR/all-lstmf"
           TOTAL_LSTMF=$(wc -l < "$OUTPUT_DIR/all-lstmf")
           echo "Generated $TOTAL_LSTMF lstmf files"
@@ -299,41 +300,30 @@ jobs:
           echo "Training: $TRAIN_COUNT, Eval: $EVAL_COUNT"
           [ "$TRAIN_COUNT" -gt 0 ] || { echo "ERROR: no training files"; exit 1; }
 
-      - name: "Phase 2: LSTM training with --append_index"
+      - name: "Phase 2: LSTM fine-tune"
         run: |
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
           TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
 
-          # Read unicharset size from proto model
-          combine_tessdata -u "$OUTPUT_DIR/$MODEL.traineddata" "$OUTPUT_DIR/proto_"
-          NCHARS=$(head -1 "$OUTPUT_DIR/proto_.lstm-unicharset")
-          echo "Proto model unicharset: $NCHARS characters"
-
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          echo "Training with --append_index 7 (replace output layer only)..."
+          echo "Plain fine-tune (no --append_index) — preserve stock output layer..."
           echo "  Base model: tessdata_best/$MODEL"
-          echo "  New output: $NCHARS chars (includes ♪ ♫ ♩ ♬)"
-          echo "  LR 0.001 (standard fine-tune rate)"
+          echo "  Unicharset: stock (unchanged)"
+          echo "  LR 0.0001 (default fine-tune rate)"
           echo ""
 
-          # --append_index 7: replace only the final output layer. Keeps all
-          #   feature extraction + LSTM weights from the pretrained model,
-          #   only retrains a new softmax with room for the extra chars (♪).
-          #   Converges far faster than --append_index 6 which retrains 500k+
-          #   params from scratch.
-          # --learning_rate 0.001: standard fine-tune LR. Higher rates cause
-          #   instability when only the output head is trainable.
-          # `|| true` on the training call: Tesseract sometimes throws a
-          #   glibc pthread assertion at exit after writing final checkpoint.
+          # Plain fine-tuning (no --append_index):
+          #   Preserves the entire stock network including output layer.
+          #   Weights adjust slightly to improve accuracy on our diverse
+          #   subtitle-style rendering without destroying pretrained capability.
+          # `|| handler`: Tesseract occasionally throws a glibc pthread
+          #   assertion at process exit after writing the final checkpoint.
           #   The checkpoint is valid — do not fail the job on teardown noise.
           lstmtraining \
-            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
-            --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+            --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
             --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-            --append_index 7 \
-            --net_spec "O1c$NCHARS" \
-            --learning_rate 0.001 \
+            --learning_rate 0.0001 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
             --train_listfile "$OUTPUT_DIR/list.train" \
             --eval_listfile "$OUTPUT_DIR/list.eval" \
@@ -341,7 +331,6 @@ jobs:
             --target_error_rate 0.01 || {
               rc=$?
               echo "lstmtraining exited with code $rc (often harmless teardown crash)"
-              # Only fail if no checkpoint was written
               find "$OUTPUT_DIR/checkpoints" -name "${MODEL}*.checkpoint" -print -quit | grep -q . || exit $rc
             }
 
