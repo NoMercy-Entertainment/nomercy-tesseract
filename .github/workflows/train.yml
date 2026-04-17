@@ -142,7 +142,7 @@ jobs:
             --max-lines 15000 \
             --workers "$(nproc)"
 
-          COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           echo "Generated $COUNT ground-truth pairs for $MODEL"
           [ "$COUNT" -gt 0 ] || { echo "ERROR: no images generated for $MODEL"; exit 1; }
 
@@ -178,31 +178,37 @@ jobs:
       - name: Validate ground-truth pairs
         run: |
           # Generate box files and remove any pair where box generation fails.
-          # This ensures tesstrain's make won't hit broken entries.
-          GT_COUNT=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          # render_diverse outputs PNG; generate_line_box accepts any image format.
+          GT_COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           NCPU=$(nproc)
           echo "Validating $GT_COUNT ground-truth pairs ($NCPU parallel workers)..."
 
           cd /tmp/tesstrain
 
-          # Parallel box generation + validation
-          ls "$GT_DIR"/*.gt.txt 2>/dev/null | xargs -P "$NCPU" -I {} bash -c '
+          # Parallel box generation + validation (use find to avoid ARG_MAX)
+          find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" -print0 | \
+            xargs -0 -P "$NCPU" -I {} bash -c '
             gt="{}"
             STEM="${gt%.gt.txt}"
-            # Check tif exists and has reasonable size
-            if [ ! -f "${STEM}.tif" ] || [ "$(wc -c < "${STEM}.tif")" -lt 200 ]; then
-              rm -f "${STEM}".tif "${STEM}".gt.txt
+            IMG=""
+            for ext in png tif tiff; do
+              if [ -f "${STEM}.${ext}" ] && [ "$(wc -c < "${STEM}.${ext}")" -ge 200 ]; then
+                IMG="${STEM}.${ext}"
+                break
+              fi
+            done
+            if [ -z "$IMG" ]; then
+              rm -f "${STEM}".gt.txt "${STEM}".png "${STEM}".tif "${STEM}".tiff
               exit 0
             fi
-            # Generate box file
-            python3 generate_line_box.py -i "${STEM}.tif" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
+            python3 generate_line_box.py -i "$IMG" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
             if [ ! -s "${STEM}.box" ]; then
-              rm -f "${STEM}".tif "${STEM}".gt.txt "${STEM}".box
+              rm -f "${STEM}".gt.txt "${STEM}".png "${STEM}".tif "${STEM}".tiff "${STEM}".box
             fi
           '
 
           cd -
-          VALID=$(ls "$GT_DIR"/*.gt.txt 2>/dev/null | wc -l)
+          VALID=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           REMOVED=$((GT_COUNT - VALID))
           echo "Valid: $VALID, Removed: $REMOVED"
           [ "$VALID" -gt 0 ] || { echo "ERROR: no valid ground-truth for $MODEL"; exit 1; }
@@ -243,7 +249,8 @@ jobs:
 
       - name: "Phase 1: Build proto model + lstmf files"
         run: |
-          GT_FILES=$(ls /tmp/tesstrain/data/${MODEL}-ground-truth/*.gt.txt 2>/dev/null | wc -l)
+          GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
+          GT_FILES=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           echo "Starting: $GT_FILES ground-truth files, $MAX_ITERATIONS iterations"
           echo "  Using --append_index to replace output layer (adds ♪ to existing model)"
           echo ""
@@ -257,15 +264,26 @@ jobs:
           echo "Building proto model with extended unicharset..."
           make -k -C /tmp/tesstrain proto-model $MAKE_ARGS || true
 
-          echo "Generating lstmf files ($(nproc) parallel)..."
-          make -k -j"$(nproc)" -C /tmp/tesstrain \
-            $(find /tmp/tesstrain/data/${MODEL}-ground-truth -name "*.gt.txt" \
-              | sed 's/\.gt\.txt$/.lstmf/') \
-            $MAKE_ARGS || true
+          # Generate lstmf files via xargs — bypasses make's ARG_MAX limit on
+          # command-line target lists. Each invocation runs tesseract directly.
+          NCPU=$(nproc)
+          echo "Generating lstmf files ($NCPU parallel via xargs)..."
+          find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" -print0 | \
+            xargs -0 -P "$NCPU" -I {} bash -c '
+              gt="{}"
+              STEM="${gt%.gt.txt}"
+              IMG=""
+              for ext in png tif tiff; do
+                [ -f "${STEM}.${ext}" ] && IMG="${STEM}.${ext}" && break
+              done
+              [ -z "$IMG" ] && exit 0
+              [ ! -f "${STEM}.box" ] && exit 0
+              tesseract "$IMG" "$STEM" --psm 13 lstm.train 2>/dev/null || true
+            '
 
           # Build train/eval lists from successful lstmf files
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          find /tmp/tesstrain/data/${MODEL}-ground-truth -name "*.lstmf" > "$OUTPUT_DIR/all-lstmf"
+          find "$GT_DIR" -maxdepth 1 -name "*.lstmf" > "$OUTPUT_DIR/all-lstmf"
           TOTAL_LSTMF=$(wc -l < "$OUTPUT_DIR/all-lstmf")
           echo "Generated $TOTAL_LSTMF lstmf files"
 
