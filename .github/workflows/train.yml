@@ -331,35 +331,98 @@ jobs:
           SIZE=$(wc -c < "tessdata/$LANG_CODE.traineddata")
           echo "Output: tessdata/$LANG_CODE.traineddata ($SIZE bytes)"
 
-      - name: Validate model
+      - name: Run benchmark on fine-tuned model
+        id: bench
         continue-on-error: true
         run: |
+          HELD_OUT=training/held-out/${LANG_CODE}.txt
+          if [ ! -f "$HELD_OUT" ]; then
+            echo "held_out_missing=true" >> $GITHUB_OUTPUT
+            echo "WARNING: $HELD_OUT missing — skipping validation gate"
+            exit 0
+          fi
           mkdir -p "$WORK_DIR"
-          python3 training/scripts/validate-model.py \
-            --tessdata tessdata/ \
+          python3 training/scripts/benchmark.py \
             --lang "$LANG_CODE" \
-            --gt-dir training/ground-truth \
-            --report "$WORK_DIR/report.json"
+            --tessdata tessdata/ \
+            --held-out "$HELD_OUT" \
+            --render-dir "/tmp/bench_${LANG_CODE}" \
+            --model-tag "current" \
+            --output "$WORK_DIR/new_bench.json" \
+            --max-lines 200
 
-      - name: Upload report
+      - name: Gate on 40% BCER reduction
+        id: gate
+        env:
+          NEW_JSON: ${{ env.WORK_DIR }}/new_bench.json
+          BASELINE: training/benchmark/baseline.json
+        run: |
+          if [ "${{ steps.bench.outputs.held_out_missing }}" = "true" ]; then
+            echo "No held-out data — commit allowed as unvalidated"
+            echo "should_commit=true" >> $GITHUB_OUTPUT
+            echo "tag=unvalidated" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ ! -f "$NEW_JSON" ]; then
+            echo "Benchmark script failed — refusing commit"
+            echo "should_commit=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          if [ ! -f "$BASELINE" ]; then
+            echo "No baseline.json — commit allowed as first-run"
+            echo "should_commit=true" >> $GITHUB_OUTPUT
+            echo "tag=first-run" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          python3 - <<PYEOF
+          import json, os, sys
+          new = json.load(open(os.environ["NEW_JSON"]))
+          baseline_all = json.load(open(os.environ["BASELINE"]))
+          lang = "${{ matrix.lang }}"
+          base = baseline_all.get(lang)
+          if base is None:
+              print(f"No baseline entry for {lang} — allowing commit")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+                  fh.write("should_commit=true\n")
+                  fh.write("tag=no-baseline\n")
+              sys.exit(0)
+          new_bcer  = new["bcer"]
+          base_bcer = base["bcer"]
+          reduction = (base_bcer - new_bcer) / base_bcer if base_bcer > 0 else 0.0
+          print(f"Baseline BCER: {base_bcer:.4f}")
+          print(f"New BCER:      {new_bcer:.4f}")
+          print(f"Reduction:     {reduction:.1%}  (target: >=40%)")
+          passed = reduction >= 0.40
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"should_commit={'true' if passed else 'false'}\n")
+              fh.write(f"reduction={reduction:.4f}\n")
+              fh.write(f"new_bcer={new_bcer:.4f}\n")
+              fh.write(f"baseline_bcer={base_bcer:.4f}\n")
+              fh.write(f"tag={'pass' if passed else 'fail'}\n")
+          PYEOF
+
+      - name: Upload benchmark report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: report-${{ matrix.lang }}
-          path: ${{ env.WORK_DIR }}/report.json
-          retention-days: 7
+          name: bench-${{ matrix.lang }}
+          path: ${{ env.WORK_DIR }}/new_bench.json
           if-no-files-found: ignore
 
-      - name: Commit updated tessdata
+      - name: Commit updated tessdata (gated)
+        if: steps.gate.outputs.should_commit == 'true'
         run: |
+          TAG="${{ steps.gate.outputs.tag }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add "tessdata/$LANG_CODE.traineddata"
           git diff --cached --quiet && exit 0
-
           for attempt in 1 2 3 4 5; do
             git pull --rebase origin master || true
-            git diff --cached --quiet || git commit -m "chore(tessdata): fine-tune $LANG_CODE [skip ci]"
+            git diff --cached --quiet || git commit -m "chore(tessdata): fine-tune $LANG_CODE ($TAG) [skip ci]"
             if git push origin master; then
               echo "Pushed $LANG_CODE (attempt $attempt)"
               break
@@ -367,6 +430,19 @@ jobs:
             echo "Push failed (attempt $attempt), retrying..."
             sleep $((attempt * 2))
           done
+
+      - name: Rejected — keep existing tessdata
+        if: steps.gate.outputs.should_commit != 'true'
+        run: |
+          REDUCTION="${{ steps.gate.outputs.reduction }}"
+          NEW="${{ steps.gate.outputs.new_bcer }}"
+          BASE="${{ steps.gate.outputs.baseline_bcer }}"
+          echo "::warning::Validation gate REJECTED $LANG_CODE"
+          echo "  Baseline BCER: $BASE"
+          echo "  New BCER:      $NEW"
+          echo "  Reduction:     $REDUCTION (target >= 0.4)"
+          echo "  Existing tessdata preserved — new model discarded."
+          git checkout -- "tessdata/$LANG_CODE.traineddata" || true
 
       - name: Upload tessdata artifact
         uses: actions/upload-artifact@v4
