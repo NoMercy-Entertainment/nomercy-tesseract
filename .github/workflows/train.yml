@@ -327,7 +327,7 @@ jobs:
             --old_traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
             --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
             --append_index 6 \
-            --net_spec "Lfx512O1c$NCHARS" \
+            --net_spec "[Lfx512 O1c$NCHARS]" \
             --learning_rate 0.01 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
             --train_listfile "$OUTPUT_DIR/list.train" \
