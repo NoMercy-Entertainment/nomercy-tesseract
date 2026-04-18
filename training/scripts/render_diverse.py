@@ -25,23 +25,23 @@ from typing import List, Optional, Tuple
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-VARIANTS_PER_LINE = 15
+VARIANTS_PER_LINE = 4
 
+# Realistic subtitle combinations only. DVD/BluRay subs are overwhelmingly
+# white or yellow text on black, with a thin outline. No JPEG/noise — model
+# first needs to learn clean shapes before robustness to degradation.
 _COLOR_COMBOS: List[Tuple[Tuple[int, int, int], Tuple[int, int, int]]] = [
-    ((255, 255, 255), (0, 0, 0)),
-    ((255, 255, 0),   (0, 0, 0)),
-    ((0, 255, 255),   (0, 0, 0)),
-    ((255, 204, 0),   (0, 0, 0)),
-    ((255, 255, 255), (26, 26, 26)),
+    ((255, 255, 255), (0, 0, 0)),      # white on black (dominant)
     ((255, 255, 255), (0, 0, 0)),
     ((255, 255, 255), (0, 0, 0)),
+    ((255, 255, 0),   (0, 0, 0)),      # yellow on black
 ]
 
-_SIZES = [24, 28, 32, 40, 48]
-_STYLES = ["regular", "bold", "italic", "bold-italic"]
-_OUTLINE_WIDTHS = [0, 1, 2]
-_SHADOW_OFFSETS = [0, 1, 2]
-_DEGRADATIONS = ["none", "blur", "noise", "jpeg"]
+_SIZES = [32, 36]
+_STYLES = ["regular", "bold"]
+_OUTLINE_WIDTHS = [0, 1]
+_SHADOW_OFFSETS = [0]
+_DEGRADATIONS = ["none"]
 
 
 def _resolve_font(font_name: str, style: str, size: int) -> Optional[ImageFont.FreeTypeFont]:

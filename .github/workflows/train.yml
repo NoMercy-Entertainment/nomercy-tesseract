@@ -139,7 +139,7 @@ jobs:
             --fonts-file "$FONTS_FILE" \
             --out-dir "$GT_DIR" \
             --lang "$MODEL" \
-            --max-lines 50000 \
+            --max-lines 100000 \
             --workers "$(nproc)"
 
           COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
@@ -321,26 +321,35 @@ jobs:
 
           echo "From-scratch LSTM training..."
           echo "  Net spec: $NET_SPEC"
-          echo "  LR 0.002 (from-scratch initial rate)"
-          echo "  Target error rate 0.5% — push hard for 99%+ accuracy"
+          echo "  LR 0.0005 (lower + more stable)"
+          echo "  Target error rate 0.5%"
           echo ""
 
-          # `|| handler`: tolerate the known glibc pthread teardown crash on
-          # process exit if checkpoints were written.
+          # LR 0.0005: previous 0.002 was unstable (delta% ~40%, weights oscillating).
+          # Lower LR gives smoother convergence at cost of more iterations.
+          # `|| handler`: tolerate known glibc pthread teardown crash if checkpoints exist.
+          set +e
           lstmtraining \
             --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
             --net_spec "$NET_SPEC" \
-            --learning_rate 0.002 \
+            --learning_rate 0.0005 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
             --train_listfile "$OUTPUT_DIR/list.train" \
             --eval_listfile "$OUTPUT_DIR/list.eval" \
             --max_iterations "$MAX_ITERATIONS" \
             --target_error_rate 0.005 \
-            --debug_interval 0 || {
-              rc=$?
-              echo "lstmtraining exited with code $rc (often harmless teardown crash)"
-              find "$OUTPUT_DIR/checkpoints" -name "${MODEL}*.checkpoint" -print -quit | grep -q . || exit $rc
-            }
+            --debug_interval 0
+          rc=$?
+          set -e
+          echo "lstmtraining exit rc=$rc"
+          if [ "$rc" -ne 0 ]; then
+            if find "$OUTPUT_DIR/checkpoints" -name "${MODEL}*.checkpoint" -print -quit | grep -q .; then
+              echo "Tolerating exit $rc — checkpoints present"
+            else
+              echo "No checkpoints — training genuinely failed"
+              exit $rc
+            fi
+          fi
 
       - name: "Phase 3: Package traineddata"
         run: |
