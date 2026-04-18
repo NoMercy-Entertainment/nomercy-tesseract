@@ -17,7 +17,7 @@ on:
       max_iterations:
         description: "tesstrain MAX_ITERATIONS"
         required: false
-        default: "30000"
+        default: "100000"
 
 concurrency:
   group: tesseract-train-${{ github.ref }}
@@ -66,7 +66,7 @@ jobs:
 
     env:
       LANG_CODE:      ${{ matrix.lang }}
-      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '30000' }}
+      MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || '100000' }}
       WORK_DIR:       /tmp/tess-train/${{ matrix.lang }}
 
     steps:
@@ -139,7 +139,7 @@ jobs:
             --fonts-file "$FONTS_FILE" \
             --out-dir "$GT_DIR" \
             --lang "$MODEL" \
-            --max-lines 15000 \
+            --max-lines 50000 \
             --workers "$(nproc)"
 
           COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
@@ -247,13 +247,13 @@ jobs:
 
           echo "Langdata and output dir prepared"
 
-      - name: "Phase 1: Extract stock LSTM + generate lstmf files"
+      - name: "Phase 1: Build proto model + generate lstmf files"
         run: |
           GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
           GT_FILES=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           echo "Starting: $GT_FILES ground-truth files, $MAX_ITERATIONS iterations"
-          echo "  Plain fine-tune — no unicharset extension, no --append_index"
+          echo "  From-scratch training (no --continue_from, no fine-tune)"
           echo ""
 
           export TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata
@@ -262,11 +262,20 @@ jobs:
           echo "Using tesseract: $(which tesseract)"
 
           mkdir -p "$OUTPUT_DIR"
-          # Extract the LSTM component from stock tessdata_best for --continue_from
-          combine_tessdata -e "/tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata" \
-            "$OUTPUT_DIR/${MODEL}.lstm"
-          [ -s "$OUTPUT_DIR/${MODEL}.lstm" ] || { echo "ERROR: failed to extract stock LSTM"; exit 1; }
-          echo "Extracted stock LSTM: $(wc -c < "$OUTPUT_DIR/${MODEL}.lstm") bytes"
+
+          # Build proto model: traineddata with extended unicharset built from
+          # our actual ground-truth corpus. Required for from-scratch training
+          # so the output layer matches the chars we'll actually see.
+          MAKE_ARGS="MODEL_NAME=$MODEL TESSDATA=/tmp/tesstrain/usr/share/tessdata LANGDATA_DIR=/tmp/tesstrain/data/langdata PSM=13"
+          echo "Building proto model with extended unicharset..."
+          make -k -C /tmp/tesstrain proto-model $MAKE_ARGS || true
+          [ -s "$OUTPUT_DIR/$MODEL.traineddata" ] || { echo "ERROR: proto model build failed"; exit 1; }
+
+          # Read unicharset size for net_spec output dimension
+          combine_tessdata -u "$OUTPUT_DIR/$MODEL.traineddata" "$OUTPUT_DIR/proto_"
+          NCHARS=$(head -1 "$OUTPUT_DIR/proto_.lstm-unicharset")
+          echo "Proto model unicharset: $NCHARS characters"
+          echo "$NCHARS" > "$OUTPUT_DIR/nchars.txt"
 
           # Generate lstmf files via xargs (direct tesseract to bypass make ARG_MAX)
           NCPU=$(nproc)
@@ -300,35 +309,34 @@ jobs:
           echo "Training: $TRAIN_COUNT, Eval: $EVAL_COUNT"
           [ "$TRAIN_COUNT" -gt 0 ] || { echo "ERROR: no training files"; exit 1; }
 
-      - name: "Phase 2: LSTM fine-tune"
+      - name: "Phase 2: LSTM training from scratch"
         run: |
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
+          NCHARS=$(cat "$OUTPUT_DIR/nchars.txt")
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          echo "Plain fine-tune (no --append_index) — preserve stock output layer..."
-          echo "  Base model: tessdata_best/$MODEL"
-          echo "  Unicharset: stock (unchanged)"
-          echo "  LR 0.0001 (default fine-tune rate)"
+          # tesstrain default network — proven on tessdata_best models
+          NET_SPEC="[1,36,0,1 Ct3,3,16 Mp3,3 Lfys48 Lfx96 Lrx96 Lfx512 O1c$NCHARS]"
+
+          echo "From-scratch LSTM training..."
+          echo "  Net spec: $NET_SPEC"
+          echo "  LR 0.002 (from-scratch initial rate)"
+          echo "  Target error rate 0.5% — push hard for 99%+ accuracy"
           echo ""
 
-          # Plain fine-tuning (no --append_index):
-          #   Preserves the entire stock network including output layer.
-          #   Weights adjust slightly to improve accuracy on our diverse
-          #   subtitle-style rendering without destroying pretrained capability.
-          # `|| handler`: Tesseract occasionally throws a glibc pthread
-          #   assertion at process exit after writing the final checkpoint.
-          #   The checkpoint is valid — do not fail the job on teardown noise.
+          # `|| handler`: tolerate the known glibc pthread teardown crash on
+          # process exit if checkpoints were written.
           lstmtraining \
-            --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
-            --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
-            --learning_rate 0.0001 \
+            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
+            --net_spec "$NET_SPEC" \
+            --learning_rate 0.002 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
             --train_listfile "$OUTPUT_DIR/list.train" \
             --eval_listfile "$OUTPUT_DIR/list.eval" \
             --max_iterations "$MAX_ITERATIONS" \
-            --target_error_rate 0.01 || {
+            --target_error_rate 0.005 \
+            --debug_interval 0 || {
               rc=$?
               echo "lstmtraining exited with code $rc (often harmless teardown crash)"
               find "$OUTPUT_DIR/checkpoints" -name "${MODEL}*.checkpoint" -print -quit | grep -q . || exit $rc
@@ -337,15 +345,15 @@ jobs:
       - name: "Phase 3: Package traineddata"
         run: |
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
           CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
           [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
           echo "Using checkpoint: $CHECKPOINT"
 
+          # Use the proto traineddata (matches the unicharset training was done with)
           lstmtraining \
             --stop_training \
             --continue_from "$CHECKPOINT" \
-            --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+            --traineddata "$OUTPUT_DIR/$MODEL.traineddata" \
             --model_output "tessdata/$LANG_CODE.traineddata"
 
           SIZE=$(wc -c < "tessdata/$LANG_CODE.traineddata")

@@ -62,10 +62,10 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=default_out,
                         metavar="DIR",
                         help="Output directory (default: training/generated/)")
-    parser.add_argument("--max-lines", type=int, default=50000,
-                        help="Max corpus lines per language (default: 50000)")
-    parser.add_argument("--held-out-count", type=int, default=2000,
-                        help="Lines reserved for benchmark eval set (default: 2000)")
+    parser.add_argument("--max-lines", type=int, default=100000,
+                        help="Max corpus lines per language (default: 100000)")
+    parser.add_argument("--held-out-count", type=int, default=3000,
+                        help="Lines reserved for benchmark eval set (default: 3000)")
     parser.add_argument("--music-ratio", type=float, default=0.0,
                         help="Fraction of lines injected with ♪/♫ (default: 0 — disabled for plain fine-tune)")
     parser.add_argument("--no-fetch", action="store_true",
