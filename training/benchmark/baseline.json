@@ -1,1 +1,137 @@
-{}
+{
+  "ara": {
+    "bcer": 0.928393,
+    "char_accuracy": 0.071607,
+    "lang": "ara",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:42:14.814272+00:00"
+  },
+  "ben": {
+    "bcer": 0.91526,
+    "char_accuracy": 0.08474,
+    "lang": "ben",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:44:36.853862+00:00"
+  },
+  "chi_sim": {
+    "bcer": 0.692726,
+    "char_accuracy": 0.307274,
+    "lang": "chi_sim",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:47:37.199791+00:00"
+  },
+  "chi_tra": {
+    "bcer": 0.932932,
+    "char_accuracy": 0.067068,
+    "lang": "chi_tra",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:46:57.819862+00:00"
+  },
+  "deu": {
+    "bcer": 0.197836,
+    "char_accuracy": 0.802164,
+    "lang": "deu",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:45:00.602602+00:00"
+  },
+  "eng": {
+    "bcer": 0.604709,
+    "char_accuracy": 0.395291,
+    "lang": "eng",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:45:29.277007+00:00"
+  },
+  "fra": {
+    "bcer": 0.573502,
+    "char_accuracy": 0.426498,
+    "lang": "fra",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:42:59.236168+00:00"
+  },
+  "hin": {
+    "bcer": 0.858216,
+    "char_accuracy": 0.141784,
+    "lang": "hin",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:45:50.248575+00:00"
+  },
+  "ita": {
+    "bcer": 0.320872,
+    "char_accuracy": 0.679128,
+    "lang": "ita",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:44:28.154816+00:00"
+  },
+  "jpn": {
+    "bcer": 0.863656,
+    "char_accuracy": 0.136344,
+    "lang": "jpn",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:47:10.559553+00:00"
+  },
+  "kor": {
+    "bcer": 0.973831,
+    "char_accuracy": 0.026169,
+    "lang": "kor",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:42:14.219121+00:00"
+  },
+  "nld": {
+    "bcer": 0.4423,
+    "char_accuracy": 0.5577,
+    "lang": "nld",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:44:18.708636+00:00"
+  },
+  "por": {
+    "bcer": 0.439911,
+    "char_accuracy": 0.560089,
+    "lang": "por",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:44:46.813753+00:00"
+  },
+  "rus": {
+    "bcer": 0.852735,
+    "char_accuracy": 0.147265,
+    "lang": "rus",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:42:21.857450+00:00"
+  },
+  "spa": {
+    "bcer": 0.494205,
+    "char_accuracy": 0.505795,
+    "lang": "spa",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T11:44:55.256106+00:00"
+  }
+}
