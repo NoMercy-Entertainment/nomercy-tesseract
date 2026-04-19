@@ -17,7 +17,7 @@ on:
       max_iterations:
         description: "tesstrain MAX_ITERATIONS"
         required: false
-        default: "100000"
+        default: "50000"
       resume_run_id:
         description: "Workflow run ID to resume training checkpoints from (blank = fresh start from stock)"
         required: false
@@ -25,7 +25,7 @@ on:
 
 concurrency:
   group: tesseract-train-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   setup:
@@ -66,6 +66,7 @@ jobs:
 
     strategy:
       fail-fast: false
+      max-parallel: 2  # beast-unit has 56 cores; 2 parallel jobs = 28 cores each (sane)
       matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
 
     env:
