@@ -108,14 +108,14 @@ jobs:
           export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:$LD_LIBRARY_PATH
           echo "PATH=$HOME/tesseract-install/bin:$PATH" >> $GITHUB_ENV
           echo "LD_LIBRARY_PATH=$HOME/tesseract-install/lib:${LD_LIBRARY_PATH:-}" >> $GITHUB_ENV
-          echo "TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata" >> $GITHUB_ENV
+          echo "TESSDATA_PREFIX=/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata" >> $GITHUB_ENV
           tesseract --version
           which lstmtraining
 
       - name: Clone tesstrain
         run: |
-          rm -rf /tmp/tesstrain
-          git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain
+          rm -rf /tmp/tesstrain-${LANG_CODE}
+          git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain-${LANG_CODE}
 
       - name: Install Pillow
         run: pip3 install --quiet --break-system-packages Pillow
@@ -123,7 +123,7 @@ jobs:
       - name: Generate ground-truth with render_diverse (parallel)
         run: |
           MODEL="$LANG_CODE"
-          GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
+          GT_DIR="/tmp/tesstrain-${LANG_CODE}/data/${MODEL}-ground-truth"
           mkdir -p "$GT_DIR"
 
           TRAINING_TEXT="training/generated/$MODEL/$MODEL.training_text"
@@ -167,18 +167,18 @@ jobs:
         run: |
           # Our repo has fast/int models which CANNOT be fine-tuned.
           # tessdata_best has float models required for LSTM training.
-          mkdir -p /tmp/tesstrain/usr/share/tessdata
+          mkdir -p /tmp/tesstrain-${LANG_CODE}/usr/share/tessdata
           # Copy tessdata configs (lstm.train etc.) to TESSDATA_PREFIX
-          cp -r $HOME/tesseract-install/share/tessdata/configs /tmp/tesstrain/usr/share/tessdata/ 2>/dev/null || true
-          cp -r $HOME/tesseract-install/share/tessdata/tessconfigs /tmp/tesstrain/usr/share/tessdata/ 2>/dev/null || true
+          cp -r $HOME/tesseract-install/share/tessdata/configs /tmp/tesstrain-${LANG_CODE}/usr/share/tessdata/ 2>/dev/null || true
+          cp -r $HOME/tesseract-install/share/tessdata/tessconfigs /tmp/tesstrain-${LANG_CODE}/usr/share/tessdata/ 2>/dev/null || true
           BEST_URL="https://github.com/tesseract-ocr/tessdata_best/raw/main/${MODEL}.traineddata"
           echo "Downloading tessdata_best for $MODEL..."
-          wget -q -O "/tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata" "$BEST_URL" || {
+          wget -q -O "/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata/${MODEL}.traineddata" "$BEST_URL" || {
             echo "ERROR: Failed to download tessdata_best for $MODEL from $BEST_URL"
             echo "This language may not exist in tessdata_best — skipping"
             exit 1
           }
-          echo "Downloaded $(wc -c < /tmp/tesstrain/usr/share/tessdata/${MODEL}.traineddata) bytes"
+          echo "Downloaded $(wc -c < /tmp/tesstrain-${LANG_CODE}/usr/share/tessdata/${MODEL}.traineddata) bytes"
 
       - name: Validate ground-truth pairs
         run: |
@@ -188,7 +188,7 @@ jobs:
           NCPU=$(nproc)
           echo "Validating $GT_COUNT ground-truth pairs ($NCPU parallel workers)..."
 
-          cd /tmp/tesstrain
+          cd /tmp/tesstrain-${LANG_CODE}
 
           # Parallel box generation + validation (use find to avoid ARG_MAX)
           find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" -print0 | \
@@ -220,8 +220,8 @@ jobs:
 
       - name: Prepare langdata and output dir for tesstrain
         run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          LANGDATA_DIR="/tmp/tesstrain/data/langdata"
+          OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
+          LANGDATA_DIR="/tmp/tesstrain-${LANG_CODE}/data/langdata"
           mkdir -p "$OUTPUT_DIR" "$LANGDATA_DIR/$MODEL"
 
           # Download radical-stroke.txt (required by combine_lang_model)
@@ -254,14 +254,14 @@ jobs:
 
       - name: "Phase 1: Generate lstmf files"
         run: |
-          GT_DIR="/tmp/tesstrain/data/${MODEL}-ground-truth"
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
+          GT_DIR="/tmp/tesstrain-${LANG_CODE}/data/${MODEL}-ground-truth"
+          OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
           GT_FILES=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           echo "Starting: $GT_FILES ground-truth files, $MAX_ITERATIONS iterations"
           echo "  Ultra-gentle fine-tune from stock (no proto model, no unicharset extension)"
           echo ""
 
-          export TESSDATA_PREFIX=/tmp/tesstrain/usr/share/tessdata
+          export TESSDATA_PREFIX=/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata
           export LD_LIBRARY_PATH=$HOME/tesseract-install/lib:${LD_LIBRARY_PATH:-}
           export PATH=$HOME/tesseract-install/bin:$PATH
           echo "Using tesseract: $(which tesseract)"
@@ -288,7 +288,7 @@ jobs:
           TOTAL_LSTMF=$(wc -l < "$OUTPUT_DIR/all-lstmf")
           echo "Generated $TOTAL_LSTMF lstmf files"
 
-          cd /tmp/tesstrain
+          cd /tmp/tesstrain-${LANG_CODE}
           python3 shuffle.py 0 "$OUTPUT_DIR/all-lstmf"
           TRAIN_SIZE=$(( TOTAL_LSTMF * 90 / 100 ))
           head -n "$TRAIN_SIZE" "$OUTPUT_DIR/all-lstmf" > "$OUTPUT_DIR/list.train"
@@ -305,15 +305,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: checkpoints-${{ matrix.lang }}
-          path: /tmp/tesstrain/data/${{ matrix.lang }}/checkpoints/
+          path: /tmp/tesstrain-${{ matrix.lang }}/data/${{ matrix.lang }}/checkpoints/
           run-id: ${{ github.event.inputs.resume_run_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
       - name: "Phase 2: Ultra-gentle fine-tune from stock LSTM"
         run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
+          OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
+          TESSDATA_DIR="/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata"
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
@@ -366,14 +366,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: checkpoints-${{ matrix.lang }}
-          path: /tmp/tesstrain/data/${{ matrix.lang }}/checkpoints/
+          path: /tmp/tesstrain-${{ matrix.lang }}/data/${{ matrix.lang }}/checkpoints/
           if-no-files-found: warn
           retention-days: 30
 
       - name: "Phase 3: Package traineddata"
         run: |
-          OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain/usr/share/tessdata"
+          OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
+          TESSDATA_DIR="/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata"
           CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
           [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
           echo "Using checkpoint: $CHECKPOINT"
@@ -510,7 +510,7 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: rm -rf /tmp/tesstrain /tmp/tess-train
+        run: rm -rf /tmp/tesstrain-${LANG_CODE} /tmp/tess-train
 
   report:
     name: Training report
