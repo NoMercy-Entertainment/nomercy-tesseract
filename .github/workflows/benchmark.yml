@@ -129,7 +129,7 @@ jobs:
           path: artifacts/
           merge-multiple: false
 
-      - name: Aggregate into baseline.json / current.json
+      - name: Aggregate into baseline.json / current.json (merge with existing)
         shell: python3 {0}
         run: |
           import json, glob
@@ -137,14 +137,27 @@ jobs:
 
           tag = "${{ github.event.inputs.model_source || 'tessdata_best' }}"
           out_name = "baseline.json" if tag == "tessdata_best" else "current.json"
+          out_path = Path(f"training/benchmark/{out_name}")
+
+          # Merge into existing scoreboard so partial-run benchmarks (e.g. one
+          # language at a time) don't wipe results from prior runs.
           results = {}
+          if out_path.exists():
+              try:
+                  results = json.loads(out_path.read_text() or "{}")
+              except json.JSONDecodeError:
+                  results = {}
+
+          new_count = 0
           for f in sorted(glob.glob("artifacts/bench-*/*.json")):
               data = json.loads(Path(f).read_text())
               results[data["lang"]] = data
-          Path("training/benchmark").mkdir(parents=True, exist_ok=True)
-          Path(f"training/benchmark/{out_name}").write_text(
-              json.dumps(results, indent=2, sort_keys=True), encoding="utf-8")
-          print(f"Wrote {len(results)} languages to {out_name}")
+              new_count += 1
+
+          out_path.parent.mkdir(parents=True, exist_ok=True)
+          out_path.write_text(json.dumps(results, indent=2, sort_keys=True),
+                              encoding="utf-8")
+          print(f"Updated {new_count} entries (total {len(results)} langs in {out_name})")
 
       - name: Commit aggregated results
         run: |
