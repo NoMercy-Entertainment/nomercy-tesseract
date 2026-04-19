@@ -271,6 +271,17 @@ jobs:
           # Generate lstmf files via xargs (direct tesseract to bypass make ARG_MAX)
           NCPU=$(nproc)
           echo "Generating lstmf files ($NCPU parallel via xargs)..."
+          # Sanity check: run tesseract on first sample with stderr visible to
+          # surface real errors — silenced loop hid them previously.
+          FIRST_GT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | head -1)
+          if [ -n "$FIRST_GT" ]; then
+            FIRST_STEM="${FIRST_GT%.gt.txt}"
+            for ext in png tif tiff; do
+              [ -f "${FIRST_STEM}.${ext}" ] && FIRST_IMG="${FIRST_STEM}.${ext}" && break
+            done
+            echo "Sample test: tesseract -l $MODEL $FIRST_IMG"
+            tesseract "$FIRST_IMG" "$FIRST_STEM" --psm 13 -l "$MODEL" lstm.train || true
+          fi
           find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" -print0 | \
             xargs -0 -P "$NCPU" -I {} bash -c '
               gt="{}"
@@ -281,7 +292,7 @@ jobs:
               done
               [ -z "$IMG" ] && exit 0
               [ ! -f "${STEM}.box" ] && exit 0
-              tesseract "$IMG" "$STEM" --psm 13 lstm.train 2>/dev/null || true
+              tesseract "$IMG" "$STEM" --psm 13 -l "'"$MODEL"'" lstm.train 2>/dev/null || true
             '
 
           find "$GT_DIR" -maxdepth 1 -name "*.lstmf" > "$OUTPUT_DIR/all-lstmf"
