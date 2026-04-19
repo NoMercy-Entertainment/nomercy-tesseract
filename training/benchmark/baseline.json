@@ -1,11 +1,11 @@
 {
   "eng": {
-    "bcer": 0.180082,
-    "char_accuracy": 0.819918,
+    "bcer": 0.604709,
+    "char_accuracy": 0.395291,
     "lang": "eng",
     "model_tag": "tessdata_best",
-    "n_lines": 100,
-    "n_variants": 1500,
-    "timestamp": "2026-04-17T14:56:06.114164+00:00"
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-04-19T09:40:37.440051+00:00"
   }
 }
