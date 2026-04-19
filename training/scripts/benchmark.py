@@ -49,10 +49,18 @@ def compute_bcer(expected: str, actual: str) -> float:
 def run_tesseract(png_path: Path, tessdata_dir: Path, lang: str) -> str:
     with tempfile.TemporaryDirectory() as tmp:
         out_base = Path(tmp) / "out"
+        # PSM 13: raw line — bypass tesseract's word/dictionary heuristics so
+        # the result reflects raw network output, matching training-time eval.
+        # Disable system DAWGs (dictionary) so the LM doesn't "correct" our
+        # subtitle-style text into common document words.
         cmd = [
             "tesseract", str(png_path), str(out_base),
             "--tessdata-dir", str(tessdata_dir),
-            "-l", lang, "--psm", "7",
+            "-l", lang, "--psm", "13",
+            "-c", "load_system_dawg=0",
+            "-c", "load_freq_dawg=0",
+            "-c", "language_model_penalty_non_dict_word=0",
+            "-c", "language_model_penalty_non_freq_dict_word=0",
         ]
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0:
