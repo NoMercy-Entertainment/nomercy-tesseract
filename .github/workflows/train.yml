@@ -18,6 +18,10 @@ on:
         description: "tesstrain MAX_ITERATIONS"
         required: false
         default: "100000"
+      resume_run_id:
+        description: "Workflow run ID to resume training checkpoints from (blank = fresh start from stock)"
+        required: false
+        default: ""
 
 concurrency:
   group: tesseract-train-${{ github.ref }}
@@ -295,6 +299,16 @@ jobs:
           echo "Training: $TRAIN_COUNT, Eval: $EVAL_COUNT"
           [ "$TRAIN_COUNT" -gt 0 ] || { echo "ERROR: no training files"; exit 1; }
 
+      - name: Restore checkpoints from prior run (if resuming)
+        if: github.event.inputs.resume_run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoints-${{ matrix.lang }}
+          path: /tmp/tesstrain/data/${{ matrix.lang }}/checkpoints/
+          run-id: ${{ github.event.inputs.resume_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
       - name: "Phase 2: Ultra-gentle fine-tune from stock LSTM"
         run: |
           OUTPUT_DIR="/tmp/tesstrain/data/$MODEL"
@@ -302,22 +316,29 @@ jobs:
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          # Extract stock LSTM for --continue_from
-          combine_tessdata -e "$TESSDATA_DIR/$MODEL.traineddata" "$OUTPUT_DIR/${MODEL}.lstm"
-          [ -s "$OUTPUT_DIR/${MODEL}.lstm" ] || { echo "ERROR: failed to extract stock LSTM"; exit 1; }
-          echo "Extracted stock LSTM: $(wc -c < "$OUTPUT_DIR/${MODEL}.lstm") bytes"
+          # Determine continue_from source: resumed checkpoint takes priority over stock
+          RESUME_CKPT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}_checkpoint 2>/dev/null | head -1)
+          if [ -n "$RESUME_CKPT" ] && [ -s "$RESUME_CKPT" ]; then
+            echo "RESUMING from prior checkpoint: $RESUME_CKPT ($(wc -c < "$RESUME_CKPT") bytes)"
+            CONTINUE_FROM="$RESUME_CKPT"
+          else
+            echo "Fresh start — extracting stock LSTM for --continue_from"
+            combine_tessdata -e "$TESSDATA_DIR/$MODEL.traineddata" "$OUTPUT_DIR/${MODEL}.lstm"
+            [ -s "$OUTPUT_DIR/${MODEL}.lstm" ] || { echo "ERROR: failed to extract stock LSTM"; exit 1; }
+            echo "Extracted stock LSTM: $(wc -c < "$OUTPUT_DIR/${MODEL}.lstm") bytes"
+            CONTINUE_FROM="$OUTPUT_DIR/$MODEL.lstm"
+          fi
 
           echo "Ultra-gentle fine-tune from stock..."
-          echo "  Base: tessdata_best/$MODEL (stock weights + unicharset)"
+          echo "  Continue from: $CONTINUE_FROM"
           echo "  LR 0.00001 (100x lower than standard fine-tune)"
-          echo "  Iter: $MAX_ITERATIONS (should converge fast)"
-          echo "  Goal: nudge stock toward subtitle rendering without destroying general capability"
+          echo "  Iter: $MAX_ITERATIONS"
           echo ""
 
           set +e
           lstmtraining \
             --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
-            --continue_from "$OUTPUT_DIR/$MODEL.lstm" \
+            --continue_from "$CONTINUE_FROM" \
             --learning_rate 0.00001 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
             --train_listfile "$OUTPUT_DIR/list.train" \
@@ -338,6 +359,15 @@ jobs:
               exit $rc
             fi
           fi
+
+      - name: Upload training checkpoints (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoints-${{ matrix.lang }}
+          path: /tmp/tesstrain/data/${{ matrix.lang }}/checkpoints/
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: "Phase 3: Package traineddata"
         run: |
