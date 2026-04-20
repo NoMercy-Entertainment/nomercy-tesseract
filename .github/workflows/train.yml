@@ -362,8 +362,11 @@ jobs:
           set -e
           echo "lstmtraining exit rc=$rc"
           if [ "$rc" -ne 0 ]; then
-            CKPT_COUNT=$(find "$OUTPUT_DIR/checkpoints" -name "*.checkpoint" 2>/dev/null | wc -l)
+            # lstmtraining writes {model_output}_checkpoint and optionally
+            # {model_output}_{bcer}_{iter}_{iter}.checkpoint. Match both.
+            CKPT_COUNT=$(find "$OUTPUT_DIR/checkpoints" -maxdepth 1 \( -name "*checkpoint" -o -name "*.checkpoint" \) 2>/dev/null | wc -l)
             echo "Checkpoint count: $CKPT_COUNT"
+            ls -la "$OUTPUT_DIR/checkpoints/" 2>/dev/null | head -20 || true
             if [ "$CKPT_COUNT" -gt 0 ]; then
               echo "Tolerating exit $rc — $CKPT_COUNT checkpoints present"
             else
