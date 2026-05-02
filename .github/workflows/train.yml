@@ -311,6 +311,15 @@ jobs:
           echo "Training: $TRAIN_COUNT, Eval: $EVAL_COUNT"
           [ "$TRAIN_COUNT" -gt 0 ] || { echo "ERROR: no training files"; exit 1; }
 
+          # Reclaim disk: PNG/box files no longer needed once .lstmf are written.
+          # Beast-unit hits "no space left on device" when 2 parallel jobs each
+          # leave ~3-5GB of GT renders sitting around through Phase 2 training.
+          echo "Pre-training disk free:"
+          df -h /tmp | tail -1
+          find "$GT_DIR" -maxdepth 1 \( -name "*.png" -o -name "*.tif" -o -name "*.tiff" -o -name "*.box" -o -name "*.gt.txt" \) -delete 2>/dev/null || true
+          echo "Post-cleanup disk free:"
+          df -h /tmp | tail -1
+
       - name: Restore checkpoints from prior run (if resuming)
         if: github.event.inputs.resume_run_id != ''
         uses: actions/download-artifact@v4
