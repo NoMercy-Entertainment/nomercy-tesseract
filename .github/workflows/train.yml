@@ -66,7 +66,8 @@ jobs:
 
     strategy:
       fail-fast: false
-      max-parallel: 2  # beast-unit has 56 cores; 2 parallel jobs = 28 cores each (sane)
+      max-parallel: 8  # Phase 2 training is single-threaded — 8 jobs × 1 core = 8/60 used.
+                       # Phase 0/1 use $(nproc) but capped to 4 per job below to avoid thrash.
       matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
 
     env:
@@ -145,7 +146,7 @@ jobs:
             --out-dir "$GT_DIR" \
             --lang "$MODEL" \
             --max-lines 100000 \
-            --workers "$(nproc)"
+            --workers 6
 
           COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           echo "Generated $COUNT ground-truth pairs for $MODEL"
@@ -185,7 +186,7 @@ jobs:
           # Generate box files and remove any pair where box generation fails.
           # render_diverse outputs PNG; generate_line_box accepts any image format.
           GT_COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
-          NCPU=$(nproc)
+          NCPU=6  # cap per-job parallelism so 8 concurrent jobs share 60 cores cleanly
           echo "Validating $GT_COUNT ground-truth pairs ($NCPU parallel workers)..."
 
           cd /tmp/tesstrain-${LANG_CODE}
@@ -269,7 +270,7 @@ jobs:
           mkdir -p "$OUTPUT_DIR"
 
           # Generate lstmf files via xargs (direct tesseract to bypass make ARG_MAX)
-          NCPU=$(nproc)
+          NCPU=6  # cap per-job parallelism so 8 concurrent jobs share 60 cores cleanly
           echo "Generating lstmf files ($NCPU parallel via xargs)..."
           # Sanity check: run tesseract on first sample with stderr visible to
           # surface real errors — silenced loop hid them previously.
