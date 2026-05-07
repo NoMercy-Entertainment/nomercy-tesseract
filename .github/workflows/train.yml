@@ -63,6 +63,7 @@ jobs:
     name: Train [${{ matrix.lang }}]
     needs: setup
     runs-on: [self-hosted, beast-unit]
+    timeout-minutes: 1440
 
     strategy:
       fail-fast: false
