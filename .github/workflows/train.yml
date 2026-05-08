@@ -81,13 +81,21 @@ jobs:
 
       - name: Install build deps and fonts
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends \
-            g++ cmake make pkg-config \
-            libleptonica-dev libicu-dev libpango1.0-dev libcairo2-dev \
-            fonts-noto fonts-noto-cjk fonts-noto-cjk-extra \
-            fonts-noto-extra fonts-noto-ui-core fonts-noto-core \
-            fonts-dejavu fonts-liberation wget
+          # Serialize apt across parallel matrix jobs — dpkg post-install
+          # scripts (emacsen-common, dictionaries-common) fail under contention.
+          (
+            flock -x 200
+            sudo dpkg --configure -a || true
+            sudo apt-get -f install -y || true
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends \
+              g++ cmake make pkg-config \
+              libleptonica-dev libicu-dev libpango1.0-dev libcairo2-dev \
+              fonts-noto fonts-noto-cjk fonts-noto-cjk-extra \
+              fonts-noto-extra fonts-noto-ui-core fonts-noto-core \
+              fonts-dejavu fonts-liberation wget \
+            || sudo apt-get install -f -y
+          ) 200>/var/lock/tesseract-apt.lock
 
       - name: Build patched Tesseract (--append_index fix)
         run: |
