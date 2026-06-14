@@ -340,27 +340,70 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
-      - name: "Phase 2: Ultra-gentle fine-tune from stock LSTM"
+      - name: "Phase 2a: Extend unicharset (stock + glyphs from ground-truth)"
+        run: |
+          # Subtitle corpora carry glyphs absent from the stock unicharset
+          # (music notes U+266A/U+266B, enclosed alphanumerics, etc). Without
+          # extension lstmtraining silently drops every line containing them —
+          # ~50% of a lyric-heavy corpus. Merge stock + corpus chars so the
+          # whole corpus trains and the model can emit those glyphs.
+          OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
+          TESSDATA_DIR="/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata"
+          LANGDATA_DIR="/tmp/tesstrain-${LANG_CODE}/data/langdata"
+          GT_DIR="/tmp/tesstrain-${LANG_CODE}/data/${MODEL}-ground-truth"
+
+          # NORM_MODE/RECODER: Latin defaults. RTL scripts (ara/heb) need
+          # NORM_MODE=3 and RECODER="--pass_through_recoder --lang_is_rtl".
+          NORM_MODE="${NORM_MODE:-2}"
+          RECODER="${RECODER:---pass_through_recoder}"
+
+          combine_tessdata -u "$TESSDATA_DIR/$MODEL.traineddata" "$OUTPUT_DIR/$MODEL." >/dev/null 2>&1
+          [ -s "$OUTPUT_DIR/$MODEL.lstm-unicharset" ] || { echo "ERROR: no stock unicharset"; exit 1; }
+          cat "$GT_DIR"/*.gt.txt > "$OUTPUT_DIR/all-gt"
+          unicharset_extractor --output_unicharset "$OUTPUT_DIR/my.unicharset" \
+            --norm_mode "$NORM_MODE" "$OUTPUT_DIR/all-gt"
+          merge_unicharsets "$OUTPUT_DIR/$MODEL.lstm-unicharset" "$OUTPUT_DIR/my.unicharset" \
+            "$OUTPUT_DIR/unicharset"
+          echo "unicharset: stock=$(head -1 "$OUTPUT_DIR/$MODEL.lstm-unicharset") -> merged=$(head -1 "$OUTPUT_DIR/unicharset")"
+
+          combine_lang_model \
+            --input_unicharset "$OUTPUT_DIR/unicharset" \
+            --script_dir "$LANGDATA_DIR" \
+            --numbers "$OUTPUT_DIR/$MODEL.numbers" \
+            --puncs "$OUTPUT_DIR/$MODEL.punc" \
+            --words "$OUTPUT_DIR/$MODEL.wordlist" \
+            --output_dir "/tmp/tesstrain-${LANG_CODE}/data" \
+            $RECODER \
+            --lang "$MODEL"
+          [ -s "$OUTPUT_DIR/$MODEL.traineddata" ] || { echo "ERROR: no proto model"; exit 1; }
+
+      - name: "Phase 2b: Ultra-gentle fine-tune with char-set expansion"
         run: |
           OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
           TESSDATA_DIR="/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata"
+          PROTO="$OUTPUT_DIR/$MODEL.traineddata"
 
           mkdir -p "$OUTPUT_DIR/checkpoints"
 
-          # Determine continue_from source: resumed checkpoint takes priority over stock
+          # Resumed checkpoint already carries the extended charset (prior run
+          # trained against PROTO) — no --old_traineddata remap needed. A fresh
+          # start continues from the stock LSTM, so it must remap stock->extended
+          # via --old_traineddata.
           RESUME_CKPT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}_checkpoint 2>/dev/null | head -1)
           if [ -n "$RESUME_CKPT" ] && [ -s "$RESUME_CKPT" ]; then
             echo "RESUMING from prior checkpoint: $RESUME_CKPT ($(wc -c < "$RESUME_CKPT") bytes)"
             CONTINUE_FROM="$RESUME_CKPT"
+            OLD_TRAINEDDATA=""
           else
             echo "Fresh start — extracting stock LSTM for --continue_from"
             combine_tessdata -e "$TESSDATA_DIR/$MODEL.traineddata" "$OUTPUT_DIR/${MODEL}.lstm"
             [ -s "$OUTPUT_DIR/${MODEL}.lstm" ] || { echo "ERROR: failed to extract stock LSTM"; exit 1; }
             echo "Extracted stock LSTM: $(wc -c < "$OUTPUT_DIR/${MODEL}.lstm") bytes"
             CONTINUE_FROM="$OUTPUT_DIR/$MODEL.lstm"
+            OLD_TRAINEDDATA="--old_traineddata $TESSDATA_DIR/$MODEL.traineddata"
           fi
 
-          echo "Ultra-gentle fine-tune from stock..."
+          echo "Ultra-gentle fine-tune (extended unicharset)..."
           echo "  Continue from: $CONTINUE_FROM"
           echo "  LR 0.00001 (100x lower than standard fine-tune)"
           echo "  Iter: $MAX_ITERATIONS"
@@ -368,7 +411,8 @@ jobs:
 
           set +e
           lstmtraining \
-            --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+            --traineddata "$PROTO" \
+            $OLD_TRAINEDDATA \
             --continue_from "$CONTINUE_FROM" \
             --learning_rate 0.00001 \
             --model_output "$OUTPUT_DIR/checkpoints/$MODEL" \
@@ -406,15 +450,17 @@ jobs:
       - name: "Phase 3: Package traineddata"
         run: |
           OUTPUT_DIR="/tmp/tesstrain-${LANG_CODE}/data/$MODEL"
-          TESSDATA_DIR="/tmp/tesstrain-${LANG_CODE}/usr/share/tessdata"
+          PROTO="$OUTPUT_DIR/$MODEL.traineddata"
           CHECKPOINT=$(ls -t "$OUTPUT_DIR"/checkpoints/${MODEL}*checkpoint 2>/dev/null | head -1)
           [ -n "$CHECKPOINT" ] || { echo "ERROR: no checkpoint found"; exit 1; }
           echo "Using checkpoint: $CHECKPOINT"
 
+          # Package against the extended-unicharset proto so the shipped model
+          # keeps the merged charset (stock + corpus glyphs).
           lstmtraining \
             --stop_training \
             --continue_from "$CHECKPOINT" \
-            --traineddata "$TESSDATA_DIR/$MODEL.traineddata" \
+            --traineddata "$PROTO" \
             --model_output "tessdata/$LANG_CODE.traineddata"
 
           SIZE=$(wc -c < "tessdata/$LANG_CODE.traineddata")
