@@ -116,7 +116,7 @@ NORM_MODE="${NORM_MODE:-2}"
 RECODER="${RECODER:---pass_through_recoder}"
 combine_tessdata -u "$TESSDATA/$MODEL.traineddata" "$OUTPUT_DIR/$MODEL." >/dev/null 2>&1
 [ -s "$OUTPUT_DIR/$MODEL.lstm-unicharset" ] || { echo "ERROR: no stock unicharset extracted"; exit 1; }
-cat "$GT_DIR"/*.gt.txt > "$OUTPUT_DIR/all-gt"
+find "$GT_DIR" -maxdepth 1 -name '*.gt.txt' -exec cat {} + > "$OUTPUT_DIR/all-gt"
 unicharset_extractor --output_unicharset "$OUTPUT_DIR/my.unicharset" \
   --norm_mode "$NORM_MODE" "$OUTPUT_DIR/all-gt"
 merge_unicharsets "$OUTPUT_DIR/$MODEL.lstm-unicharset" "$OUTPUT_DIR/my.unicharset" \

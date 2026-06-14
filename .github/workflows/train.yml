@@ -359,7 +359,9 @@ jobs:
 
           combine_tessdata -u "$TESSDATA_DIR/$MODEL.traineddata" "$OUTPUT_DIR/$MODEL." >/dev/null 2>&1
           [ -s "$OUTPUT_DIR/$MODEL.lstm-unicharset" ] || { echo "ERROR: no stock unicharset"; exit 1; }
-          cat "$GT_DIR"/*.gt.txt > "$OUTPUT_DIR/all-gt"
+          # find|-exec, not glob — full corpora have tens of thousands of
+          # .gt.txt files and a shell glob blows ARG_MAX (as elsewhere here).
+          find "$GT_DIR" -maxdepth 1 -name '*.gt.txt' -exec cat {} + > "$OUTPUT_DIR/all-gt"
           unicharset_extractor --output_unicharset "$OUTPUT_DIR/my.unicharset" \
             --norm_mode "$NORM_MODE" "$OUTPUT_DIR/all-gt"
           merge_unicharsets "$OUTPUT_DIR/$MODEL.lstm-unicharset" "$OUTPUT_DIR/my.unicharset" \
