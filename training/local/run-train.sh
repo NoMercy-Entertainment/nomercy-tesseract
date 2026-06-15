@@ -110,6 +110,10 @@ tail -n +"$((TRAIN_SIZE + 1))" "$OUTPUT_DIR/all-lstmf" > "$OUTPUT_DIR/list.eval"
 [ -s "$OUTPUT_DIR/list.eval" ] || cp "$OUTPUT_DIR/list.train" "$OUTPUT_DIR/list.eval"
 echo "   train=$(wc -l < "$OUTPUT_DIR/list.train") eval=$(wc -l < "$OUTPUT_DIR/list.eval")"
 
+# Mirror CI's disk reclaim: drop the large image/box files once lstmf exist.
+# Keep *.gt.txt — Phase 2a reads them to extend the unicharset.
+find "$GT_DIR" -maxdepth 1 \( -name '*.png' -o -name '*.tif' -o -name '*.tiff' -o -name '*.box' \) -delete 2>/dev/null || true
+
 echo "-- phase 2a: extend unicharset (stock + glyphs from GT)"
 # NORM_MODE/RECODER: Latin defaults. RTL scripts (ara/heb) need NORM_MODE=3 + --lang_is_rtl.
 NORM_MODE="${NORM_MODE:-2}"

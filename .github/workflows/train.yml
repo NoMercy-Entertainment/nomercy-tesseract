@@ -326,7 +326,9 @@ jobs:
           # leave ~3-5GB of GT renders sitting around through Phase 2 training.
           echo "Pre-training disk free:"
           df -h /tmp | tail -1
-          find "$GT_DIR" -maxdepth 1 \( -name "*.png" -o -name "*.tif" -o -name "*.tiff" -o -name "*.box" -o -name "*.gt.txt" \) -delete 2>/dev/null || true
+          # Keep *.gt.txt — Phase 2a reads them to extend the unicharset. Only
+          # the image/box files are large enough to matter for disk reclaim.
+          find "$GT_DIR" -maxdepth 1 \( -name "*.png" -o -name "*.tif" -o -name "*.tiff" -o -name "*.box" \) -delete 2>/dev/null || true
           echo "Post-cleanup disk free:"
           df -h /tmp | tail -1
 
