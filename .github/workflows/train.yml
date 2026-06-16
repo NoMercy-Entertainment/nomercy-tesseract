@@ -127,8 +127,8 @@ jobs:
           rm -rf /tmp/tesstrain-${LANG_CODE}
           git clone --depth 1 https://github.com/tesseract-ocr/tesstrain.git /tmp/tesstrain-${LANG_CODE}
 
-      - name: Install Pillow
-        run: pip3 install --quiet --break-system-packages Pillow
+      - name: Install Python deps (Pillow + bidi for RTL/Indic boxing)
+        run: pip3 install --quiet --break-system-packages Pillow python-bidi
 
       - name: Generate ground-truth with render_diverse (parallel)
         run: |
@@ -190,10 +190,31 @@ jobs:
           }
           echo "Downloaded $(wc -c < /tmp/tesstrain-${LANG_CODE}/usr/share/tessdata/${MODEL}.traineddata) bytes"
 
+      - name: Classify language type (RTL / Indic / default)
+        run: |
+          # tesstrain treats RTL and Indic scripts differently: they need
+          # NORM_MODE 3 / --lang_is_rtl (RTL), --pass_through_recoder, and
+          # word-string boxing instead of line boxing. Default (Latin, CJK,
+          # Cyrillic, Greek, Thai, etc.) uses line boxing.
+          RTL="ara fas heb yid urd pus snd uig syr div"
+          INDIC="asm ben bih bod dzo guj hin kan mal mar nep ori pan san sin tam tel"
+          if echo " $RTL " | grep -qw "$LANG_CODE"; then
+            TYPE=RTL;     NM=3; RC="--pass_through_recoder --lang_is_rtl"; BOX=generate_wordstr_box.py
+          elif echo " $INDIC " | grep -qw "$LANG_CODE"; then
+            TYPE=Indic;   NM=2; RC="--pass_through_recoder";              BOX=generate_wordstr_box.py
+          else
+            TYPE=default; NM=2; RC="--pass_through_recoder";              BOX=generate_line_box.py
+          fi
+          echo "LANG_TYPE=$TYPE"   >> $GITHUB_ENV
+          echo "NORM_MODE=$NM"     >> $GITHUB_ENV
+          echo "RECODER=$RC"       >> $GITHUB_ENV
+          echo "BOX_SCRIPT=$BOX"   >> $GITHUB_ENV
+          echo "$LANG_CODE -> type=$TYPE norm=$NM recoder='$RC' box=$BOX"
+
       - name: Validate ground-truth pairs
         run: |
           # Generate box files and remove any pair where box generation fails.
-          # render_diverse outputs PNG; generate_line_box accepts any image format.
+          # render_diverse outputs PNG; the box script accepts any image format.
           GT_COUNT=$(find "$GT_DIR" -maxdepth 1 -name "*.gt.txt" | wc -l)
           NCPU=6  # cap per-job parallelism so 8 concurrent jobs share 60 cores cleanly
           echo "Validating $GT_COUNT ground-truth pairs ($NCPU parallel workers)..."
@@ -216,7 +237,7 @@ jobs:
               rm -f "${STEM}".gt.txt "${STEM}".png "${STEM}".tif "${STEM}".tiff
               exit 0
             fi
-            python3 generate_line_box.py -i "$IMG" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
+            python3 "${BOX_SCRIPT:-generate_line_box.py}" -i "$IMG" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
             if [ ! -s "${STEM}.box" ]; then
               rm -f "${STEM}".gt.txt "${STEM}".png "${STEM}".tif "${STEM}".tiff "${STEM}".box
             fi

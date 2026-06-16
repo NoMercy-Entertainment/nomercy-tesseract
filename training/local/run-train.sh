@@ -28,6 +28,18 @@ MAX_ITERATIONS="${MAX_ITERATIONS:-400}"
 MAX_LINES="${MAX_LINES:-200}"
 MODEL="$LANG_CODE"
 
+# Classify script type — RTL/Indic need word-string boxing, --pass_through_recoder,
+# and (RTL) NORM_MODE=3 + --lang_is_rtl. Default (Latin/CJK/Cyrillic/...) line-boxes.
+RTL_LANGS="ara fas heb yid urd pus snd uig syr div"
+INDIC_LANGS="asm ben bih bod dzo guj hin kan mal mar nep ori pan san sin tam tel"
+if echo " $RTL_LANGS " | grep -qw "$MODEL"; then
+  LANG_TYPE=RTL;     NORM_MODE=3; RECODER="--pass_through_recoder --lang_is_rtl"; BOX_SCRIPT=generate_wordstr_box.py
+elif echo " $INDIC_LANGS " | grep -qw "$MODEL"; then
+  LANG_TYPE=Indic;   NORM_MODE=2; RECODER="--pass_through_recoder";              BOX_SCRIPT=generate_wordstr_box.py
+else
+  LANG_TYPE=default; NORM_MODE=2; RECODER="--pass_through_recoder";              BOX_SCRIPT=generate_line_box.py
+fi
+
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 OUT_REPO="$REPO/training/local/out"
 WORK="/tmp/tess-local-$LANG_CODE"
@@ -78,7 +90,7 @@ find "$GT_DIR" -maxdepth 1 -name '*.gt.txt' -print0 | xargs -0 -P "$(nproc)" -I 
   gt="{}"; STEM="${gt%.gt.txt}"; IMG=""
   for e in png tif tiff; do [ -f "${STEM}.${e}" ] && [ "$(wc -c < "${STEM}.${e}")" -ge 200 ] && IMG="${STEM}.${e}" && break; done
   [ -z "$IMG" ] && { rm -f "${STEM}".gt.txt "${STEM}".png "${STEM}".tif "${STEM}".tiff; exit 0; }
-  python3 "'"$TESSTRAIN"'/generate_line_box.py" -i "$IMG" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
+  python3 "'"$TESSTRAIN"'/'"$BOX_SCRIPT"'" -i "$IMG" -t "${STEM}.gt.txt" > "${STEM}.box" 2>/dev/null
   [ -s "${STEM}.box" ] || rm -f "${STEM}".gt.txt "${STEM}".png "${STEM}".box'
 [ "$(find "$GT_DIR" -name '*.gt.txt' | wc -l)" -gt 0 ] || { echo "ERROR: no valid GT after boxing"; exit 1; }
 
@@ -114,10 +126,7 @@ echo "   train=$(wc -l < "$OUTPUT_DIR/list.train") eval=$(wc -l < "$OUTPUT_DIR/l
 # Keep *.gt.txt — Phase 2a reads them to extend the unicharset.
 find "$GT_DIR" -maxdepth 1 \( -name '*.png' -o -name '*.tif' -o -name '*.tiff' -o -name '*.box' \) -delete 2>/dev/null || true
 
-echo "-- phase 2a: extend unicharset (stock + glyphs from GT)"
-# NORM_MODE/RECODER: Latin defaults. RTL scripts (ara/heb) need NORM_MODE=3 + --lang_is_rtl.
-NORM_MODE="${NORM_MODE:-2}"
-RECODER="${RECODER:---pass_through_recoder}"
+echo "-- phase 2a: extend unicharset ($LANG_TYPE: norm=$NORM_MODE recoder='$RECODER')"
 combine_tessdata -u "$TESSDATA/$MODEL.traineddata" "$OUTPUT_DIR/$MODEL." >/dev/null 2>&1
 [ -s "$OUTPUT_DIR/$MODEL.lstm-unicharset" ] || { echo "ERROR: no stock unicharset extracted"; exit 1; }
 find "$GT_DIR" -maxdepth 1 -name '*.gt.txt' -exec cat {} + > "$OUTPUT_DIR/all-gt"

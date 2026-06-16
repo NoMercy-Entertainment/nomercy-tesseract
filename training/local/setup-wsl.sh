@@ -35,7 +35,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TRAINING_TOOLS=ON \
 make -j"$(nproc)"
 make install
 sudo ldconfig
-pip3 install --quiet --break-system-packages Pillow 2>/dev/null || pip3 install --quiet Pillow
+# Pillow for rendering; python-bidi for RTL/Indic word-string boxing.
+pip3 install --quiet --break-system-packages Pillow python-bidi 2>/dev/null || pip3 install --quiet Pillow python-bidi
 
 "$HOME/tesseract-install/bin/tesseract" --version | head -2
 echo "Setup complete."
