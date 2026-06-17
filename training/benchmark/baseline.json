@@ -1,137 +1,947 @@
 {
+  "afr": {
+    "bcer": 0.015813,
+    "char_accuracy": 0.984187,
+    "lang": "afr",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:08:22.113630+00:00"
+  },
+  "amh": {
+    "bcer": 0.42811,
+    "char_accuracy": 0.57189,
+    "lang": "amh",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:54:02.991174+00:00"
+  },
   "ara": {
-    "bcer": 0.928393,
-    "char_accuracy": 0.071607,
+    "bcer": 0.639068,
+    "char_accuracy": 0.360932,
     "lang": "ara",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:42:14.814272+00:00"
+    "timestamp": "2026-06-17T17:38:52.854757+00:00"
+  },
+  "asm": {
+    "bcer": 0.482447,
+    "char_accuracy": 0.517553,
+    "lang": "asm",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:42:29.143728+00:00"
+  },
+  "aze": {
+    "bcer": 0.008367,
+    "char_accuracy": 0.991633,
+    "lang": "aze",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:10:16.600558+00:00"
+  },
+  "aze_cyrl": {
+    "bcer": 0.752222,
+    "char_accuracy": 0.247778,
+    "lang": "aze_cyrl",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:07:04.717931+00:00"
+  },
+  "bel": {
+    "bcer": 0.052164,
+    "char_accuracy": 0.947836,
+    "lang": "bel",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:46:19.287481+00:00"
   },
   "ben": {
-    "bcer": 0.91526,
-    "char_accuracy": 0.08474,
+    "bcer": 0.227929,
+    "char_accuracy": 0.772071,
     "lang": "ben",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:44:36.853862+00:00"
+    "timestamp": "2026-06-17T17:56:49.052200+00:00"
+  },
+  "bos": {
+    "bcer": 0.032201,
+    "char_accuracy": 0.967799,
+    "lang": "bos",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:02:13.425790+00:00"
+  },
+  "bre": {
+    "bcer": 0.093847,
+    "char_accuracy": 0.906153,
+    "lang": "bre",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:30:49.245236+00:00"
+  },
+  "bul": {
+    "bcer": 0.018697,
+    "char_accuracy": 0.981303,
+    "lang": "bul",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:59:58.063194+00:00"
+  },
+  "cat": {
+    "bcer": 0.046859,
+    "char_accuracy": 0.953141,
+    "lang": "cat",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:16:28.908695+00:00"
+  },
+  "ces": {
+    "bcer": 0.084574,
+    "char_accuracy": 0.915426,
+    "lang": "ces",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:54:51.442421+00:00"
   },
   "chi_sim": {
-    "bcer": 0.692726,
-    "char_accuracy": 0.307274,
+    "bcer": 0.245907,
+    "char_accuracy": 0.754093,
     "lang": "chi_sim",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:47:37.199791+00:00"
+    "timestamp": "2026-06-17T16:55:05.444073+00:00"
+  },
+  "chi_sim_vert": {
+    "bcer": 0.986602,
+    "char_accuracy": 0.013398,
+    "lang": "chi_sim_vert",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:55:37.563809+00:00"
   },
   "chi_tra": {
-    "bcer": 0.932932,
-    "char_accuracy": 0.067068,
+    "bcer": 0.648369,
+    "char_accuracy": 0.351631,
     "lang": "chi_tra",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:46:57.819862+00:00"
+    "timestamp": "2026-06-17T16:45:57.094985+00:00"
+  },
+  "chi_tra_vert": {
+    "bcer": 0.98729,
+    "char_accuracy": 0.01271,
+    "lang": "chi_tra_vert",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:15:51.724541+00:00"
+  },
+  "cym": {
+    "bcer": 0.065688,
+    "char_accuracy": 0.934312,
+    "lang": "cym",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:44:24.079172+00:00"
+  },
+  "dan": {
+    "bcer": 0.033538,
+    "char_accuracy": 0.966462,
+    "lang": "dan",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:38:19.409161+00:00"
   },
   "deu": {
-    "bcer": 0.197836,
-    "char_accuracy": 0.802164,
+    "bcer": 0.051309,
+    "char_accuracy": 0.948691,
     "lang": "deu",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:45:00.602602+00:00"
+    "timestamp": "2026-06-17T18:20:27.344584+00:00"
+  },
+  "deu_latf": {
+    "bcer": 0.023183,
+    "char_accuracy": 0.976817,
+    "lang": "deu_latf",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:05:52.944272+00:00"
+  },
+  "ell": {
+    "bcer": 0.335228,
+    "char_accuracy": 0.664772,
+    "lang": "ell",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:08:38.267955+00:00"
   },
   "eng": {
-    "bcer": 0.604709,
-    "char_accuracy": 0.395291,
+    "bcer": 0.048791,
+    "char_accuracy": 0.951209,
     "lang": "eng",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:45:29.277007+00:00"
+    "timestamp": "2026-06-17T17:16:40.144271+00:00"
+  },
+  "enm": {
+    "bcer": 0.044174,
+    "char_accuracy": 0.955826,
+    "lang": "enm",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:54:28.861059+00:00"
+  },
+  "epo": {
+    "bcer": 0.025212,
+    "char_accuracy": 0.974788,
+    "lang": "epo",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:47:16.333233+00:00"
+  },
+  "est": {
+    "bcer": 0.05068,
+    "char_accuracy": 0.94932,
+    "lang": "est",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:05:18.927974+00:00"
+  },
+  "eus": {
+    "bcer": 0.294333,
+    "char_accuracy": 0.705667,
+    "lang": "eus",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:29:57.049124+00:00"
+  },
+  "fao": {
+    "bcer": 0.065099,
+    "char_accuracy": 0.934901,
+    "lang": "fao",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:23:42.785128+00:00"
+  },
+  "fas": {
+    "bcer": 0.497535,
+    "char_accuracy": 0.502465,
+    "lang": "fas",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:51:35.183270+00:00"
+  },
+  "fil": {
+    "bcer": 0.024301,
+    "char_accuracy": 0.975699,
+    "lang": "fil",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:43:12.621462+00:00"
+  },
+  "fin": {
+    "bcer": 0.070865,
+    "char_accuracy": 0.929135,
+    "lang": "fin",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:32:33.778802+00:00"
   },
   "fra": {
-    "bcer": 0.573502,
-    "char_accuracy": 0.426498,
+    "bcer": 0.047377,
+    "char_accuracy": 0.952623,
     "lang": "fra",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:42:59.236168+00:00"
+    "timestamp": "2026-06-17T17:36:51.184172+00:00"
+  },
+  "frm": {
+    "bcer": 0.062235,
+    "char_accuracy": 0.937765,
+    "lang": "frm",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:22:01.275878+00:00"
+  },
+  "fry": {
+    "bcer": 0.017802,
+    "char_accuracy": 0.982198,
+    "lang": "fry",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:24:22.883369+00:00"
+  },
+  "gla": {
+    "bcer": 0.045074,
+    "char_accuracy": 0.954926,
+    "lang": "gla",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:01:13.379044+00:00"
+  },
+  "gle": {
+    "bcer": 0.028258,
+    "char_accuracy": 0.971742,
+    "lang": "gle",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:33:27.970898+00:00"
+  },
+  "glg": {
+    "bcer": 0.027697,
+    "char_accuracy": 0.972303,
+    "lang": "glg",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:31:47.558304+00:00"
+  },
+  "guj": {
+    "bcer": 0.37669,
+    "char_accuracy": 0.62331,
+    "lang": "guj",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:43:18.406701+00:00"
+  },
+  "hat": {
+    "bcer": 0.049639,
+    "char_accuracy": 0.950361,
+    "lang": "hat",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:07:10.687462+00:00"
+  },
+  "heb": {
+    "bcer": 0.59059,
+    "char_accuracy": 0.40941,
+    "lang": "heb",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:10:22.434409+00:00"
   },
   "hin": {
-    "bcer": 0.858216,
-    "char_accuracy": 0.141784,
+    "bcer": 0.198051,
+    "char_accuracy": 0.801949,
     "lang": "hin",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:45:50.248575+00:00"
+    "timestamp": "2026-06-17T18:16:30.311001+00:00"
+  },
+  "hrv": {
+    "bcer": 0.031821,
+    "char_accuracy": 0.968179,
+    "lang": "hrv",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:05:28.557381+00:00"
+  },
+  "hun": {
+    "bcer": 0.082438,
+    "char_accuracy": 0.917562,
+    "lang": "hun",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:55:27.777544+00:00"
+  },
+  "hye": {
+    "bcer": 0.393709,
+    "char_accuracy": 0.606291,
+    "lang": "hye",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:14:31.347600+00:00"
+  },
+  "ind": {
+    "bcer": 0.027693,
+    "char_accuracy": 0.972307,
+    "lang": "ind",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:12:40.452352+00:00"
+  },
+  "isl": {
+    "bcer": 0.123922,
+    "char_accuracy": 0.876078,
+    "lang": "isl",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:46:42.097798+00:00"
   },
   "ita": {
-    "bcer": 0.320872,
-    "char_accuracy": 0.679128,
+    "bcer": 0.034473,
+    "char_accuracy": 0.965527,
     "lang": "ita",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:44:28.154816+00:00"
+    "timestamp": "2026-06-17T18:14:37.809915+00:00"
+  },
+  "ita_old": {
+    "bcer": 0.03262,
+    "char_accuracy": 0.96738,
+    "lang": "ita_old",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:04:12.898537+00:00"
   },
   "jpn": {
-    "bcer": 0.863656,
-    "char_accuracy": 0.136344,
+    "bcer": 0.537394,
+    "char_accuracy": 0.462606,
     "lang": "jpn",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:47:10.559553+00:00"
+    "timestamp": "2026-06-17T17:30:04.814703+00:00"
+  },
+  "jpn_vert": {
+    "bcer": 0.94705,
+    "char_accuracy": 0.05295,
+    "lang": "jpn_vert",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T16:59:50.692401+00:00"
+  },
+  "kan": {
+    "bcer": 0.389398,
+    "char_accuracy": 0.610602,
+    "lang": "kan",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:52:01.930479+00:00"
+  },
+  "kat": {
+    "bcer": 0.388302,
+    "char_accuracy": 0.611698,
+    "lang": "kat",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T17:43:56.342801+00:00"
+  },
+  "kat_old": {
+    "bcer": 0.928725,
+    "char_accuracy": 0.071275,
+    "lang": "kat_old",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:00:54.915977+00:00"
+  },
+  "kaz": {
+    "bcer": 0.034556,
+    "char_accuracy": 0.965444,
+    "lang": "kaz",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:04:22.170080+00:00"
+  },
+  "khm": {
+    "bcer": 0.392146,
+    "char_accuracy": 0.607854,
+    "lang": "khm",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:31:25.497770+00:00"
+  },
+  "kir": {
+    "bcer": 0.195439,
+    "char_accuracy": 0.804561,
+    "lang": "kir",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:46:47.103991+00:00"
+  },
+  "kmr": {
+    "bcer": 0.048353,
+    "char_accuracy": 0.951647,
+    "lang": "kmr",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:48:48.287900+00:00"
   },
   "kor": {
-    "bcer": 0.973831,
-    "char_accuracy": 0.026169,
+    "bcer": 0.905452,
+    "char_accuracy": 0.094548,
     "lang": "kor",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:42:14.219121+00:00"
+    "timestamp": "2026-06-17T18:37:08.876630+00:00"
+  },
+  "kor_vert": {
+    "bcer": 0.889142,
+    "char_accuracy": 0.110858,
+    "lang": "kor_vert",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:05:01.194570+00:00"
+  },
+  "lao": {
+    "bcer": 0.594282,
+    "char_accuracy": 0.405718,
+    "lang": "lao",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:18:55.331375+00:00"
+  },
+  "lav": {
+    "bcer": 0.02903,
+    "char_accuracy": 0.97097,
+    "lang": "lav",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:54:26.513098+00:00"
+  },
+  "lit": {
+    "bcer": 0.020446,
+    "char_accuracy": 0.979554,
+    "lang": "lit",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:00:30.714767+00:00"
+  },
+  "ltz": {
+    "bcer": 0.074384,
+    "char_accuracy": 0.925616,
+    "lang": "ltz",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:01:58.614078+00:00"
+  },
+  "mal": {
+    "bcer": 0.363703,
+    "char_accuracy": 0.636297,
+    "lang": "mal",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:45:37.619044+00:00"
+  },
+  "mar": {
+    "bcer": 0.300129,
+    "char_accuracy": 0.699871,
+    "lang": "mar",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:27:28.212666+00:00"
+  },
+  "mkd": {
+    "bcer": 0.03715,
+    "char_accuracy": 0.96285,
+    "lang": "mkd",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:16:47.579752+00:00"
+  },
+  "mlt": {
+    "bcer": 0.065631,
+    "char_accuracy": 0.934369,
+    "lang": "mlt",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:10:56.304823+00:00"
+  },
+  "mon": {
+    "bcer": 0.439149,
+    "char_accuracy": 0.560851,
+    "lang": "mon",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:38:07.967490+00:00"
+  },
+  "mri": {
+    "bcer": 0.059341,
+    "char_accuracy": 0.940659,
+    "lang": "mri",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:02:27.159275+00:00"
+  },
+  "msa": {
+    "bcer": 0.018168,
+    "char_accuracy": 0.981832,
+    "lang": "msa",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:24:58.816050+00:00"
+  },
+  "mya": {
+    "bcer": 0.467146,
+    "char_accuracy": 0.532854,
+    "lang": "mya",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:11:51.742262+00:00"
+  },
+  "nep": {
+    "bcer": 0.314012,
+    "char_accuracy": 0.685988,
+    "lang": "nep",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:34:58.873204+00:00"
   },
   "nld": {
-    "bcer": 0.4423,
-    "char_accuracy": 0.5577,
+    "bcer": 0.023504,
+    "char_accuracy": 0.976496,
     "lang": "nld",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:44:18.708636+00:00"
+    "timestamp": "2026-06-17T19:49:19.930830+00:00"
+  },
+  "nor": {
+    "bcer": 0.036185,
+    "char_accuracy": 0.963815,
+    "lang": "nor",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:39:31.274485+00:00"
+  },
+  "oci": {
+    "bcer": 0.021141,
+    "char_accuracy": 0.978859,
+    "lang": "oci",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:43:51.044617+00:00"
+  },
+  "ori": {
+    "bcer": 0.923582,
+    "char_accuracy": 0.076418,
+    "lang": "ori",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:58:38.622198+00:00"
+  },
+  "pan": {
+    "bcer": 0.370814,
+    "char_accuracy": 0.629186,
+    "lang": "pan",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:29:34.988697+00:00"
+  },
+  "pol": {
+    "bcer": 0.016849,
+    "char_accuracy": 0.983151,
+    "lang": "pol",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:49:58.835590+00:00"
   },
   "por": {
-    "bcer": 0.439911,
-    "char_accuracy": 0.560089,
+    "bcer": 0.027705,
+    "char_accuracy": 0.972295,
     "lang": "por",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:44:46.813753+00:00"
+    "timestamp": "2026-06-17T18:55:13.361760+00:00"
+  },
+  "pus": {
+    "bcer": 0.569806,
+    "char_accuracy": 0.430194,
+    "lang": "pus",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:48:03.071433+00:00"
+  },
+  "ron": {
+    "bcer": 0.024504,
+    "char_accuracy": 0.975496,
+    "lang": "ron",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:36:20.815535+00:00"
   },
   "rus": {
-    "bcer": 0.852735,
-    "char_accuracy": 0.147265,
+    "bcer": 0.05902,
+    "char_accuracy": 0.94098,
     "lang": "rus",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:42:21.857450+00:00"
+    "timestamp": "2026-06-17T18:55:42.995672+00:00"
+  },
+  "sin": {
+    "bcer": 0.474723,
+    "char_accuracy": 0.525277,
+    "lang": "sin",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:26:32.911774+00:00"
+  },
+  "slk": {
+    "bcer": 0.032462,
+    "char_accuracy": 0.967538,
+    "lang": "slk",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:52:14.435317+00:00"
+  },
+  "slv": {
+    "bcer": 0.013553,
+    "char_accuracy": 0.986447,
+    "lang": "slv",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:17:06.081682+00:00"
   },
   "spa": {
-    "bcer": 0.494205,
-    "char_accuracy": 0.505795,
+    "bcer": 0.04946,
+    "char_accuracy": 0.95054,
     "lang": "spa",
     "model_tag": "tessdata_best",
     "n_lines": 500,
     "n_variants": 2000,
-    "timestamp": "2026-04-19T11:44:55.256106+00:00"
+    "timestamp": "2026-06-17T19:26:13.098106+00:00"
+  },
+  "spa_old": {
+    "bcer": 0.019177,
+    "char_accuracy": 0.980823,
+    "lang": "spa_old",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:57:27.763690+00:00"
+  },
+  "sqi": {
+    "bcer": 0.041351,
+    "char_accuracy": 0.958649,
+    "lang": "sqi",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:40:53.639653+00:00"
+  },
+  "srp": {
+    "bcer": 0.845843,
+    "char_accuracy": 0.154157,
+    "lang": "srp",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:10:16.355994+00:00"
+  },
+  "srp_latn": {
+    "bcer": 0.076281,
+    "char_accuracy": 0.923719,
+    "lang": "srp_latn",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:48:53.561341+00:00"
+  },
+  "swa": {
+    "bcer": 0.005755,
+    "char_accuracy": 0.994245,
+    "lang": "swa",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:10:25.158254+00:00"
+  },
+  "swe": {
+    "bcer": 0.013665,
+    "char_accuracy": 0.986335,
+    "lang": "swe",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:22:06.746730+00:00"
+  },
+  "tam": {
+    "bcer": 0.656021,
+    "char_accuracy": 0.343979,
+    "lang": "tam",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:55:26.457305+00:00"
+  },
+  "tat": {
+    "bcer": 0.854823,
+    "char_accuracy": 0.145177,
+    "lang": "tat",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T18:39:23.811682+00:00"
+  },
+  "tel": {
+    "bcer": 0.221198,
+    "char_accuracy": 0.778802,
+    "lang": "tel",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:30:40.928219+00:00"
+  },
+  "tgk": {
+    "bcer": 0.070075,
+    "char_accuracy": 0.929925,
+    "lang": "tgk",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:48:15.422089+00:00"
+  },
+  "tha": {
+    "bcer": 0.752345,
+    "char_accuracy": 0.247655,
+    "lang": "tha",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:37:49.044183+00:00"
+  },
+  "tur": {
+    "bcer": 0.034373,
+    "char_accuracy": 0.965627,
+    "lang": "tur",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:20:53.624192+00:00"
+  },
+  "ukr": {
+    "bcer": 0.060962,
+    "char_accuracy": 0.939038,
+    "lang": "ukr",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:41:21.236503+00:00"
+  },
+  "urd": {
+    "bcer": 0.641552,
+    "char_accuracy": 0.358448,
+    "lang": "urd",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:55:33.324310+00:00"
+  },
+  "uzb": {
+    "bcer": 0.486473,
+    "char_accuracy": 0.513527,
+    "lang": "uzb",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:33:25.624370+00:00"
+  },
+  "uzb_cyrl": {
+    "bcer": 0.408994,
+    "char_accuracy": 0.591006,
+    "lang": "uzb_cyrl",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:12:59.449954+00:00"
+  },
+  "vie": {
+    "bcer": 0.117866,
+    "char_accuracy": 0.882134,
+    "lang": "vie",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:35:32.203440+00:00"
+  },
+  "yid": {
+    "bcer": 0.927052,
+    "char_accuracy": 0.072948,
+    "lang": "yid",
+    "model_tag": "tessdata_best",
+    "n_lines": 383,
+    "n_variants": 1532,
+    "timestamp": "2026-06-17T19:24:52.998474+00:00"
+  },
+  "yor": {
+    "bcer": 0.120229,
+    "char_accuracy": 0.879771,
+    "lang": "yor",
+    "model_tag": "tessdata_best",
+    "n_lines": 500,
+    "n_variants": 2000,
+    "timestamp": "2026-06-17T19:48:15.706236+00:00"
   }
 }
