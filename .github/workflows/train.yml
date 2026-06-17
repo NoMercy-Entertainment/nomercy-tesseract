@@ -511,16 +511,20 @@ jobs:
             --output "$WORK_DIR/new_bench.json" \
             --max-lines 200
 
-      - name: Gate on 40% BCER reduction
+      - name: Gate on no regression vs stock
         id: gate
         env:
           NEW_JSON: ${{ env.WORK_DIR }}/new_bench.json
           BASELINE: training/benchmark/baseline.json
         run: |
+          # Policy: never ship a regression. A fine-tune commits only if it is at
+          # least as accurate as stock on held-out text. If we cannot validate
+          # (no held-out, no baseline, benchmark failed), we refuse and keep
+          # stock — an unvalidated model could regress.
           if [ "${{ steps.bench.outputs.held_out_missing }}" = "true" ]; then
-            echo "No held-out data — commit allowed as unvalidated"
-            echo "should_commit=true" >> $GITHUB_OUTPUT
-            echo "tag=unvalidated" >> $GITHUB_OUTPUT
+            echo "::warning::No held-out data — cannot prove no regression, keeping stock"
+            echo "should_commit=false" >> $GITHUB_OUTPUT
+            echo "tag=unvalidatable" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -531,9 +535,9 @@ jobs:
           fi
 
           if [ ! -f "$BASELINE" ]; then
-            echo "No baseline.json — commit allowed as first-run"
-            echo "should_commit=true" >> $GITHUB_OUTPUT
-            echo "tag=first-run" >> $GITHUB_OUTPUT
+            echo "::warning::No baseline.json — cannot prove no regression, keeping stock"
+            echo "should_commit=false" >> $GITHUB_OUTPUT
+            echo "tag=no-baseline" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -544,24 +548,24 @@ jobs:
           lang = "${{ matrix.lang }}"
           base = baseline_all.get(lang)
           if base is None:
-              print(f"No baseline entry for {lang} — allowing commit")
+              print(f"No baseline entry for {lang} — cannot prove no regression, keeping stock")
               with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
-                  fh.write("should_commit=true\n")
+                  fh.write("should_commit=false\n")
                   fh.write("tag=no-baseline\n")
               sys.exit(0)
           new_bcer  = new["bcer"]
           base_bcer = base["bcer"]
-          reduction = (base_bcer - new_bcer) / base_bcer if base_bcer > 0 else 0.0
+          # No regression: the fine-tune must not be less accurate than stock.
+          passed = new_bcer <= base_bcer
+          improvement = base_bcer - new_bcer
           print(f"Baseline BCER: {base_bcer:.4f}")
           print(f"New BCER:      {new_bcer:.4f}")
-          print(f"Reduction:     {reduction:.1%}  (target: >=40%)")
-          passed = reduction >= 0.40
+          print(f"Delta:         {improvement:+.4f}  ({'no regression' if passed else 'REGRESSION'})")
           with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
               fh.write(f"should_commit={'true' if passed else 'false'}\n")
-              fh.write(f"reduction={reduction:.4f}\n")
               fh.write(f"new_bcer={new_bcer:.4f}\n")
               fh.write(f"baseline_bcer={base_bcer:.4f}\n")
-              fh.write(f"tag={'pass' if passed else 'fail'}\n")
+              fh.write(f"tag={'pass' if passed else 'regression'}\n")
           PYEOF
 
       - name: Upload benchmark report
@@ -594,14 +598,12 @@ jobs:
       - name: Rejected — keep existing tessdata
         if: steps.gate.outputs.should_commit != 'true'
         run: |
-          REDUCTION="${{ steps.gate.outputs.reduction }}"
           NEW="${{ steps.gate.outputs.new_bcer }}"
           BASE="${{ steps.gate.outputs.baseline_bcer }}"
-          echo "::warning::Validation gate REJECTED $LANG_CODE"
+          echo "::warning::Gate REJECTED $LANG_CODE (${{ steps.gate.outputs.tag }})"
           echo "  Baseline BCER: $BASE"
           echo "  New BCER:      $NEW"
-          echo "  Reduction:     $REDUCTION (target >= 0.4)"
-          echo "  Existing tessdata preserved — new model discarded."
+          echo "  Policy: no regression allowed — stock preserved, new model discarded."
           git checkout -- "tessdata/$LANG_CODE.traineddata" || true
 
       - name: Upload tessdata artifact
