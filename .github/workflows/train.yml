@@ -93,7 +93,7 @@ jobs:
               libleptonica-dev libicu-dev libpango1.0-dev libcairo2-dev \
               fonts-noto fonts-noto-cjk fonts-noto-cjk-extra \
               fonts-noto-extra fonts-noto-ui-core fonts-noto-core \
-              fonts-dejavu fonts-liberation wget \
+              fonts-dejavu fonts-liberation fontconfig wget \
             || sudo apt-get install -f -y
           ) 200>/var/lock/tesseract-apt.lock
 
