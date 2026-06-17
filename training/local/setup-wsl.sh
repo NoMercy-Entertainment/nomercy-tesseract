@@ -22,8 +22,9 @@ sudo apt-get update -qq
 sudo apt-get install -y --no-install-recommends \
   g++ cmake make pkg-config git \
   libleptonica-dev libicu-dev libpango1.0-dev libcairo2-dev \
-  fonts-noto fonts-noto-extra fonts-noto-ui-core fonts-noto-core \
-  fonts-dejavu fonts-liberation wget python3 python3-pip
+  fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-extra \
+  fonts-noto-ui-core fonts-noto-core fonts-noto-unhinted \
+  fonts-dejavu fonts-liberation fontconfig wget python3 python3-pip
 
 rm -rf "$HOME/tesseract-src"
 git clone --depth 1 --branch fix/append-index-lstmrecognizer \

@@ -19,6 +19,9 @@ import argparse
 import io
 import os
 import random
+import subprocess
+import sys
+from functools import lru_cache
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -44,20 +47,40 @@ _SHADOW_OFFSETS = [0]
 _DEGRADATIONS = ["none"]
 
 
+@lru_cache(maxsize=512)
+def _fc_match_file(query: str) -> Optional[str]:
+    """Resolve a fontconfig pattern (e.g. 'Noto Sans Arabic:bold') to a file path."""
+    try:
+        result = subprocess.run(
+            ["fc-match", "-f", "%{file}", query],
+            capture_output=True, text=True, timeout=10,
+        )
+        path = result.stdout.strip()
+        return path or None
+    except Exception:
+        return None
+
+
 def _resolve_font(font_name: str, style: str, size: int) -> Optional[ImageFont.FreeTypeFont]:
+    # Resolve the family NAME to a real font file via fontconfig. PIL's
+    # truetype(family_name) is unreliable and silently falls back to
+    # load_default() — an ASCII-only bitmap that renders every non-Latin script
+    # blank. fc-match maps the name to the installed file so real glyphs render.
     style_suffix = {
         "regular": "",
-        "bold": " Bold",
-        "italic": " Italic",
-        "bold-italic": " Bold Italic",
+        "bold": ":bold",
+        "italic": ":italic",
+        "bold-italic": ":bold:italic",
     }[style]
-    try:
-        return ImageFont.truetype(f"{font_name}{style_suffix}", size=size)
-    except OSError:
+    path = _fc_match_file(f"{font_name}{style_suffix}")
+    if path:
         try:
-            return ImageFont.truetype(font_name, size=size)
+            return ImageFont.truetype(path, size=size)
         except OSError:
-            return ImageFont.load_default()
+            pass
+    print(f"  WARNING: no usable font for '{font_name}' ({style}); render will be blank",
+          file=sys.stderr)
+    return ImageFont.load_default()
 
 
 def _apply_degradation(img: Image.Image, kind: str, rng: random.Random) -> Image.Image:
