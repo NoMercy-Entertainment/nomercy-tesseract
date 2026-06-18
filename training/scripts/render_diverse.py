@@ -152,6 +152,28 @@ def _render_one(
     return _apply_degradation(img, degradation, rng)
 
 
+def is_junk_line(line: str) -> bool:
+    """
+    True for corpus lines that are not real subtitle text — emoji, private-use,
+    math-alphanumeric, decorative and miscellaneous symbol runs (e.g.
+    '꧁ঔৣ☬𝓓🅰ʍ𝖆я☬ঔৣ꧂'). These have no place in an OCR model and the encoder
+    would skip them anyway. Real punctuation and the wanted glyphs ♪ ♫ are kept.
+    """
+    if not line.strip():
+        return True
+    for ch in line:
+        cp = ord(ch)
+        if (
+            cp >= 0x1F000                                  # emoji & supplemental symbols
+            or 0xE000 <= cp <= 0xF8FF                       # private use area
+            or 0x1D400 <= cp <= 0x1D7FF                     # math alphanumeric
+            or 0xA9C0 <= cp <= 0xA9CF                       # Javanese decorative
+            or (0x2600 <= cp <= 0x27BF and ch not in ("♪", "♫"))  # misc symbols/dingbats
+        ):
+            return True
+    return False
+
+
 def render_line_variants(
     line: str,
     seed: int,
@@ -164,6 +186,8 @@ def render_line_variants(
     list of output stems (without extension). PNG + .gt.txt written side
     by side with matching stems.
     """
+    if is_junk_line(line):
+        return []
     out_dir.mkdir(parents=True, exist_ok=True)
     rng = random.Random(seed)
     stems: List[str] = []
