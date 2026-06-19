@@ -255,9 +255,20 @@ jobs:
           LANGDATA_DIR="/tmp/tesstrain-${LANG_CODE}/data/langdata"
           mkdir -p "$OUTPUT_DIR" "$LANGDATA_DIR/$MODEL"
 
-          # Download radical-stroke.txt (required by combine_lang_model)
-          wget -q -O "$LANGDATA_DIR/radical-stroke.txt" \
-            "https://github.com/tesseract-ocr/langdata_lstm/raw/main/radical-stroke.txt" || true
+          # Retrying fetch — raw.githubusercontent flakes intermittently and a
+          # silent miss here makes combine_lang_model fail later (e.g. cym).
+          fetch() {
+            wget -q --tries=5 --waitretry=5 --retry-connrefused --timeout=30 \
+              -O "$1" "$2" && [ -s "$1" ]
+          }
+          LANGDATA_RAW="https://github.com/tesseract-ocr/langdata_lstm/raw/main"
+
+          # radical-stroke.txt is REQUIRED by combine_lang_model — fail loudly if missing.
+          for attempt in 1 2 3 4 5; do
+            fetch "$LANGDATA_DIR/radical-stroke.txt" "$LANGDATA_RAW/radical-stroke.txt" && break
+            echo "radical-stroke.txt fetch failed (attempt $attempt), retrying..."; sleep $((attempt * 3))
+          done
+          [ -s "$LANGDATA_DIR/radical-stroke.txt" ] || { echo "ERROR: radical-stroke.txt unavailable"; exit 1; }
 
           # Download script unicharsets that tesstrain needs
           echo "Downloading script unicharsets..."
@@ -267,8 +278,7 @@ jobs:
                    Canadian_Aboriginal Cherokee Ogham Oriya Runic Syriac"
           DL_COUNT=0
           for script in $SCRIPTS; do
-            wget -q -O "$LANGDATA_DIR/${script}.unicharset" \
-              "https://github.com/tesseract-ocr/langdata_lstm/raw/main/${script}.unicharset" 2>/dev/null && DL_COUNT=$((DL_COUNT + 1)) || true
+            fetch "$LANGDATA_DIR/${script}.unicharset" "$LANGDATA_RAW/${script}.unicharset" && DL_COUNT=$((DL_COUNT + 1)) || true
           done
           echo "Downloaded $DL_COUNT script unicharsets"
 
