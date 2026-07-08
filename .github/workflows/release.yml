@@ -204,3 +204,24 @@ jobs:
             tessdata/yor.traineddata
           draft: false
           prerelease: false
+
+      - name: Stage released files for manifest
+        run: |
+          mkdir -p release
+          cp tesseract-traineddata.tar.gz release/ 2>/dev/null || true
+          cp tessdata/*.traineddata release/
+
+      - name: Generate signed manifest
+        uses: NoMercy-Entertainment/nomercy-media-server/.github/actions/generate-release-manifest@master
+        with:
+          output-dir: release
+          version: ${{ steps.tag.outputs.tag_name }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Upload manifest and signature to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ steps.tag.outputs.tag_name }}" \
+            release/manifest.json release/manifest.json.sig \
+            --repo "${{ github.repository }}" --clobber
