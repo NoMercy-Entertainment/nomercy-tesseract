@@ -1,0 +1,44 @@
+name: Sign Existing Release
+
+# Backfill a GPG-signed manifest onto a release that was published before signing
+# existed. Downloads the release's assets, generates manifest.json + a detached
+# signature via the shared NoMercy action, and uploads only those two files — it
+# never re-uploads the assets themselves, so it avoids the secondary-rate-limit that
+# a full release re-run hits.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to sign (e.g. v1.0.1)'
+        required: true
+        type: string
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p release
+          gh release download "${{ inputs.tag }}" \
+            --repo "${{ github.repository }}" --dir release
+
+      - name: Generate signed manifest
+        uses: NoMercy-Entertainment/nomercy-media-server/.github/actions/generate-release-manifest@master
+        with:
+          output-dir: release
+          version: ${{ inputs.tag }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Upload manifest and signature to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ inputs.tag }}" \
+            release/manifest.json release/manifest.json.sig \
+            --repo "${{ github.repository }}" --clobber
