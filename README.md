@@ -29,7 +29,7 @@ training/
   ground-truth/     Manually verified image+text pairs used for training and validation
   fonts/            Where to place extra .ttf fonts (see fonts/README.md)
   scripts/
-    generate-training-data.py   Renders synthetic subtitle training images
+    generate_training_data.py   Renders synthetic subtitle training images
     validate-model.py           Tests models against ground-truth before committing
   config/
     characters.txt  Extra characters to cover in training
@@ -46,7 +46,7 @@ training/
 3. For each language in parallel:
    a. Installs Tesseract 5 training tools via apt.
    b. Downloads the base LSTM model from the installed package.
-   c. Runs `generate-training-data.py` to produce synthetic subtitle images
+   c. Runs `generate_training_data.py` to produce synthetic subtitle images
       (white/yellow text on black background, multiple fonts and sizes).
    d. Appends the manual ground-truth pairs from `training/ground-truth/`.
    e. Converts all images to `.lstmf` format.
@@ -73,13 +73,13 @@ If you find a subtitle that OCR reads incorrectly:
 pip install Pillow
 
 # Generate training images for English only
-python training/scripts/generate-training-data.py --lang eng
+python training/scripts/generate_training_data.py --lang eng
 
 # Validate an existing tessdata directory
 python training/scripts/validate-model.py --tessdata tessdata/ --lang eng
 
 # Preview sample renders without writing files
-python training/scripts/generate-training-data.py --preview
+python training/scripts/generate_training_data.py --preview
 ```
 
 Tesseract 5 training tools must be on PATH for the validate script:
