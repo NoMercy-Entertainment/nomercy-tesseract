@@ -81,7 +81,6 @@ jobs:
 
       - name: Install build deps and fonts
         run: |
-          umask 0022
           # Serialize apt across parallel matrix jobs — dpkg post-install
           # scripts (emacsen-common, dictionaries-common) fail under contention.
           (

@@ -24,7 +24,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          umask 0022
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends python3
 
