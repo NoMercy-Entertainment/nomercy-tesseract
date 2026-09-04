@@ -64,6 +64,7 @@ jobs:
 
       - name: Install deps
         run: |
+          umask 0022
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
             tesseract-ocr tesseract-ocr-all python3-pip \
