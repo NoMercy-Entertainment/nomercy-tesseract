@@ -10,7 +10,7 @@ installed at `$HOME/tesseract-install` — the same prefix CI builds on beast-un
 
 ```bash
 wsl -d Ubuntu-24.04
-cd /mnt/c/Projects/NoMercy/packages/nomercy-tesseract
+cd /mnt/c/Projects/NoMercy/server/recognition/nomercy-tesseract
 bash training/local/setup-wsl.sh
 ```
 
