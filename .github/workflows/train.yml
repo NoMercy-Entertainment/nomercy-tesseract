@@ -30,7 +30,7 @@ concurrency:
 jobs:
   setup:
     name: Resolve language matrix
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
@@ -62,7 +62,7 @@ jobs:
   train:
     name: Train [${{ matrix.lang }}]
     needs: setup
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
     timeout-minutes: 1440
 
     strategy:
@@ -632,7 +632,7 @@ jobs:
     name: Training report
     needs: [setup, train]
     if: always()
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
 
     steps:
       - uses: actions/checkout@v4

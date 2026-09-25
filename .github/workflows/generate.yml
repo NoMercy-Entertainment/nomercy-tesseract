@@ -17,7 +17,7 @@ on:
 jobs:
   generate:
     name: Generate training text
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
 
     steps:
       - uses: actions/checkout@v4

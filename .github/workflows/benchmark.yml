@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   setup:
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
@@ -51,7 +51,7 @@ jobs:
 
   bench:
     needs: setup
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
@@ -118,7 +118,7 @@ jobs:
   aggregate:
     needs: [setup, bench]
     if: always()
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
     steps:
       - uses: actions/checkout@v4
 

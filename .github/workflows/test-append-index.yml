@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     name: Build patched Tesseract and test --append_index
-    runs-on: [self-hosted, beast-unit]
+    runs-on: [self-hosted, Linux, X64, beast-unit]
 
     steps:
       - uses: actions/checkout@v4
