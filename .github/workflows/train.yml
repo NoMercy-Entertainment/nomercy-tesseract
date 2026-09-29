@@ -34,7 +34,7 @@ jobs:
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Build language matrix
         id: matrix
@@ -77,7 +77,7 @@ jobs:
       WORK_DIR:       /tmp/tess-train/${{ matrix.lang }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Install build deps and fonts
         run: |
@@ -365,7 +365,7 @@ jobs:
 
       - name: Restore checkpoints from prior run (if resuming)
         if: github.event.inputs.resume_run_id != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8.0.1
         with:
           name: checkpoints-${{ matrix.lang }}
           path: /tmp/tesstrain-${{ matrix.lang }}/data/${{ matrix.lang }}/checkpoints/
@@ -475,7 +475,7 @@ jobs:
 
       - name: Upload training checkpoints (always)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: checkpoints-${{ matrix.lang }}
           path: /tmp/tesstrain-${{ matrix.lang }}/data/${{ matrix.lang }}/checkpoints/
@@ -580,7 +580,7 @@ jobs:
 
       - name: Upload benchmark report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: bench-${{ matrix.lang }}
           path: ${{ env.WORK_DIR }}/new_bench.json
@@ -617,7 +617,7 @@ jobs:
           git checkout -- "tessdata/$LANG_CODE.traineddata" || true
 
       - name: Upload tessdata artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: tessdata-${{ matrix.lang }}
           path: tessdata/${{ matrix.lang }}.traineddata
@@ -635,10 +635,10 @@ jobs:
     runs-on: [self-hosted, Linux, X64, beast-unit]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Download all reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8.0.1
         with:
           pattern: report-*
           path: reports/
@@ -710,7 +710,7 @@ jobs:
           print(summary)
 
       - name: Upload consolidated report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: training-report
           path: training-report.json
