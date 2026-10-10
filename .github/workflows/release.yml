@@ -14,6 +14,7 @@ on:
 
 jobs:
   release:
+    timeout-minutes: 7200
     runs-on: [self-hosted, Linux, X64, beast-unit]
     permissions:
       contents: write

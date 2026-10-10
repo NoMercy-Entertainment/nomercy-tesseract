@@ -29,6 +29,7 @@ concurrency:
 
 jobs:
   setup:
+    timeout-minutes: 7200
     name: Resolve language matrix
     runs-on: [self-hosted, Linux, X64, beast-unit]
     outputs:
@@ -63,7 +64,7 @@ jobs:
     name: Train [${{ matrix.lang }}]
     needs: setup
     runs-on: [self-hosted, Linux, X64, beast-unit]
-    timeout-minutes: 1440
+    timeout-minutes: 7200
 
     strategy:
       fail-fast: false
@@ -629,6 +630,7 @@ jobs:
         run: rm -rf /tmp/tesstrain-${LANG_CODE} /tmp/tess-train
 
   report:
+    timeout-minutes: 7200
     name: Training report
     needs: [setup, train]
     if: always()

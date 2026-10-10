@@ -26,6 +26,7 @@ concurrency:
 
 jobs:
   setup:
+    timeout-minutes: 7200
     runs-on: [self-hosted, Linux, X64, beast-unit]
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
@@ -50,6 +51,7 @@ jobs:
               fh.write(f"value={json.dumps({'lang': langs})}\n")
 
   bench:
+    timeout-minutes: 7200
     needs: setup
     runs-on: [self-hosted, Linux, X64, beast-unit]
     strategy:
@@ -116,6 +118,7 @@ jobs:
         run: rm -rf /tmp/bench_render_${LANG_CODE} /tmp/bench_tessdata
 
   aggregate:
+    timeout-minutes: 7200
     needs: [setup, bench]
     if: always()
     runs-on: [self-hosted, Linux, X64, beast-unit]
