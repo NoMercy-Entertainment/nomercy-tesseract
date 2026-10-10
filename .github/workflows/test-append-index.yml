@@ -5,6 +5,7 @@ on:
 
 jobs:
   test:
+    timeout-minutes: 7200
     name: Build patched Tesseract and test --append_index
     runs-on: [self-hosted, Linux, X64, beast-unit]
 

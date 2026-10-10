@@ -16,6 +16,7 @@ on:
 
 jobs:
   generate:
+    timeout-minutes: 7200
     name: Generate training text
     runs-on: [self-hosted, Linux, X64, beast-unit]
 
